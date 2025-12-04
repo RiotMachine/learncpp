@@ -1,10 +1,2 @@
-# Borrowing this man's list for now
-# https://gist.github.com/Yousha/3830712334ac30a90eb6041b932b68d7
-
-## VisualStudioCode
+## VS Code
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
