@@ -1,15 +1,15 @@
 #include <iostream>
 #include <typeinfo>
 
-// auto keyword not recommended for functions 
-/// w/o a good reason
-// also does not work for function params
-/// until c++20 and then it's not type deduction
-/// but function templates
+/*
+auto keyword not recommended for functions w/o a good reason
+also does not work for function params until c++20 and then it's not type deduction
+
 auto sum(int x, double y)
 {
     return x + y;
 }
+*/
 
 
 int main()
