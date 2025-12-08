@@ -18,8 +18,7 @@ int main()
     double g { 5 };     // numeric conversion, not narrowing since 5 is constexpr and in double's range
 
     // Extra credit section
-    long h { 5 };       // numeric conversion - not considered to be promotion 
-                        // not narrowing since long can represent all int values
+    long h { 5 };       // numeric conversion - not all widening conversions are considered promotions
 
     float i { f };      // narrowing conversion since f is double and not constexpr; 
                         // but only throws warning whereas int c { 5.4 } throws error
