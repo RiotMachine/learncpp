@@ -1,4 +1,7 @@
 // non-type template parameters
+/// good way to pass a constexpr as a parameter
+/// in a type template parameter, the template is for type selections
+/// in a non-type template parameter, the template is for a constexpr value
 
 #include <iostream>
 
