@@ -1,4 +1,8 @@
 // using function templates in multiple files
+/// define templates in header file then include them wherever
+/// doesnt violate ODR since implicit function instantiations are 
+//// implicitly inline && coming from one source of truth
+//// definitions with the same name and types are identical
 
 #include "s10.h"
 

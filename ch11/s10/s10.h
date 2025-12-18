@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+// with non-type template parameters, numeric conversions are more limited (int to double wont work)
+// also, they perform more limited matching than type template parameters. 
+/// if I were to define template <char N> as well we would get ambiguous matches
+
 template <int N>
 constexpr int factorial()
 {
