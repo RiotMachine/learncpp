@@ -1,0 +1,10 @@
+This program returns 
+11
+2
+4
+2
+6
+
+function call syntax prefers direct match over one created by template
+if there is no direct match, new instantiation is preferred over promotion
+<> or <type> syntax route to template-created functions

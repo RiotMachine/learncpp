@@ -1,0 +1,32 @@
+The program outputs 
+1
+2
+1
+2
+because two instantiations of int count(T) are created -
+	one with type int and one with type double.
+Each instantiation gets its own static int.
+
+Correction:
+originally wrote
+0
+1
+0
+1
+but these are the values of static int c each time 
+	count<int>(int)/count<double>(double) is called. 
+	since ++c is returned cout prints 1 2 1 2
+
+
+n.b.
+prefix increment operator increments then returns incremented val
+posfix increment copies init val, increments the underlying var, then
+	returns init val 
+*prefix* increment is the one that is preferred
+postfix would have printed
+0
+1
+0
+1
+since the 'preincrement' val is returned even though the static variable
+	is incremented
