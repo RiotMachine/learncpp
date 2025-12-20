@@ -1,0 +1,7 @@
+a) Prints "int 5" since overloads prefer numeric promotion over conversion
+b) Wont compile because print() is an ambiguous match with
+	void print() and void print(int x=0)
+c) Wont compile because print(5) is an ambiguous match with void print(long x)
+	and void print (double x) -- int to long is considered a conversion
+	so both options are considered conversions
+
