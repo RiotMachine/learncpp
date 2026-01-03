@@ -1,0 +1,11 @@
+// lvalue references
+
+11
+22
+44
+
+/*
+rvalue reference is assigned to object once and for all
+reference and object are synonymous with regard to
+    value and assignment
+*/
