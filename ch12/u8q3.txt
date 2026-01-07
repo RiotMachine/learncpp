@@ -1,0 +1,5 @@
+Why should we set pointers that arent pointing to a valid object to 'nullptr'?
+
+Because we can use boolean logic to prevent dereferencing a null pointer.
+If we leave a pointer dangling there's no easy way to keep it from
+	being dereferenced.

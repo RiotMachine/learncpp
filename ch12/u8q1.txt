@@ -1,0 +1,7 @@
+1a) Can we determine whether a pointer is a null pointer or not? If so, how?
+
+Yes, null pointers eval to false, while non-null ptrs eval to true.
+
+1b) Can we determine whether a non-null pointer is valid or dangling? If so, how?
+
+No

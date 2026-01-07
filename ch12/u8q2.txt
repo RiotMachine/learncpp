@@ -1,0 +1,17 @@
+2a) Assigning the address of an object to a non-const pointer
+Predictable
+
+2b) Assigning nullptr to a pointer
+Predictable
+
+2c) Dereferencing a pointer to a valid object
+Predictable
+
+2d) Dereferencing a dangling pointer
+Undefined
+
+2e) Dereferencing a null pointer
+Undefined
+
+2f) Dereferening a non-pull pointer
+Possibly undefined, if pointer is dangling
