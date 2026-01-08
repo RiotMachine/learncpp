@@ -19,6 +19,11 @@ void launchProgram(const std::string_view name)
 // 5 is in main's scope so it lives until the end of the expression in main
 // if 5 itself were returned, it would die then the returned reference would be dangling
 /// [technically, the refs are to a temp object holding the rvalue 5]
+/*
+ "If a parameter is passed into a function by reference, it’s safe to return that parameter by reference.
+ "in order to pass an argument to a function, the argument must exist in the scope of the caller.
+ "When the called function returns, that object must still exist in the scope of the caller."
+*/
 const int& printFive(const int& five=5)
 {
     return five;
