@@ -23,6 +23,11 @@ void passByRef(const T&& ref)
 template <typename T>
 void passByAddress(const T* ptr)
 {
+    if(!ptr)
+    {
+        std::cout << "\nnull pointer!\n";
+        return;
+    }
     std::cout << *ptr << " passed by address\n";
 }
 
@@ -43,6 +48,15 @@ int main()
     std::cout << '\n';
     passByValue('b');
     passByRef('b');
+
+    char* ptr{ &x };
+    std::cout << "\nvalue at " << static_cast<const void*>(ptr) << '\n';
+    passByValue(*ptr);
+    passByRef(*ptr);
+    passByAddress(ptr);
+
+    ptr = nullptr;
+    passByAddress(ptr);
 
     return 0;
 }
