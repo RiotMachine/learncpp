@@ -35,6 +35,10 @@ int main()
     launchProgram(program);
 
     std::cout << printFive() << '\n';
+    // this though leads to a dangling reference
+    // since rvalue lifetime extensions dont work across function boundaries
+    /// temp object holding 5 dies at end of this expression
+    // const int& ref{ printFive() };
 
     return 0;
 }
