@@ -2,14 +2,15 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
-const std::string& getProgramName()
+const std::string_view getProgramName()
 {
     static const std::string name { "My program" };
     return name;
 }
 
-void launchProgram(const std::string& name)
+void launchProgram(const std::string_view name)
 {
     if (name == "My program")
         std::cout << "Yay!\n";
@@ -17,7 +18,7 @@ void launchProgram(const std::string& name)
 
 int main()
 {
-    std::string program{ getProgramName() };
+    std::string_view program{ getProgramName() };
     launchProgram(program);
 
     return 0;
