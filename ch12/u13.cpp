@@ -10,19 +10,24 @@
 void getTrig(double degrees, double& sinOut, double& cosOut, double& tanOut)
 {
     constexpr double pi{ 3.14159265358979323846 };
-    double radians{ degrees * pi / 180.0 };
-    sinOut = std::sin(radians);
-    cosOut = std::cos(radians);
-    tanOut = std::tan(radians);
-
+    const double radians{ degrees * pi / 180.0 };
     if (fmod(degrees, 180.0) == 0)
     {
         sinOut = 0.0;
+        cosOut = std::cos(radians);
         tanOut = 0.0;
     }
-    if ((fmod(degrees, 90.0) == 0) && (fmod(degrees, 180.0) != 0))
+    else if (fmod(degrees, 90.0) == 0)
     {
+        sinOut = std::sin(radians);
         cosOut = 0.0;
+        tanOut = std::tan(radians);
+    }
+    else
+    {
+        sinOut = std::sin(radians);
+        cosOut = std::cos(radians);
+        tanOut = std::tan(radians);
     }
 }
 
