@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <limits>
 
 // in getTrig, degrees is an in parameter while the trigs are out parameters
 void getTrig(double degrees, double& sinOut, double& cosOut, double& tanOut)
@@ -21,7 +22,7 @@ void getTrig(double degrees, double& sinOut, double& cosOut, double& tanOut)
     {
         sinOut = std::sin(radians);
         cosOut = 0.0;
-        tanOut = std::tan(radians);
+        tanOut = std::numeric_limits<double>::quiet_NaN();
     }
     else
     {
@@ -33,6 +34,7 @@ void getTrig(double degrees, double& sinOut, double& cosOut, double& tanOut)
 
 int main()
 {
+    std::numeric_limits<double>::has_quiet_NaN == false;
     std::cout << "Enter the degrees of your angle: ";
     double angle{};
     std::cin >> angle;
@@ -46,7 +48,7 @@ int main()
     std::cout << "\tsin = " << sin << '\n';
     std::cout << "\tcos = " << cos << '\n';
     std::cout << "\ttan ";
-    if (cos == 0.0)
+    if (std::isnan(tan))
         std::cout << "is undefined\n";
     else
         std::cout << "= " << tan << '\n';
