@@ -1,0 +1,4 @@
+Why prefer to pass args by const reference?
+
+1) Ensures function does not modify the value we passed
+2) Allows us to pass greater range - const lvalues, non-const lvalues, and rvalues

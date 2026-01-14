@@ -1,0 +1,5 @@
+a) 5		- rvalue
+b) x		- lvalue
+c) x + 1	- rvalue
+d) foo()	- rvalue, since return by value
+e) max(x,y)	- lvalue, since return by reference
