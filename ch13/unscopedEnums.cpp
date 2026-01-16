@@ -1,6 +1,22 @@
+#include <algorithm>
+#include <cctype>
 #include <iostream>
+#include <iterator>
 #include <map>
+#include <optional>
+#include <string>
 #include <string_view>
+
+std::string lowerString(std::string_view sv)
+{
+    std::string lower{};
+    std::transform(sv.begin(), sv.end(), std::back_inserter(lower),
+    [](char c)
+    {
+        return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    });
+    return lower;
+}
 
 // enumerators of unscoped enumerations occupy same scope as enumeration
 
@@ -21,6 +37,16 @@ namespace NFL
         texans,
     };
 
+    constexpr std::optional<Opponent> getOppFromString(std::string_view sv)
+    {
+        if (sv == "colts")    return colts;
+        if (sv == "cowboys")  return cowboys;
+        if (sv == "eagles")   return eagles;
+        if (sv == "texans")   return texans;
+
+        return {};
+    }
+
     constexpr std::string_view printOpp(Opponent opp)
     {
         switch (opp)
@@ -35,7 +61,7 @@ namespace NFL
 
     void printResult(Opponent opp, Result result)
     {
-        std::cout << "\tVerses the " << printOpp(opp) << '\t';
+        std::cout << "Verses the " << printOpp(opp) << '\t';
         if (result == win)
             std::cout << "win!\n";
         else if (result == loss)
@@ -54,9 +80,24 @@ int main()
     chiefs.insert({ NFL::eagles, loss });
     chiefs.insert({ NFL::colts, win });
 
-    std::cout << "Chiefs season:\n";
+    std::cout << "Chiefs season:\n\n";
     for (auto const& [key, val] : chiefs)
         NFL::printResult(key, val);
 
+    std::cout << "\nInput a team: ";
+    std::string input{};
+    std::cin >> input;
+    std::optional<NFL::Opponent> opponent{ NFL::getOppFromString(lowerString(input)) };
+    if (!opponent)
+        std::cout << input << " is not an NFL team.\n";
+    else
+        if (chiefs.find(*opponent) == chiefs.end())
+            std::cout << "The Chiefs did not play the " << input << '\n';
+        else
+            NFL::printResult(*opponent, chiefs[*opponent]);
+
     return 0;
 }
+
+
+
