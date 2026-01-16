@@ -1,0 +1,11 @@
+Emumerators can be
+
+Given an integer value? T
+Given no explicit value? T
+Given a floating point value? F
+Given a negative value? T
+Given a non-unique value? T
+Given the value of a prior enumerator (e.g. magenta = red)? T
+Given a non-constexpr value? F; enumerators are compile-time constants
+	"since enumerators are constexpr, their values must be constexpr"
+	(enumerator is the word, enumeration is the object)
