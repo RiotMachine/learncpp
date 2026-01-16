@@ -1,7 +1,7 @@
-#include <algorithm>
-#include <cctype>
+#include <algorithm> // for std::transform
+#include <cctype>    // for std::tolower
 #include <iostream>
-#include <iterator>
+#include <iterator>  // for std::back_inserter
 #include <map>
 #include <optional>
 #include <string>
