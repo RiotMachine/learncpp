@@ -12,7 +12,7 @@ enum class Animal
     duck,
 };
 
-std::string_view getAnimalName(Animal animal)
+constexpr std::string_view getAnimalName(Animal animal)
 {
     switch(animal)
     {
@@ -26,15 +26,15 @@ std::string_view getAnimalName(Animal animal)
     }
 }
 
-std::optional<int> getNumberOfLegs(Animal animal)
+constexpr std::optional<int> getNumberOfLegs(Animal animal)
 {
     switch(animal)
     {
-    case Animal::pig:     return 4;
-    case Animal::goat:    return 4;
-    case Animal::cat:     return 4;
+    case Animal::pig:
+    case Animal::goat:
+    case Animal::cat:
     case Animal::dog:     return 4;
-    case Animal::chicken: return 2;
+    case Animal::chicken:
     case Animal::duck:    return 2;
     default:              return { };
     }
@@ -44,18 +44,16 @@ void printNumberOfLegs(Animal animal)
 {
     std::optional<int> legs{ getNumberOfLegs(animal) };
     if (!legs)
-        std::cout << "Why did you pass me an unreal animal fool?\n";
+        std::cout << "What did you pass me fool?\n";
     else
-        std::cout << "A " << getAnimalName(animal) << " has " << *legs << " legs.\n";
+        std::cout << "A " << getAnimalName(animal) << " has " << *legs
+            << " legs.\n";
 }
 
 int main()
 {
-    Animal cat{ Animal::cat };
-    Animal chicken{ Animal::chicken };
-
-    printNumberOfLegs(cat);
-    printNumberOfLegs(chicken);
+    printNumberOfLegs(Animal::cat);
+    printNumberOfLegs(Animal::chicken);
 
     return 0;
 }
