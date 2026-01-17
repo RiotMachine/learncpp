@@ -4,7 +4,6 @@
 #include <iterator>  // for std::back_inserter
 #include <limits>
 #include <map>
-#include <optional>
 #include <string>
 #include <string_view>
 
