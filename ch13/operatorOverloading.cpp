@@ -2,6 +2,7 @@
 #include <cctype>    // for std::tolower
 #include <iostream>
 #include <iterator>  // for std::back_inserter
+#include <limits>
 #include <map>
 #include <optional>
 #include <string>
@@ -27,7 +28,7 @@ enum Result
 
 namespace NFL
 {
-    enum Opponent
+    enum Team
     {
         colts,
         cowboys,
@@ -35,9 +36,9 @@ namespace NFL
         texans,
     };
 
-    std::ostream& operator<<(std::ostream& out, Opponent opp)
+    std::ostream& operator<<(std::ostream& out, Team team)
     {
-        switch (opp)
+        switch (team)
         {
         case colts:    return out << "Colts";
         case cowboys:  return out << "Cowboys";
@@ -47,19 +48,24 @@ namespace NFL
         }
     }
 
-    constexpr std::optional<Opponent> getOppFromString(std::string_view sv)
+    std::istream& operator>>(std::istream& in, Team& team)
     {
-        if (sv == "colts")    return colts;
-        if (sv == "cowboys")  return cowboys;
-        if (sv == "eagles")   return eagles;
-        if (sv == "texans")   return texans;
+        std::string s{ };
+        in >> s;
+        s = lowerString(s);
 
-        return {};
+        if (s == "colts")         team = colts;
+        else if (s == "cowboys")  team = cowboys;
+        else if (s == "eagles")   team = eagles;
+        else if (s == "texans")   team = texans;
+        else                      in.setstate(std::ios_base::failbit);
+
+        return in;
     }
 
-    void printResult(Opponent opp, Result result)
+    void printResult(Team opponent, Result result)
     {
-        std::cout << "Verses the " << opp << '\t';
+        std::cout << "Verses the " << opponent << '\t';
         if (result == win)
             std::cout << "win!\n";
         else if (result == loss)
@@ -71,7 +77,7 @@ namespace NFL
 
 int main()
 {
-    using Season = std::map<NFL::Opponent, Result>;
+    using Season = std::map<NFL::Team, Result>;
 
     Season chiefs;
     chiefs.insert({ NFL::texans, loss });
@@ -83,16 +89,20 @@ int main()
         NFL::printResult(key, val);
 
     std::cout << "\nInput a team: ";
-    std::string input{};
-    std::cin >> input;
-    std::optional<NFL::Opponent> opponent{ NFL::getOppFromString(lowerString(input)) };
-    if (!opponent)
-        std::cout << input << " is not an NFL team.\n";
-    else
-        if (chiefs.find(*opponent) == chiefs.end())
-            std::cout << "The Chiefs did not play the " << input << '\n';
+    NFL::Team opponent{ };
+    if (std::cin >> opponent)
+    {
+        if (chiefs.find(opponent) == chiefs.end())
+            std::cout << "The Chiefs did not play the " << opponent << '\n';
         else
-            NFL::printResult(*opponent, chiefs[*opponent]);
+            NFL::printResult(opponent, chiefs[opponent]);
+    }
+    else
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "That is not an NFL team.\n";
+    }
 
     return 0;
 }
