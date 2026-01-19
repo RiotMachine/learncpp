@@ -6,20 +6,20 @@ struct Fraction
     int denom{ 1 };
 };
 
-void setFraction(Fraction& fraction)
+Fraction getFraction()
 {
+    Fraction temp{ };
     std::cout << "Input a numerator: ";
-    std::cin >> fraction.num;
-    bool flag{ true };
-    do
+    std::cin >> temp.num;
+    while (true)
     {
         std::cout << "Input a denominator: ";
-        std::cin >> fraction.denom;
-        if (fraction.denom == 0)
+        std::cin >> temp.denom;
+        if (temp.denom == 0)
             std::cout << "A fraction cannot have a denominator of 0\n";
         else
-            flag = false;
-    } while (flag);
+            return temp;
+    }
 }
 
 void printFraction(const Fraction& fraction)
@@ -27,7 +27,7 @@ void printFraction(const Fraction& fraction)
     std::cout << fraction.num << "/" << fraction.denom << '\n';
 }
 
-Fraction getFractionProduct(const Fraction& fraction1, const Fraction& fraction2)
+constexpr Fraction getFractionProduct(const Fraction& fraction1, const Fraction& fraction2)
 {
     return {
         fraction1.num * fraction2.num,
@@ -38,13 +38,11 @@ Fraction getFractionProduct(const Fraction& fraction1, const Fraction& fraction2
 int main()
 {
     std::cout << "Getting Fraction #1...\n";
-    Fraction fraction1{ };
-    setFraction(fraction1);
+    Fraction fraction1{ getFraction() };
     std::cout << '\n';
 
     std::cout << "Getting Fraction #2...\n";
-    Fraction fraction2{ };
-    setFraction(fraction2);
+    Fraction fraction2{ getFraction() };
     std::cout << '\n';
 
     std::cout << "Your fractions multiplied together: ";
