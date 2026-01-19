@@ -14,15 +14,11 @@ void setFraction(Fraction& fraction)
     do
     {
         std::cout << "Input a denominator: ";
-        int temp{ };
-        std::cin >> temp;
-        if (temp == 0)
+        std::cin >> fraction.denom;
+        if (fraction.denom == 0)
             std::cout << "A fraction cannot have a denominator of 0\n";
         else
-        {
-            fraction.denom = temp;
             flag = false;
-        }
     } while (flag);
 }
 
