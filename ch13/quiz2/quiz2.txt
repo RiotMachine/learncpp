@@ -1,0 +1,12 @@
+# specify whether each object should be passed by value, const address, or 
+## const reference. Assume the function that takes it does not modify it
+
+a) char                                      - value
+b) std::string                               - const reference
+c) unsigned long                             - value
+d) bool                                      - value
+e) an enumerated type                        - value
+f) struct Position w/ 3 dbl members          - const reference
+g) struct Player with 1 int member (for now) - const reference
+h) int when null is a valid argument         - const address
+i) std::string_view                          - value
