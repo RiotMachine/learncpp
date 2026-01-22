@@ -55,14 +55,16 @@ namespace NFL
         WltResult result{ };
         int score{ };
         int opponentScore{ };
-    };
 
-    std::ostream& operator<<(std::ostream& out, const RegSeasonGame& game)
-    {
-        out << game.opponent << ": " << game.result << " " << game.score
-            << "-" << game.opponentScore;
-        return out;
-    }
+        // not bad practice to include functions in structs as long as
+        // a) struct is just a bag of data
+        // b) struct does not include initializer
+        void print()
+        {
+            std::cout << opponent << ": " << result << " " << score << "-"
+                << opponentScore << '\n';
+        }
+    };
 
 
     // SEASONS
@@ -71,7 +73,9 @@ namespace NFL
     void printSeason(Season season)
     {
         for (RegSeasonGame game : season)
-            std::cout << '\t' << game << '\n';
+        {
+            game.print();
+        }
     }
 
     void searchSeason(Season season)
@@ -85,7 +89,7 @@ namespace NFL
                 if (game.opponent == opponent)
                 {
                     flag = false;
-                    std::cout << game << '\n';
+                    game.print();
                 }
             if (flag)
                 std::cout << "Your team did not play the " << opponent << '\n';
@@ -109,7 +113,7 @@ int main()
         NFL::RegSeasonGame{ NFL::broncos, WltResult::loss, 19, 22 }
     };
 
-    std::cout << "Chiefs season:\n";
+    std::cout << "Chiefs season:\n\n";
     NFL::printSeason(chiefs);
 
     NFL::searchSeason(chiefs);
