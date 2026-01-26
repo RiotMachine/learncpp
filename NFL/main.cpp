@@ -1,20 +1,21 @@
 #include "nfl.h"
-#include "sport.h"
 #include <iostream>
 
 int main()
 {
-    NFL::Season chiefs2025{ NFL::chiefs };
-    chiefs2025.regSeasonGames = {
-        NFL::RegSeasonGame{ NFL::texans,  Sport::WltResult::loss, 10, 20 },
-        NFL::RegSeasonGame{ NFL::eagles,  Sport::WltResult::loss, 17, 20 },
-        NFL::RegSeasonGame{ NFL::colts,   Sport::WltResult::win,  23, 20 },
-        NFL::RegSeasonGame{ NFL::broncos, Sport::WltResult::loss, 13, 20 },
-        NFL::RegSeasonGame{ NFL::broncos, Sport::WltResult::loss, 19, 22 }
+    NFL::Season chiefs2025{
+        NFL::chiefs, {
+        NFL::RegSeasonGame{ NFL::texans,  NFL::RegSeasonResult::loss, 10, 20 },
+        NFL::RegSeasonGame{ NFL::eagles,  NFL::RegSeasonResult::loss, 17, 20 },
+        NFL::RegSeasonGame{ NFL::colts,   NFL::RegSeasonResult::win,  23, 20 },
+        NFL::RegSeasonGame{ NFL::broncos, NFL::RegSeasonResult::loss, 13, 20 },
+        NFL::RegSeasonGame{ NFL::broncos, NFL::RegSeasonResult::loss, 19, 22 }
+        }
     };
 
-    std::cout << "Chiefs season:\n\n";
+    std::cout << "2025 Chiefs:\n\n";
     chiefs2025.print();
+    std::cout << '\n';
     chiefs2025.search();
 
     return 0;

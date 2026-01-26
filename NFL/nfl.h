@@ -20,11 +20,13 @@ namespace NFL
     std::ostream& operator<<(std::ostream& out, Team team);
     std::istream& operator>>(std::istream& in, Team& team);
 
-    struct RegSeasonGame : Sport::Game<Team, Sport::WltResult> {};
-    struct PlayoffGame   : Sport::Game<Team, Sport::WlResult> {};
+    using RegSeasonResult = Sport::WltResult;
+    using PlayoffResult = Sport::WlResult;
 
-    constexpr int regSeasonLength{ 17 };
-    struct Season : Sport::Season<Team, RegSeasonGame, PlayoffGame, regSeasonLength> {};
+    struct RegSeasonGame : Sport::Game<Team, RegSeasonResult> {};
+    struct PlayoffGame   : Sport::Game<Team, PlayoffResult> {};
+
+    struct Season : Sport::Season<Team, RegSeasonGame, PlayoffGame> {};
 
     class Franchise
     {

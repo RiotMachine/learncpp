@@ -1,7 +1,6 @@
 #ifndef SPORT_H
 #define SPORT_H
 
-#include <array>
 #include <iostream>
 #include <limits>
 #include <vector>
@@ -33,56 +32,50 @@ namespace Sport
         int score{ };
         int opponentScore{ };
 
-        void print()
+        void print() const
         {
             std::cout << opponent << ": " << result << " "
                 << score << "-" << opponentScore << '\n';
         }
-
-        void printIndent()
-        {
-            std::cout << '\t';
-            print();
-        }
     };
 
 
-    template <typename T, typename U, typename V, int N>
+    template <typename T, typename U, typename V>
     struct Season
     {
         T team;
-        std::array<U, N> regSeasonGames;
+        std::vector<U> regSeason;
         std::vector<V> playoffs;
 
-        void print()
+        void print() const
         {
             std::cout << "Regular season:\n";
-            for (U game : regSeasonGames)
-                game.printIndent();
+            for (const U& game : regSeason)
+                game.print();
             if (!playoffs.empty())
             {
                 std::cout << "Playoffs:\n";
-                for (V game : playoffs)
-                    game.printIndent();
+                for (const V& game : playoffs)
+                    game.print();
             }
             else
-                std::cout << "\nThe " << team << " did not make the playoffs.\n";
+                std::cout << "The " << team << " did not make the playoffs.\n";
         }
 
-        void search()
+        void search() const
         {
-            std::cout << "\nInput a team: ";
+            std::cout << "Input a team: ";
             T opponent{ };
             if (std::cin >> opponent)
             {
                 bool flag{ true };
-                for (U game : regSeasonGames)
+                for (const U& game : regSeason)
                     if (game.opponent == opponent)
                     {
                         flag = false;
                         game.print();
                     }
-                for (V game : playoffs)
+                for (const V& game : playoffs)
                     if (game.opponent == opponent)
                     {
                         flag = false;

@@ -33,4 +33,3 @@ std::istream& NFL::operator>>(std::istream& in, NFL::Team& team)
 
     return in;
 }
-
