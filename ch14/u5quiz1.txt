@@ -1,0 +1,6 @@
+a) A public member is accessible by the 'public', ie. non-class type
+	members
+b) A private member is only accessible by other members of that class
+c) An access specifer determines the access level of a portion of a 
+	class type's def
+d) The are three: public, private, and protected
