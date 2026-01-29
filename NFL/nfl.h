@@ -30,9 +30,11 @@ namespace NFL
 
     class Franchise
     {
-        Team name{ };
-        std::vector<Season> seasons{ };
-        int superBowlWins{ };
+        // class member variables should be private by default
+        // best practice to prefix these with 'm_'
+        Team m_name{ };
+        std::vector<Season> m_seasons{ };
+        int m_superBowlWins{ };
     };
 }
 
