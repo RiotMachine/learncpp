@@ -5,36 +5,22 @@
 class Ball
 {
 private:
-    std::string m_color{ "black" };
-    float m_radius{ 10.0 };
+    static constexpr std::string_view default_color{ "black" };
+    static constexpr float default_radius{ 10.0 };
 
-    void printBall() const
-    {
-        std::cout << "Ball(" << m_color << ", " << m_radius << ")\n";
-    }
+    std::string m_color{ default_color };
+    float m_radius{ default_radius };
 
 public:
-    Ball()
-    {
-        printBall();
-    }
-
-    Ball(std::string_view color)
-        : m_color{ color }
-    {
-        printBall();
-    }
-
     Ball(float radius)
-        : m_radius{ radius }
+        : Ball{ default_color, radius }
     {
-        printBall();
     }
 
-    Ball(std::string_view color, float radius)
+    Ball(std::string_view color=default_color, float radius=default_radius)
         : m_color{ color }, m_radius{ radius }
     {
-        printBall();
+        std::cout << "Ball(" << m_color << ", " << m_radius << ")\n";
     }
 };
 
