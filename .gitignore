@@ -1,9 +1,9 @@
 *
 
 !*/
-!.cpp
-!.h
-!.txt
+!*.cpp
+!*.h
+!*.txt
 
 brainstorming.txt
 
