@@ -13,8 +13,7 @@ public:
     // implicit default constructor only when no user-defined constructors
     Fraction() = default;
 
-    // not best practice to be non-explicit (considered one-arg) but for practice
-    Fraction(int numerator, int denominator=1)
+    Fraction(int numerator, int denominator)
         : m_numerator{ numerator }, m_denominator{ denominator }
     {
     }
@@ -39,8 +38,8 @@ public:
     // not best practice, just for practice; same as default copy constructor
     // copy constructor (when not elided) called whenever object is copied
     ///  eg. pass by value
-    // mandatory copy elision still worx even if you =delete copy constructor
-    // private members are visible to all objects of the class
+    //// mandatory copy elision still worx even if you =delete copy constructor
+    //// private members are visible to all objects of the class
     Real(const Real& real)
         : m_value { real.m_value }
     {
@@ -76,17 +75,14 @@ int main()
     */
     print( Fraction{ } );
     print( Real{ 5 } );
-    print( Fraction{ 5 } );
+    print( Fraction{ 5, 9 } );
 
     // Converting constructors
 
-    // prints fraction since Real(double) constructor is explicit
-    /// only one user-defined conversion in a conversion stack allowed
-    /// double to int doesnt count since not user-defined
-    print(5.0);
-
-    // Appears implicit conversion with mult args reqs a brace list
-    print( {5,8} );
+    // only one user-defined conversion in a conversion stack allowed
+    // double to int doesnt count since not user-defined
+    /// Appears implicit conversion with mult args reqs a brace list
+    print( {5.0,8} );
 
     // std::string can be implicitly constructed from a c-style string
     // semantic and performant, I guess
