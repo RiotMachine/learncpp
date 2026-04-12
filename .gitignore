@@ -1,4 +1,10 @@
-brainstorming.txt
+*
 
 ## VS Code
 .vscode/*
+
+!.cpp
+!.h
+!.txt
+
+brainstorming.txt
