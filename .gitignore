@@ -1,10 +1,11 @@
 *
 
-## VS Code
-.vscode/*
-
+!*/
 !.cpp
 !.h
 !.txt
 
 brainstorming.txt
+
+## VS Code
+.vscode/*
