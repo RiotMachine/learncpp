@@ -5,7 +5,7 @@
 class Fraction
 {
 private:
-    // direct list init defaults to 0 for fundamental data types
+    // value init defaults to 0 for fundamental data types
     int m_numerator{ };
     int m_denominator{ 1 };
 
@@ -13,6 +13,7 @@ public:
     // implicit default constructor only when no user-defined constructors
     Fraction() = default;
 
+    // bp would make explicit as single arg constructor
     Fraction(int numerator, int denominator=1)
         : m_numerator{ numerator }, m_denominator{ denominator }
     {
@@ -84,11 +85,11 @@ int main()
 
     // std::string cannot be implicitly constructed from a string_view
     /// semantic but non-performant
-    // explicit constructor can still be used thru (direct &&) direct list init
+    // Prefer static_cast when converting to a fundamental type
+    /// list-initialized temporary when converting to a class type
     std::string_view rams{ "Fuck them picks." };
     printString( std::string { rams } );
 
-    printString( static_cast<std::string>(rams) );
 
     return 0;
 }
