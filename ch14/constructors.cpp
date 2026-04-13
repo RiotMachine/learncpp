@@ -13,7 +13,7 @@ public:
     // implicit default constructor only when no user-defined constructors
     Fraction() = default;
 
-    Fraction(int numerator, int denominator)
+    Fraction(int numerator, int denominator=1)
         : m_numerator{ numerator }, m_denominator{ denominator }
     {
     }
@@ -59,8 +59,7 @@ void print(Real r)
     std::cout << r.value() << '\n';
 }
 
-// added bool because brace list implicit to Fraction was ambiguous
-void print(std::string r, bool)
+void printString(std::string r)
 {
     std::cout << r << '\n';
 }
@@ -68,37 +67,28 @@ void print(std::string r, bool)
 int main()
 {
     // Temporary (anonymous) class objects
-
-    /*
-    Real has no default constructor
-    print( Real{ } );
-    */
     print( Fraction{ } );
     print( Real{ 5 } );
     print( Fraction{ 5, 9 } );
 
     // Converting constructors
-
-    // only one user-defined conversion in a conversion stack allowed
-    // double to int doesnt count since not user-defined
-    /// Appears implicit conversion with mult args reqs a brace list
-    print( {5.0,8} );
+    /// only one user-defined conversion in a conversion stack allowed
+    /// double to int doesnt count since not user-defined
+    /// Using bracelist to count as one passed object since print takes one param
+    print(7);
+    print( {5.0, 8} );
 
     // std::string can be implicitly constructed from a c-style string
     // semantic and performant, I guess
-    print("Fuck them picks.", true);
+    printString("Fuck them picks.");
 
-    std::string_view rams{ "Fuck them picks." };
-    /*
-      std::string cannot be implicitly constructed from a string_view
-      semantic but non-performant
-    print(rams, true);
-    */
-
+    // std::string cannot be implicitly constructed from a string_view
+    /// semantic but non-performant
     // explicit constructor can still be used thru (direct &&) direct list init
-    print( std::string { rams }, true );
+    std::string_view rams{ "Fuck them picks." };
+    printString( std::string { rams } );
 
-    print( static_cast<std::string>(rams), true );
+    printString( static_cast<std::string>(rams) );
 
     return 0;
 }
