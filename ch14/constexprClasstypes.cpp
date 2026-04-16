@@ -46,6 +46,8 @@ public:
     }
 };
 
+// std::sqrt and std::pow are not constexpr in C++17
+/// but gcc performs some trickery so they behave like constexpr
 constexpr double magnitude(const Vector& v)
 {
     return std::sqrt( std::pow(v.x1(), 2) + std::pow(v.x2(), 2) );
