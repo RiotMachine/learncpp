@@ -46,7 +46,7 @@ public:
     }
 };
 
-// constexpr functions can only call constexpr functions
+// at compile time constexpr functions can only call constexpr functions
 // std::sqrt and std::pow are not constexpr in C++17
 /// but gcc performs some trickery so they behave like constexpr
 constexpr double magnitude(const Vector& v)
