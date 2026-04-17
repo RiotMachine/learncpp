@@ -3,6 +3,7 @@
 class Fraction
 {
 public:
+    // should init b4 function body
     Fraction()
     {
         std::cout << "Enter a numerator: ";
@@ -12,6 +13,8 @@ public:
         std::cout << '\n';
     }
 
+    // should both be non-member functions to promote encapsulation
+    // not to mention multiply is weird as a member function
     void multiply()
     {
         Fraction multiplicand{ };
@@ -32,6 +35,7 @@ private:
 
 int main()
 {
+    // couldve written two Fraction objects and a multiply(Fraction)
     Fraction f1{ };
     f1.multiply();
 
