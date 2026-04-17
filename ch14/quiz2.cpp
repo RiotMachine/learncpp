@@ -4,6 +4,7 @@ class Fraction
 {
 public:
     // should init b4 function body
+    // default constructor is not typically made explicit
     Fraction()
     {
         std::cout << "Enter a numerator: ";
