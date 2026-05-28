@@ -17,13 +17,11 @@ struct Answers
     std::vector<float> highs{ std::vector<float>(365) };
 };
 
-std::vector<int> getIntVector(int x)
+void fillVector(std::vector<int>& v)
 {
-    std::cout << "Enter " << x << " integers: ";
-    std::vector<int> v(x);
-    for (int i{ 0 }; i < x; ++i)
+    std::cout << "Enter " << v.size() << " integers: ";
+    for (int i{ 0 }; i < v.size() ; ++i)
         std::cin >> v[i];
-    return v;
 }
 
 int getSum(const std::vector<int>& v)
@@ -36,7 +34,7 @@ int getSum(const std::vector<int>& v)
 
 int getProduct(const std::vector<int>& v)
 {
-    int product{ 1 };
+    int product{ v.empty() ? 0 : 1 };
     for (int i{ 0 }; i < v.size(); ++i)
         product *= v[i];
     return product;
@@ -44,7 +42,8 @@ int getProduct(const std::vector<int>& v)
 
 int main()
 {
-    std::vector v{ getIntVector(3) };
+    std::vector<int> v(3);
+    fillVector(v);
     std::cout << "The sum is: " << getSum(v) << '\n';
     std::cout << "The product is: " << getProduct(v) << '\n';
 
