@@ -20,7 +20,7 @@ struct Answers
 void fillVector(std::vector<int>& v)
 {
     std::cout << "Enter " << v.size() << " integers: ";
-    for (int i{ 0 }; i < v.size() ; ++i)
+    for (int i{ 0 }; i < v.size(); ++i)
         std::cin >> v[i];
 }
 
