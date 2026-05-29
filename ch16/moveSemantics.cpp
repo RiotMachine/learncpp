@@ -28,6 +28,9 @@ int getProduct(const std::vector<int>& v)
 
 int main()
 {
+    // since std::vector supports move semantics
+    /// returned vector is moved instead of copied into v if elision doesnt occur
+    /// so return by value is best
     std::vector v{ fillVector(3) };
     std::cout << "The sum is: " << getSum(v) << '\n';
     std::cout << "The product is: " << getProduct(v) << '\n';
