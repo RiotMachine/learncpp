@@ -2,9 +2,11 @@
 #include <vector>
 
 template <typename T>
-void printElement(const std::vector<T>& v, std::size_t idx)
+void printElement(const std::vector<T>& v, int input)
 {
-    if (idx < v.size())
+    std::size_t idx{ static_cast<std::size_t>(input) };
+
+    if (input >= 0 && idx < v.size())
         std::cout << "The element has value " << v[idx] << '\n';
     else
         std::cout << "Invalid index\n";
