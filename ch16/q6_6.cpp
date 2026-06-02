@@ -19,14 +19,14 @@ void fizzbuzz(int testSize)
 
     for (int i{ 1 }; i <= testSize; ++i)
     {
-        bool printed{ false };
+        bool iPrinted{ false };
         for (std::size_t j{ 0 }; j < divisors.size(); ++j)
             if (i % divisors[j] == 0)
             {
                 std::cout << words[j];
-                printed = true;
+                iPrinted = true;
             }
-        if (!printed)
+        if (!iPrinted)
             std::cout << i;
         std::cout << '\n';
     }
