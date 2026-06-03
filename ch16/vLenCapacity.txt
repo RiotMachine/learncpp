@@ -1,0 +1,9 @@
+What do the length and capacity of an std::vector represent?
+length: elements in use
+capacity: elements-worth of allocated storage
+
+Why are length and capacity separate values?
+By tracking capacity separately from length, a vector can sometimes avoid expensive reallocations.
+
+Are the valid indices for std::vector based on length or capacity?
+The valid indices for std::vector are based on length.
