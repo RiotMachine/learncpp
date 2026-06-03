@@ -16,6 +16,7 @@ int main()
     v.resize(0);
     print(v);
 
+    // non-binding; compiler's choice
     v.shrink_to_fit();
     print(v);
 }
