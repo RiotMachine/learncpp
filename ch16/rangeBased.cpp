@@ -29,8 +29,7 @@ int main()
 
     std::string desName{ getName() };
 
-    std::cout << desName << " was ";
-    std::cout << (
+    std::cout << desName << " was " << (
         search(
             names, static_cast<std::string_view>(desName)
             ) ? "found.\n" : "not found.\n"
