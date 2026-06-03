@@ -4,7 +4,7 @@
 #include <vector>
 
 template <typename T>
-bool search(const std::vector<T>& arr, T desire)
+bool search(const std::vector<T>& arr, const T& desire)
 {
     for (const auto& x : arr)
         if (x == desire)
@@ -29,10 +29,11 @@ int main()
 
     std::string desName{ getName() };
 
+    // compiler will perform implicit conversions when template type
+    /// argument is explicitly specified
     std::cout << desName << " was " << (
-        search(
-            names, static_cast<std::string_view>(desName)
-            ) ? "found.\n" : "not found.\n"
+        search<std::string_view>(names, desName)
+            ? "found.\n" : "not found.\n"
         );
 
     return 0;
