@@ -1,3 +1,4 @@
+#include <array>
 #include <iostream>
 #include <limits>
 #include <vector>
@@ -34,8 +35,7 @@ int main()
     print(v);
 
     constexpr int sentinel{ std::numeric_limits<int>::min() };
-
-    const std::vector queue{ 1, 2, 3, sentinel, 4, sentinel, sentinel, sentinel };
+    constexpr std::array queue{ 1, 2, 3, sentinel, 4, sentinel, sentinel, sentinel };
     v.reserve(queue.size());
 
     for (const auto& x : queue)
