@@ -33,9 +33,11 @@ int main()
     std::vector<int> v{ };
     print(v);
 
-    int sentinel{ std::numeric_limits<int>::min() };
+    constexpr int sentinel{ std::numeric_limits<int>::min() };
 
-    std::vector queue{ 1, 2, 3, sentinel, 4, sentinel, sentinel, sentinel };
+    const std::vector queue{ 1, 2, 3, sentinel, 4, sentinel, sentinel, sentinel };
+    v.reserve(queue.size());
+
     for (const auto& x : queue)
     {
         if (x == sentinel)
