@@ -1,10 +1,10 @@
 #include <array>
-#include <cassert>
 #include <iostream>
-#include <optional>
 #include <string_view>
-#include <utility>
+#include <utility>      // for std::pair
 #include <vector>
+
+using IDX = std::size_t;
 
 namespace q1
 {
@@ -17,7 +17,7 @@ namespace q1
 
 namespace q2
 {
-    enum Item
+    enum ItemType
     {
         potion,
         torch,
@@ -25,68 +25,86 @@ namespace q2
         itemType_count
     };
 
-    constexpr std::array<std::string_view, itemType_count> itemSingStrs{
-        "health potion", "torch", "arrow"
-        };
+    using Inventory = std::array<int, itemType_count>;
+    using Dictionary = std::array<std::array<std::string_view, 2>, itemType_count>;
 
-    constexpr std::array<std::string_view, itemType_count> itemPluralStrs{
-        "health potions", "torches", "arrows"
-        };
+    constexpr Dictionary itemDict{{
+        { "health potion", "health potions" },
+        { "torch", "torches" },
+        { "arrow", "arrows" }
+        }};
 
-    template <typename Count>
-    int getTotal(const std::vector<Count>& items)
+    int getTotal(const Inventory& inventory)
     {
         int total{ };
-        for (Count x: items)
-            total += x;
+        for (const auto count: inventory)
+            total += count;
         return total;
     }
 
-    template <typename Count>
-    void print(const std::vector<Count>& items)
+    void print(const Inventory& inventory)
     {
-        std::size_t idx{ };
-        for (Count x: items)
-        {
-            std::cout << "You have " << x << ' ' <<
-                (x > 1 ? itemPluralStrs[idx] : itemSingStrs[idx]) << '\n';
-            ++idx;
-        }
-        std::cout << "You have " << getTotal(items) << " total items\n";
+        for (IDX i{ }; i < itemType_count; ++i)
+            std::cout << "You have " << inventory[i] << ' '
+                << (inventory[i] == 1 ? itemDict[i][0] : itemDict[i][1]) << '\n';
+
+        std::cout << "You have " << getTotal(inventory) << " total items\n";
     }
 }
 
-namespace q3
+namespace q4
 {
-    template <typename T>
-    std::optional<std::pair<T, T>> getExtremeIDX(const std::vector<T>& v)
+    std::vector<int> makeVector()
     {
-        if (v.empty())
-            return { };
-        std::size_t minIDX{ 0 };
-        std::size_t maxIDX{ 0 };
-        std::size_t currIDX{ };
-        for (T x : v)
+        std::cout << "Enter numbers to add (use -1 to stop): ";
+        std::vector<int> v{ };
+        while (true)
         {
-            if (x < v[minIDX])
-                minIDX = currIDX;
-            if (x > v[maxIDX])
-                maxIDX = currIDX;
-            ++currIDX;
+            int x{ };
+            std::cin >> x;
+            if (x == -1)
+                break;
+            v.push_back(x);
         }
-        return std::pair { minIDX, maxIDX };
+        return v;
     }
 
     template <typename T>
-    void print(const std::pair<T, T>& extremeIDX, const std::vector<T>& v)
+    std::pair<IDX, IDX> getExtremeIDX(const std::vector<T>& v)
     {
-        std::cout << "With array (";
-        std::size_t idx{ };
+        IDX minIDX{ 0 };
+        IDX maxIDX{ 0 };
+        for (IDX i{ }; i < v.size(); ++i)
+        {
+            if (v[i] < v[minIDX])
+                minIDX = i;
+            if (v[i] > v[maxIDX])
+                maxIDX = i;
+        }
+        return { minIDX, maxIDX };
+    }
+
+    template <typename T>
+    void print(const std::vector<T>& v)
+    {
+        if (v.empty())
+        {
+            std::cout << "The array is empty.\n";
+            return;
+        }
+
+        std::cout << "With array ( ";
+        bool comma{ false };
         for (const auto& x : v)
         {
-            std::cout << ' ' << x << (idx < v.size()-1 ? "," : " ):\n");
-            idx++;
+            if (comma)
+                std::cout << ", ";
+            std::cout << x;
+            comma = true;
         }
+        std::cout << " ):\n";
+
+        std::pair extremeIDX{ getExtremeIDX(v) };
         std::cout << "The min element has index " << extremeIDX.first
             << " and value " << v[extremeIDX.first] << '\n';
         std::cout << "The max element has index " << extremeIDX.second
@@ -97,19 +115,13 @@ namespace q3
 
 int main()
 {
-    const std::vector playerItems{ 1, 5, 10 };
-    assert(q2::itemType_count == playerItems.size());
-    q2::print(playerItems);
+    const q2::Inventory inventory{ 1, 5, 10 };
+    q2::print(inventory);
     std::cout << '\n';
 
-    std::vector v1{ 3, 8, 2, 5, 7, 8, 3 };
-    std::pair p1{ *q3::getExtremeIDX(v1) };
-    q3::print(p1, v1);
+    const std::vector v{ q4::makeVector() };
+    q4::print(v);
     std::cout << '\n';
-
-    std::vector v2{ 5.5, 2.7, 3.3, 7.6, 1.2, 8.8, 6.6 };
-    std::pair p2{ *q3::getExtremeIDX(v2) };
-    q3::print(p2, v2);
 
     return 0;
 }
