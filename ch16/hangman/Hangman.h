@@ -1,3 +1,6 @@
+#ifndef HANGMAN_H
+#define HANGMAN_H
+
 #include <array>
 #include <string>
 #include <string_view>
@@ -46,3 +49,5 @@ private:
         "luggage"
     };
 };
+
+#endif

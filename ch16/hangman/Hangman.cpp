@@ -36,7 +36,7 @@ void Hangman::play()
     while (m_tries > 0 && !m_hasWon)
     {
         printState();
-        char c{ lowercase( getLetter() ) };
+        char c{ Helper::lowercase( getLetter() ) };
         if (updateTryWords(c))
             std::cout << "\n'" << c << "' is in the word.\n";
         else
@@ -65,7 +65,7 @@ char Hangman::getLetter()
     {
         std::cout << "Enter your next letter: ";
         std::cin >> c;
-        clearBuffer();
+        Helper::clearBuffer();
         if (std::isalpha(c))
             break;
         std::cout << "That wasn't a valid input. Try again.\n";
@@ -78,7 +78,7 @@ bool Hangman::updateTryWords(char c)
     bool inWordFlag{ false };
 
     // reveal letter in m_tryRight if letter is in m_word
-    for (IDX i{ }; i < m_word.size(); ++i)
+    for (Helper::IDX i{ }; i < m_word.size(); ++i)
     {
         if (m_word[i] == c)
         {
