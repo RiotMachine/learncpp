@@ -89,7 +89,9 @@ bool Hangman::updateTryWords(char c)
     // if not, decrease user's tries and log wrong letter in m_tryWrong
     if (!inWordFlag)
     {
-        m_tryWrong[m_tries-1] = c;
+        for (Helper::IDX i{ }; i < m_tryWrong.size()-1; ++i)
+            m_tryWrong[i] = m_tryWrong[i+1];
+        m_tryWrong.back() = c;
         --m_tries;
     }
     // user can win only after a correct guess
