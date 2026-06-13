@@ -5,9 +5,16 @@ template <typename T, std::size_t N>
 void printArray(const std::array<T, N>& arr )
 {
     std::cout << "The array (";
+
+    /* trad for-loop
     for (std::size_t i{ 0 }; i < N; ++i)
-        std::cout << arr[i] << (i != N-1 ? ", " : ")");
-    std::cout << " has length " << N << '\n';
+        std::cout << arr[i] << ( i != N-1 ? ", " : "" ); */
+
+    // range-based for-loop
+    for (const auto& e : arr)
+        std::cout << e << ( &e != &arr[N-1] ? ", " : "" );
+
+    std::cout << ") has length " << N << '\n';
 }
 
 int main()
