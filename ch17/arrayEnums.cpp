@@ -66,7 +66,7 @@ bool operator!=(const Animal::Data& elem1, const Animal::Data& elem2)
 
 int main()
 {
-    std::cout << "Enter an animal you want data for: ";
+    std::cout << "Enter an animal for which you want data: ";
     Animal::Data input{ };
     if (std::cin >> input)
         std::cout << input << "\n\n";
