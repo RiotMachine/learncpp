@@ -1,3 +1,4 @@
+// Program to print animal data
 #include <array>
 #include <iostream>
 #include <string>
@@ -48,6 +49,7 @@ std::istream& operator>>(std::istream& in, Animal::Data& elem)
         }
     }
     in.setstate(std::ios_base::failbit);
+    elem = { };
     return in;
 }
 
@@ -64,7 +66,7 @@ bool operator!=(const Animal::Data& elem1, const Animal::Data& elem2)
 
 int main()
 {
-    std::cout << "Enter an animal: ";
+    std::cout << "Enter an animal you want data for: ";
     Animal::Data input{ };
     if (std::cin >> input)
         std::cout << input << "\n\n";
@@ -73,10 +75,8 @@ int main()
 
     std::cout << "Here is the data for the rest of the animals:\n";
     for (const auto& elem : Animal::dataArr)
-    {
         if (elem != input)
             std::cout << elem << '\n';
-    }
 
     return 0;
 }
