@@ -23,14 +23,13 @@ namespace Animal
         std::string_view sound{ };
     };
 
-    using namespace std::string_view_literals;
     constexpr std::array dataArr{
-        Data {"chicken"sv , 2, "cluck"sv},
-        Data {"dog"sv     , 4, "woof"sv},
-        Data {"cat"sv     , 4, "meow"sv},
-        Data {"elephant"sv, 4, "waah"sv},
-        Data {"duck"sv    , 2, "quack"sv},
-        Data {"snake"sv   , 0, "hsss"sv}
+        Data {"chicken" , 2, "cluck"},
+        Data {"dog"     , 4, "woof"},
+        Data {"cat"     , 4, "meow"},
+        Data {"elephant", 4, "waah"},
+        Data {"duck"    , 2, "quack"},
+        Data {"snake"   , 0, "hsss"}
     };
 
     static_assert( dataArr.size() == max_types );
@@ -52,15 +51,15 @@ std::istream& operator>>(std::istream& in, Animal::Data& elem)
     return in;
 }
 
-std::ostream& operator<<(std::ostream& out, Animal::Data elem)
+std::ostream& operator<<(std::ostream& out, const Animal::Data& elem)
 {
     return out << "A " << elem.name << " has " << elem.legs
         << " legs and says " << elem.sound << '.';
 }
 
-bool operator==(Animal::Data elem1, Animal::Data elem2)
+bool operator!=(const Animal::Data& elem1, const Animal::Data& elem2)
 {
-    return elem1.name == elem2.name;
+    return elem1.name != elem2.name;
 }
 
 int main()
@@ -75,9 +74,8 @@ int main()
     std::cout << "Here is the data for the rest of the animals:\n";
     for (const auto& elem : Animal::dataArr)
     {
-        if (elem == input)
-            continue;
-        std::cout << elem << '\n';
+        if (elem != input)
+            std::cout << elem << '\n';
     }
 
     return 0;
