@@ -1,0 +1,11 @@
+#Q1
+Array decay is what happens when an array decays into a pointer to its first element.
+Array decay causes arrays to lose length information.
+
+#Q2
+C-style strings use a null terminator so they have a sentinel value to indicate the end of traversal.
+
+#Q3
+It is easier to use a sentinel value than to try force all calls with a C-style string to include length info. Plus, one has to know whether length does or doesnt include the sentinel.
+
+Also, implicit function calls (think: operators) dont allow for passing length vals.
