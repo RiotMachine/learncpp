@@ -1,0 +1,17 @@
+a)
+for loop goes one-too-many times. should be
+for (std::size_t count{ 0 }; count < std::size(arr); ++count)
+
+b)
+in printArray(int array[]), array will decay and not know its own length
+we should either pass the length of the array, or terminate it with a sentinel
+a quick fix would be replacing the range-based for-loop with
+for (int i=0; i<5; ++i)
+
+Alex suggests using std::array instead and keeping the range-based for loop
+would need to template function or use std::array<int, 5> as param's type
+
+c)
+the length of an std::array must be a constant expression. we cant get it at runtime
+let's use std::vector instead
+std::vector<int, length> scores;
