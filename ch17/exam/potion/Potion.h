@@ -2,6 +2,7 @@
 #define POTION_H
 
 #include <array>
+#include <iostream>
 #include <string_view>
 
 namespace Potion
@@ -31,12 +32,12 @@ namespace Potion
 
     static_assert(potions.size() == max_types);
 
-    void printMenu()
+    inline void printMenu()
     {
         std::cout << "Here is our selection for today:\n";
         for (Data e : potions)
             std::cout << static_cast<int>(e.type)+1 << ") " 
-            << e.name << " costs " << e.cost << '\n';
+                << e.name << " costs " << e.cost << '\n';
     }
 }
 

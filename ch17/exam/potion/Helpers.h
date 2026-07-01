@@ -7,12 +7,12 @@
 
 namespace Helpers
 {
-    void clearBuffer()
+    inline void clearBuffer()
     {
         std::cin.ignore(std::numeric_limits<std::streamsize>:: max(), '\n');
     }
 
-    char getChar()
+    inline char getChar()
     {
         char c{ };
         while (!(std::cin >> c))
@@ -24,7 +24,7 @@ namespace Helpers
         return c;
     }
 
-    std::string getStr()
+    inline std::string getStr()
     {
         std::string str{ };
         while (!(std::cin >> str))
