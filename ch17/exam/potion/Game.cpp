@@ -4,7 +4,9 @@
 #include "Random.h"
 #include <iostream>
 
-void setup()
+using IDX = std::size_t;
+
+void Game::setup()
 {
     std::cout << "Welcome to Roscoe's potion emporium!\n" 
         << "Enter your name: ";
@@ -14,7 +16,7 @@ void setup()
         << m_player.gold << " gold.";
 }
 
-void play()
+void Game::play()
 {
     std::cout << '\n';
     Potion::printMenu();
@@ -46,15 +48,15 @@ void play()
     }
 }
 
-void close()
+void Game::close()
 {
     std::cout << "Your inventory contains:\n";
-    for (int i{ 0 }; i < inventory.size(); ++i)
+    for (IDX i{ 0 }; i < m_player.inventory.size(); ++i)
     {
-        if (inventory[i] != 0)
+        if (m_player.inventory[i] != 0)
         {
             const Potion::Data& potion{ Potion::potions[i] };
-            std::cout << inventory[i] << "x potion of " << potion.name << '\n';
+            std::cout << m_player.inventory[i] << "x potion of " << potion.name << '\n';
         }
     }
     std::cout << "You escaped with " << m_player.gold << " remaining.\n\n"
