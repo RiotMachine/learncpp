@@ -12,18 +12,18 @@ public:
     void close();
 
 
-private:    
-    static constexpr int s_minGold{ 80 };
-    static constexpr int s_maxGold{ 120 };
-
-    Player m_player{ };
-
+private:
     struct Player
     {
         std::string name{ };
         int gold{ };
         std::vector<int> inventory{ };
     };
+
+    static constexpr int s_minGold{ 80 };
+    static constexpr int s_maxGold{ 120 };
+
+    Player m_player{ };
 };
 
 #endif
