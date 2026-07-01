@@ -30,7 +30,7 @@ void play()
         selection -= '0';
         if (selection > 0 && selection <= Potion::max_types)
         {
-            Potion::Data potion{ Potion::potions[selection] };
+            const Potion::Data& potion{ Potion::potions[selection] };
             if (m_player.gold >= potion.cost)
             { 
                 ++m_player.inventory[selection];
@@ -49,6 +49,13 @@ void play()
 void close()
 {
     std::cout << "Your inventory contains:\n";
-
-
+    for (int i{ 0 }; i < inventory.size(); ++i)
+    {
+        if (inventory[i] != 0)
+        {
+            const Potion::Data& potion{ Potion::potions[i] };
+            std::cout << inventory[i] << "x potion of " << potion.name << '\n';
+        }
+    std::cout << "You escaped with " << m_player.gold << " remaining.\n\n"
+        << "Thanks for shopping at Roscoe's potion emporium!;
 }
