@@ -15,7 +15,7 @@ namespace Helpers
     char getChar()
     {
         char c{ };
-        while (!std::cin >> c)
+        while (!(std::cin >> c))
         {
             std::cin.clear();
             clearBuffer();
@@ -27,7 +27,7 @@ namespace Helpers
     std::string getStr()
     {
         std::string str{ };
-        while (!std::cin >> str)
+        while (!(std::cin >> str))
         {
             std::cin.clear();
             clearBuffer();
