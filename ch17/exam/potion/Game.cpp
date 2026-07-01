@@ -57,5 +57,5 @@ void close()
             std::cout << inventory[i] << "x potion of " << potion.name << '\n';
         }
     std::cout << "You escaped with " << m_player.gold << " remaining.\n\n"
-        << "Thanks for shopping at Roscoe's potion emporium!;
+        << "Thanks for shopping at Roscoe's potion emporium!";
 }
