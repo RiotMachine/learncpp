@@ -6,7 +6,7 @@
 
 void setup()
 {
-    std::cout << "Welcome to Roscoe's potion emporium!\n 
+    std::cout << "Welcome to Roscoe's potion emporium!\n" 
         << "Enter your name: ";
     m_player.name = Helpers::getStr();
     m_player.gold = Random::get(s_minGold, s_maxGold);

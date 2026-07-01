@@ -24,6 +24,6 @@ private:
         int gold{ };
         std::vector<int> inventory{ };
     };
-}
+};
 
 #endif
