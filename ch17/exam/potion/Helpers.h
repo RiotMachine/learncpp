@@ -36,6 +36,17 @@ namespace Helpers
         clearBuffer();
         return str;
     }
+
+    // under construction
+    inline std::string getString()
+    {
+        return std::string { };
+    }
+
+    inline int getIntFromString()
+    {
+        return int { };
+    }
 }
 
 #endif

@@ -1,24 +1,22 @@
 // emulating Alex's indexing-by-enum focus
 
 #include "Helpers.h"
+#include "Player.h"
 #include "Potion.h"
+#include "Random.h"
 #include <iostream>
 
-void Potion::printMenu()
-{
-    std::cout << "Here is our selection for today:\n";
-    for (const auto& e : potions)
-        std::cout << static_cast<int>(e.type)+1 << ") " 
-            << e.name << " costs " << e.cost << '\n';
-}
-
-void Potion::Game::setup()
+Potion::Game Potion::Game::setup()
 {
     std::cout << "Welcome to Roscoe's potion emporium!\n"
         << "Enter your name: ";
-    m_player.name = Helpers::getWord();
-    std::cout << "Hello, " << m_player.name << ", you have "
-        << m_player.gold << " gold.";
+    Player<max_types> player{ 
+        Helpers::getWord(),
+        Random::get(s_minGold, s_maxGold), 
+    };
+    std::cout << "Hello, " << player.name << ", you have "
+        << player.gold << " gold.";
+    return Game { player };
 }
 
 void Potion::Game::play()
@@ -37,19 +35,19 @@ void Potion::Game::play()
             if (input == 'q')
                 return;
 
-            // ::printMenu offsets int casts of .type by +1
-            // char arithmetic promotes char to signed int
+            // printMenu offset int casts of Type by +1
             int selection{ input - '0' - 1 };
-            for (const auto& potion : potions)
+            for (const auto& type : types)
             {
-                if (static_cast<int>(potion.type) == selection)
+                if (static_cast<int>(type) == selection)
                 {
                     validInput = true;
+                    const Data& potion{ data[type] };
                     if (m_player.gold < potion.cost)
                         std::cout << "You cannot afford that.\n";
                     else
                     { 
-                        ++m_player.inventory[potion.type];
+                        ++m_player.inventory[type];
                         m_player.gold -= potion.cost;
                         std::cout << "You purchased a potion of " << potion.name
                             << ". You have " << m_player.gold << " gold left.\n";
@@ -57,7 +55,6 @@ void Potion::Game::play()
                     break;
                 }
             }
-
             if (!validInput)
                 std::cout << "That is an invalid input. Try again: ";
         }
@@ -67,12 +64,23 @@ void Potion::Game::play()
 void Potion::Game::close()
 {
     std::cout << "Your inventory contains:\n";
-    for (const auto& potion : potions)
+    for (const auto& type : types)
     {
-        if (m_player.inventory[potion.type] != 0)
-            std::cout << m_player.inventory[potion.type] << "x potion of "
-                << potion.name << '\n';
+        if (m_player.inventory[type] != 0)
+            std::cout << m_player.inventory[type] << "x potion of "
+                << data[type].name << '\n';
     }
     std::cout << "You escaped with " << m_player.gold << " gold remaining.\n\n"
         << "Thanks for shopping at Roscoe's potion emporium!";
+}
+
+void Potion::printMenu()
+{
+    std::cout << "Here is our selection for today:\n";
+    for (const auto& type : types)
+    {
+        const Data& potion{ data[type] };
+        std::cout << static_cast<int>(type)+1 << ") " 
+            << potion.name << " costs " << potion.cost << '\n';
+    }
 }

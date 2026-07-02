@@ -3,9 +3,7 @@
 
 int main()
 {
-    Potion::Game game{ };
-
-    game.setup();
+    Potion::Game game{ Potion::Game::setup() };
     std::cout << '\n';
 
     game.play();
