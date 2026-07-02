@@ -9,7 +9,7 @@ namespace Helpers
 {
     inline void clearBuffer()
     {
-        std::cin.ignore(std::numeric_limits<std::streamsize>:: max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
     inline char getChar()

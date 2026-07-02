@@ -30,7 +30,7 @@ void Potion::Game::play()
         std::cout << "Enter the number of the potion you'd like to buy, "
             << "or 'q' to quit: ";
 
-        bool validInput = false;
+        bool validInput{ false };
         while (!validInput)
         {
             char input{ Helpers::getChar() };
@@ -39,7 +39,7 @@ void Potion::Game::play()
 
             // ::printMenu offsets int casts of .type by +1
             // char arithmetic promotes char to signed int
-            int selection = input - '0' - 1;
+            int selection{ input - '0' - 1 };
             for (const auto& potion : potions)
             {
                 if (static_cast<int>(potion.type) == selection)
