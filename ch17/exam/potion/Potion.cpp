@@ -37,7 +37,7 @@ void Potion::Game::play()
 
             // printMenu offset int casts of Type by +1
             int selection{ input - '0' - 1 };
-            for (const auto& type : types)
+            for (const auto type : types)
             {
                 if (static_cast<int>(type) == selection)
                 {
@@ -64,7 +64,7 @@ void Potion::Game::play()
 void Potion::Game::close()
 {
     std::cout << "Your inventory contains:\n";
-    for (const auto& type : types)
+    for (const auto type : types)
     {
         if (m_player.inventory[type] != 0)
             std::cout << m_player.inventory[type] << "x potion of "
@@ -77,7 +77,7 @@ void Potion::Game::close()
 void Potion::printMenu()
 {
     std::cout << "Here is our selection for today:\n";
-    for (const auto& type : types)
+    for (const auto type : types)
     {
         const Data& potion{ data[type] };
         std::cout << static_cast<int>(type)+1 << ") " 
