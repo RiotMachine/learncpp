@@ -40,6 +40,8 @@ namespace Potion
         Player<max_types> m_player{ };
     };
 
+    // constexpr global/namespace vars have internal linkage by default
+    // 'inline' here limits array to one instance in memory
     inline constexpr std::array types{
         healing, mana, speed, invisibility
     };
