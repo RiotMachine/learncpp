@@ -40,11 +40,11 @@ namespace Potion
         Player<max_types> m_player{ };
     };
 
-    constexpr std::array types{
+    inline constexpr std::array types{
         healing, mana, speed, invisibility
     };
 
-    constexpr std::array data{
+    inline constexpr std::array data{
         Data { "healing", 20 },
         Data { "mana", 30 },
         Data { "speed", 12 },
