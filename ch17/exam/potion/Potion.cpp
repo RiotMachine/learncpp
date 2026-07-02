@@ -1,24 +1,32 @@
-#include "Game.h"
+// emulating Alex's indexing-by-enum focus
+
 #include "Helpers.h"
 #include "Potion.h"
 #include <iostream>
 
+void Potion::printMenu()
+{
+    std::cout << "Here is our selection for today:\n";
+    for (const auto& e : potions)
+        std::cout << static_cast<int>(e.type)+1 << ") " 
+            << e.name << " costs " << e.cost << '\n';
+}
 
-void Game::setup()
+void Potion::Game::setup()
 {
     std::cout << "Welcome to Roscoe's potion emporium!\n"
         << "Enter your name: ";
-    m_player.name = Helpers::getStr();
+    m_player.name = Helpers::getWord();
     std::cout << "Hello, " << m_player.name << ", you have "
         << m_player.gold << " gold.";
 }
 
-void Game::play()
+void Potion::Game::play()
 {
     while (true)
     {
         std::cout << '\n';
-        Potion::printMenu();
+        printMenu();
         std::cout << "Enter the number of the potion you'd like to buy, "
             << "or 'q' to quit: ";
 
@@ -32,7 +40,7 @@ void Game::play()
             // ::printMenu offsets int casts of .type by +1
             // char arithmetic promotes char to signed int
             int selection = input - '0' - 1;
-            for (const auto& potion : Potion::potions)
+            for (const auto& potion : potions)
             {
                 if (static_cast<int>(potion.type) == selection)
                 {
@@ -56,10 +64,10 @@ void Game::play()
     }
 }
 
-void Game::close()
+void Potion::Game::close()
 {
     std::cout << "Your inventory contains:\n";
-    for (const auto& potion : Potion::potions)
+    for (const auto& potion : potions)
     {
         if (m_player.inventory[potion.type] != 0)
             std::cout << m_player.inventory[potion.type] << "x potion of "

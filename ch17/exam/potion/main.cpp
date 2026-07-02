@@ -1,9 +1,9 @@
-#include "Game.h"
+#include "Potion.h"
 #include <iostream>
 
 int main()
 {
-    Game game{ };
+    Potion::Game game{ };
 
     game.setup();
     std::cout << '\n';

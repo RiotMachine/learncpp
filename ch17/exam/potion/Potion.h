@@ -1,9 +1,13 @@
+// Namespace for potion data and its related game
+
 #ifndef POTION_H
 #define POTION_H
 
+#include "Random.h"
 #include <array>
-#include <iostream>
+#include <string>
 #include <string_view>
+#include <vector>
 
 namespace Potion
 {
@@ -23,6 +27,27 @@ namespace Potion
         int cost{ };
     };
 
+    class Game
+    {
+    public:
+        void setup();
+        void play();
+        void close();
+
+    private:
+        struct Player
+        {
+            std::string name{ };
+            int gold{ Random::get(s_minGold, s_maxGold) };
+            std::vector<int> inventory{ std::vector<int>(max_types) };
+        };
+
+        static constexpr int s_minGold{ 80 };
+        static constexpr int s_maxGold{ 120 };
+
+        Player m_player{ };
+    };
+
     constexpr std::array potions{
         Data { healing, "healing", 20 },
         Data { mana, "mana", 30 },
@@ -32,13 +57,7 @@ namespace Potion
 
     static_assert(potions.size() == max_types);
 
-    inline void printMenu()
-    {
-        std::cout << "Here is our selection for today:\n";
-        for (Data e : potions)
-            std::cout << static_cast<int>(e.type)+1 << ") " 
-                << e.name << " costs " << e.cost << '\n';
-    }
+    void printMenu();
 }
 
 #endif

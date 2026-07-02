@@ -24,7 +24,8 @@ namespace Helpers
         return c;
     }
 
-    inline std::string getStr()
+    // returns input up to first whitespace
+    inline std::string getWord()
     {
         std::string str{ };
         while (!(std::cin >> str))
