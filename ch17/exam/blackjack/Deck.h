@@ -5,6 +5,7 @@
 #include "Random.h"
 #include <algorithm>
 #include <array>
+#include <cassert>
 
 class Deck
 {
@@ -21,8 +22,7 @@ public:
 
     Card draw()
     {
-        if (m_topIdx >= s_size)
-            shuffle();
+        assert (m_topIdx < s_size && "Deck is empty.");
         return m_deck[m_topIdx++]; 
     }
 
