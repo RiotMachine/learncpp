@@ -1,17 +1,20 @@
-#include "Card.h"
+#include "Deck.h"
 #include <iostream>
+
+template <int N>
+void deal(Deck& deck)
+{
+    for (int i{ 0 }; i < N; ++i)
+        std::cout << deck.draw() << ' ';
+    std::cout << '\n';
+}
 
 int main()
 {
-    Card card{ Card::five, Card::heart };
-    std::cout << card << '\n';
-
-    for (const auto suit : Card::suits)
-    {
-        for (const auto rank : Card::ranks)
-            std::cout << Card {rank, suit} << ' ';
-    }
-    std::cout << '\n';
+    Deck deck{ };
+    deal<3>(deck);
+    deck.shuffle();
+    deal<3>(deck);
 
     return 0;
 }

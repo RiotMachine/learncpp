@@ -40,7 +40,7 @@ struct Card
         heart, spade
     };
 
-    int value()
+    constexpr int value() const
     {
         switch (rank)
         {
