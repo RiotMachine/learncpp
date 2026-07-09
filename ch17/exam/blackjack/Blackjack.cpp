@@ -39,10 +39,7 @@ void Blackjack::play()
     std::cout << "The dealer is showing: " << dealer.hand << '\n';
     std::cout << "You have: " << user.hand << '\n';
 
-    bool userBust{ false };
-    bool dealerBust{ false };
-
-    while (!userBust)
+    while (!user.wentBust)
     {
         std::cout << "h to hit, anything else to stand: ";
         if (Helpers::getChar() != 'h')
@@ -52,24 +49,24 @@ void Blackjack::play()
             << ". You now have: " << user.score() << '\n';
         if (user.score() > maxScore)
         {
-            userBust = true;
+            user.wentBust = true;
             std::cout << "You went bust.\n";
         }
     }
 
-    while (dealer.score() < dealerMinScore && !userBust)
+    while (dealer.score() < dealerMinScore && !user.wentBust)
     {
         dealer.hand.push_back(deck.draw());
         std::cout << "The dealer flips a " << dealer.hand.back()
             << ". They now have: " << dealer.score() << '\n';
         if (dealer.score() > maxScore)
         {
-            dealerBust = true;
+            dealer.wentBust = true;
             std::cout << "The dealer went bust.\n";
         }
     }
 
-    if ( userBust || (!dealerBust && user.score() < dealer.score()) )
+    if ( user.wentBust || (!dealer.wentBust && user.score() < dealer.score()) )
         std::cout << "You lose.\n";
     else if (dealer.score() == user.score())
         std::cout << "You tie.\n";

@@ -10,6 +10,7 @@ namespace Blackjack
     {
         using Hand = std::vector<Card>;
         Hand hand{ };
+        bool wentBust{ false };
 
         int score();
     };
