@@ -5,9 +5,19 @@
 
 int Blackjack::Player::score()
 {
-    int sum = 0;
+    int sum{ 0 };
+    int aceCounter{ };
     for (const auto& card : hand)
+    {
+        if (card.rank == Card::ace)
+            ++aceCounter;
         sum += card.value();
+    }
+    while (aceCounter > 0 && sum > maxScore)
+    {
+        sum -= 10;
+        --aceCounter;
+    }
     return sum;
 }
 
