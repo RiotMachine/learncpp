@@ -1,0 +1,5 @@
+a void pointer can hold an address of any type of object
+a null pointer points to nothing
+
+'void' - type
+'null' - value
