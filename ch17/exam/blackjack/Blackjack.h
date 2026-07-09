@@ -15,7 +15,7 @@ namespace Blackjack
     };
 
     constexpr int maxScore{ 21 };
-    constexpr int dealerStopScore{ 17 };
+    constexpr int dealerMinScore{ 17 };
 
     std::ostream& operator<<(std::ostream& out, const Player::Hand& hand);
     void play();
