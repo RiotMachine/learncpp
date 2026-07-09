@@ -33,10 +33,10 @@ void Blackjack::play()
     Deck deck{ };
     deck.shuffle();
         
-    Player dealer{{ deck.draw() }};
+    Player dealer{{ deck.draw(), deck.draw() }};
     Player user{{ deck.draw(), deck.draw() }};
 
-    std::cout << "The dealer is showing: " << dealer.hand << '\n';
+    std::cout << "The dealer is showing: " << dealer.hand.front() << '\n';
     std::cout << "You have: " << user.hand << '\n';
 
     while (!user.wentBust)
