@@ -14,31 +14,33 @@ struct Card
         five=5,  six=6,   seven=7, 
         eight=8, nine=9,  ten=10, 
         jack,    queen,   king,
-        max_ranks
     };
 
     enum Suit
     {
         club, diamond,
         heart, spade,
-        max_suits
     };
 
     Rank rank{ };
     Suit suit{ };
 
-    constexpr static std::array<Rank, max_ranks> ranks{
+    constexpr static int max_ranks{ 13 };
+    constexpr static std::array ranks{
         ace,
         two, three, four, 
         five, six, seven, 
         eight, nine, ten, 
         jack, queen, king
     };
+    static_assert(ranks.size() == max_ranks);
 
-    constexpr static std::array<Suit, max_suits> suits{
+    constexpr static int max_suits{ 4 };
+    constexpr static std::array suits{
         club, diamond,
         heart, spade
     };
+    static_assert(suits.size() == max_suits);
 
     constexpr int value() const
     {
