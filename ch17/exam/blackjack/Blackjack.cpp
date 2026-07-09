@@ -54,7 +54,8 @@ void Blackjack::play()
         }
     }
 
-    std::cout << "The dealer's full hand is: " << dealer.hand << '\n';
+    if (!user.wentBust)
+        std::cout << "The dealer's full hand is: " << dealer.hand << '\n';
     while (dealer.score() < dealerMinScore && !user.wentBust)
     {
         dealer.hand.push_back(deck.draw());
