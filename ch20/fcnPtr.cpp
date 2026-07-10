@@ -53,7 +53,8 @@ int main()
 
     ArithmeticFcn fcnPtr{ getArithmeticFcn(c) };
     if (fcnPtr)
-        std::cout << x << ' ' << c << ' ' << y << " = " << fcnPtr(x, y);
+        std::cout << x << ' ' << c << ' ' << y << " = " 
+            << fcnPtr(x, y) << '\n';
     
     return 0;
 }
