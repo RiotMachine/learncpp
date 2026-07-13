@@ -13,7 +13,6 @@ int getInt(std::string_view str = {})
     return x;
 }
 
-
 Game Game::setup()
 {
     return Game {
@@ -34,40 +33,32 @@ Game::ValuesArr Game::getValues(int start, int length, int multiplier)
     return arr;
 }       
 
+auto Game::searchValues(int guess) const
+{
+    return std::min_element(m_values.begin(), m_values.end(),
+                [guess](const auto x, const auto y) { 
+                    return std::abs(x - guess) < std::abs(y - guess);
+                });
+}
 
 bool Game::play()
 {
-    std::cout << "I generated " << m_length << " numbers.\n"
+    std::cout << "I generated " << m_initLen << " numbers.\n"
         << "Do you know each square multiplied by " << m_multiplier << "?\n";
 
     while (remaining())
     {
         std::cout << remaining() << " number(s) left.\n";
         int guess{ getInt() };
-        int closest{ searchValues(guess) };
-        if (closest != guess)
+        auto closestIt{ searchValues(guess) };
+        if (*closestIt != guess)
         {
-            std::cout << guess << " is wrong. " << closest << " was closest.\n";
+            std::cout << guess << " is wrong. " << *closestIt << " was closest.\n";
             return false;
         }
-        m_values.erase( std::find(m_values.begin(), m_values.end(), guess) );
+        m_values.erase(closestIt);
     }
 
     std::cout << "Nice! You found all the numbers.\n";
     return true;
-}
-
-
-int Game::searchValues(int guess) const
-{
-    auto found{ std::find(m_values.begin(), m_values.end(), guess) };
-
-    if (found == m_values.end())
-        found = std::min_element(m_values.begin(), m_values.end(),
-                [guess](const auto x, const auto y) { 
-                    return std::abs(x - guess) < std::abs(y - guess);
-                }
-            );
-
-    return *found;
 }
