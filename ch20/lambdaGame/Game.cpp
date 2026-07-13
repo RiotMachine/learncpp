@@ -1,20 +1,39 @@
 #include "Game.h"
+#include "Random.h"
 #include <algorithm>
-#include <cstdlib>
+#include <cstdlib>   // for std::abs()
 #include <iostream>
+#include <vector>
+
+int getInt(std::string_view str = {})
+{
+    std::cout << str;
+    int x;
+    std::cin >> x;
+    return x;
+}
+
 
 Game Game::setup()
 {
-    std::cout << "Start where? ";
-    int start;
-    std::cin >> start;
-
-    std::cout << "How many numbers? ";
-    int length;
-    std::cin >> length;
-
-    return Game {start, length};
+    return Game {
+        getInt("Start where? "), 
+        getInt("How many numbers? "),
+        Random::get(S_MULT_MIN, S_MULT_MAX)
+    };
 }
+
+Game::ValuesArr Game::getValues(int start, int length, int multiplier)
+{
+    ValuesArr arr;
+    arr.reserve(length);
+    for (int i{ }; i < length; ++i)
+        arr.push_back(
+            (start + i) * (start + i) * multiplier
+        );
+    return arr;
+}       
+
 
 bool Game::play()
 {
@@ -24,8 +43,7 @@ bool Game::play()
     while (remaining())
     {
         std::cout << remaining() << " number(s) left.\n";
-        int guess{ };
-        std::cin >> guess;
+        int guess{ getInt() };
         int closest{ searchValues(guess) };
         if (closest != guess)
         {
@@ -39,16 +57,17 @@ bool Game::play()
     return true;
 }
 
-int Game::searchValues(int guess)
+
+int Game::searchValues(int guess) const
 {
     auto found{ std::find(m_values.begin(), m_values.end(), guess) };
 
     if (found == m_values.end())
-        return *std::min_element(m_values.begin(), m_values.end(),
+        found = std::min_element(m_values.begin(), m_values.end(),
                 [guess](const auto x, const auto y) { 
                     return std::abs(x - guess) < std::abs(y - guess);
-            }
-        );
-    else
-        return guess;
+                }
+            );
+
+    return *found;
 }

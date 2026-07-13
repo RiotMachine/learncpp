@@ -1,37 +1,43 @@
+// Game to calculate set of multiples of squared numbers
+
 #ifndef GAME_H
 #define GAME_H
 
-#include "Random.h"
+#include <cassert>
+#include <limits>
 #include <vector>
 
 class Game
 {
 public:
+    using ValuesArr = std::vector<int>;
+
     static Game setup();
     bool play();
-    int searchValues(int guess);
 
-    int remaining()  { return m_values.size(); }
+    // returns guess if found, closest int in absolute terms otherwise
+    int searchValues (int guess) const;
+
+    int remaining() const { return static_cast<int>(m_values.size()); }
 
 private:
     constexpr static int S_MULT_MIN{ 2 };
     constexpr static int S_MULT_MAX{ 4 };
 
-    Game(int x, int y)
-        : m_start{ x }, m_length{ y },
-          m_multiplier{ Random::get(S_MULT_MIN, S_MULT_MAX) }
+    static ValuesArr getValues(int start, int length, int multiplier);
+
+    Game(int x, int y, int z)
+        : m_start{ x }, m_length{ y }, m_multiplier{ z },
+          m_values{ getValues(x, y, z) }
     {
-        m_values.reserve(m_length);
-        for (int i{ }; i < m_length; ++i)
-            m_values.push_back(
-                (m_start + i) * (m_start + i) * m_multiplier
-            );
+        assert(m_multiplier >= S_MULT_MIN && m_multiplier <= S_MULT_MAX);
+        assert(m_values.size() <= std::numeric_limits<int>::max());
     }
 
     int m_start{ };
     int m_length{ };
     int m_multiplier{ };
-    std::vector<int> m_values{ };
+    ValuesArr m_values{ };
 };
 
 #endif
