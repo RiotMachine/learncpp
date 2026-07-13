@@ -1,0 +1,27 @@
+Q1:
+int i{};
+static int j{};
+{
+  int a{};
+  constexpr int b{};
+  static int c{};
+  static constexpr int d{};
+  const int e{};
+  const int f{ getValue() };
+  static const int g{};
+  static const int h{ getValue() };
+}
+
+a lambda can use static duration and constexpr vars w/o capture, ie.
+b (constexpr)
+c (static)
+d (static && constexpr)
+e (implicitly constexpr - value init and const)
+g (static)
+h (static)
+i (global)
+j (global && static)
+
+
+Q2:
+prints 'I like grapes\n'
