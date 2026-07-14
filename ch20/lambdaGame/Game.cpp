@@ -5,12 +5,15 @@
 #include <iostream>
 #include <vector>
 
-int getInt(std::string_view str = {})
+namespace
 {
-    std::cout << str;
-    int x;
-    std::cin >> x;
-    return x;
+    int getInt(std::string_view str = {})
+    {
+        std::cout << str;
+        int x;
+        std::cin >> x;
+        return x;
+    }
 }
 
 Game Game::setup()

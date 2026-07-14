@@ -4,7 +4,6 @@
 #define GAME_H
 
 #include <cassert>
-#include <limits>
 #include <vector>
 
 class Game
@@ -14,10 +13,6 @@ public:
 
     static Game setup();
     bool play();
-
-    // returns iterator to guess if found, to closest num otherwise
-    auto searchValues (int guess) const;
-
     std::size_t remaining() const { return m_values.size(); }
 
 private:
@@ -32,6 +27,9 @@ private:
     {
         assert(m_multiplier >= S_MULT_MIN && m_multiplier <= S_MULT_MAX);
     }
+
+    // returns iterator to guess if found, to closest num otherwise
+    auto searchValues (int guess) const;
 
     const int m_initLen{ };
     const int m_multiplier{ };
