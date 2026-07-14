@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Random.h"
 #include <algorithm>
+#include <cassert>
 #include <cstdlib>   // for std::abs()
 #include <iostream>
 #include <vector>
@@ -32,6 +33,7 @@ Game Game::setup()
 Game::ValuesArr Game::getValues(int start, int length, int multiplier)
 {
     ValuesArr arr;
+    assert(length >= 0);
     arr.reserve(static_cast<Idx>(length));
     for (int i{ }; i < length; ++i)
         arr.push_back(
