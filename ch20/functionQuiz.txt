@@ -1,0 +1,17 @@
+q1:
+a) double max(double d1, double d2);
+
+b) void swap(int& x, int& y);
+
+// arr cant be const int* bcause we'd be returning a non-const reference to a const elem
+// I presume we dont want const arr because we'd use it to iterate across length
+c) int& getLargestElement(int length, int* arr);
+
+
+q2:
+a) returning a reference to an object that goes out of scope
+b) no base-case terminate condition
+c) no way to differentiate overload (; also, not protecting against x/0)
+d) stack overflow
+e) argv[1] needs to be converted to number b4 being assigned to int var
+    (; also, need to test that argv[1] exists first)
