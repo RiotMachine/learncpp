@@ -4,9 +4,8 @@
 #include <cassert>
 #include <cstdlib>   // for std::abs()
 #include <iostream>
+#include <string_view>
 #include <vector>
-
-using Idx = std::size_t;
 
 namespace
 {
@@ -34,7 +33,7 @@ Game::ValuesArr Game::getValues(int start, int length, int multiplier)
 {
     ValuesArr arr;
     assert(length >= 0);
-    arr.reserve(static_cast<Idx>(length));
+    arr.reserve(static_cast<std::size_t>(length));
     for (int i{ }; i < length; ++i)
         arr.push_back(
             (start + i) * (start + i) * multiplier
