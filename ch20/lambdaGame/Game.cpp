@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 
+using Idx = std::size_t;
+
 namespace
 {
     int getInt(std::string_view str = {})
@@ -18,9 +20,11 @@ namespace
 
 Game Game::setup()
 {
+    int start{ getInt("Start where? ") };
+    int length{ getInt("How many numbers? ") };
     return Game {
-        getInt("Start where? "), 
-        getInt("How many numbers? "),
+        start,
+        length,
         Random::get(S_MULT_MIN, S_MULT_MAX)
     };
 }
@@ -28,7 +32,7 @@ Game Game::setup()
 Game::ValuesArr Game::getValues(int start, int length, int multiplier)
 {
     ValuesArr arr;
-    arr.reserve(length);
+    arr.reserve(static_cast<Idx>(length));
     for (int i{ }; i < length; ++i)
         arr.push_back(
             (start + i) * (start + i) * multiplier
