@@ -1,3 +1,6 @@
+// Binary search algos returning index of value, or array size if not found
+// Search range is [min, max)
+
 #include <array>
 #include <iostream>
 
@@ -7,54 +10,45 @@ using Idx = std::size_t;
 template <typename T, Idx N>
 Idx iterative(const std::array<T, N>& arr, T target)
 {
-    const Idx sentinel{ arr.size() };
-
-    if (arr.empty())
-        return sentinel;
-    
     Idx min{ 0 };
-    Idx max{ arr.size()-1 };
+    Idx max{ arr.size() };
 
-    while (min <= max)
+    while (min < max)
     {
         const Idx midpoint{ min + ((max-min) / 2) };
         if (arr[midpoint] < target)
             min = midpoint + 1;
         else if (arr[midpoint] > target)
-        {
-            if (midpoint == 0)
-                break;
-            max = midpoint - 1;
-        }
+            max = midpoint;
         else
             return midpoint;
     }
 
-    return sentinel;
+    return arr.size();
 }
 
+
 template <typename T, Idx N>
-Idx recursive(const std::array<T, N>& arr, T target, Idx max, Idx min=0)
+Idx recursive(const std::array<T, N>& arr, T target, Idx min, Idx max)
 {
-    const Idx sentinel{ arr.size() };
+    if (min >= max)
+        return arr.size();
 
-    if (arr.empty())
-        return sentinel;
-
-    if (min > max)
-        return sentinel;
     const Idx midpoint{ min + ((max-min) / 2) };
     if (arr[midpoint] < target)
-        return recursive(arr, target, max, midpoint+1);
+        return recursive(arr, target, midpoint+1, max);
     else if (arr[midpoint] > target)
-    {
-        if (midpoint == 0)
-            return sentinel;
-        return recursive(arr, target, midpoint-1, min);
-    }
+        return recursive(arr, target, min, midpoint);
     else
         return midpoint;
 }
+
+
+void printTest(Idx result, Idx expected)
+{
+    std::cout << (result == expected ? " passed" : " failed") << '\n';
+}
+
 
 int main()
 {
@@ -72,13 +66,17 @@ int main()
         sentinel, 0, 3, sentinel, sentinel, 8, sentinel, 13, 14, sentinel
     };
 
-    for (Idx i; i < searchVals.size(); ++i)
+    for (Idx i{ }; i < searchVals.size(); ++i)
     {
         int val{ searchVals[i] };
-        Idx result{ recursive(arr, val, arr.size()) };
-        std::cout << "test value " << val
-            << (result == expectedResults[i] ? " passed." : " failed.")
-            << '\n';
+
+        std::cout << "test value " << val << ":\n"
+            << "\tIterative: ";
+        printTest(iterative(arr, val), expectedResults[i]);
+        std::cout << "\tRecursive: ";
+        printTest(recursive(arr, val, 0, arr.size()), expectedResults[i]);
+        
+        std::cout << '\n';
     }
 
     return 0;
