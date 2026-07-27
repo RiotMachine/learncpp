@@ -4,7 +4,7 @@
 class Fraction
 {
 public:
-    Fraction(int x=0, int y=1)
+    Fraction(int x, int y=1)
         : m_numerator{ x }, m_denominator{ y } { reduce(); }
 
     void reduce()
@@ -18,16 +18,20 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& out, const Fraction& f);
-
+    friend bool operator==(const Fraction& f1, const Fraction& f2);
+    friend bool operator<(const Fraction& f1, const Fraction& f2);
     friend Fraction operator*(const Fraction& f1, const Fraction& f2);
-    friend Fraction operator*(const Fraction& f, int x);
-    friend Fraction operator*(int x, const Fraction& f);
 
 private:
     int m_numerator{ };
     int m_denominator{ };
 };
 
+
+std::ostream& operator<<(std::ostream& out, const Fraction& f)
+{
+    return out << f.m_numerator << '/' << f.m_denominator;
+}
 
 std::istream& operator>>(std::istream& in, Fraction& f)
 {
@@ -42,38 +46,41 @@ std::istream& operator>>(std::istream& in, Fraction& f)
     return in;
 }
 
-std::ostream& operator<<(std::ostream& out, const Fraction& f)
+bool operator==(const Fraction& f1, const Fraction& f2)
 {
-    return out << f.m_numerator << '/' << f.m_denominator;
+    return (f1.m_numerator == f2.m_numerator) && (f1.m_denominator == f2.m_denominator);
 }
+
+bool operator<(const Fraction& f1, const Fraction& f2)
+{
+    int lcm{ std::lcm(f1.m_denominator, f2.m_denominator) };
+    int f1Factor{ lcm / f1.m_denominator };
+    int f2Factor{ lcm / f2.m_denominator };
+    return f1.m_numerator*f1Factor < f2.m_numerator*f2Factor;
+}
+
+bool operator!=(const Fraction& f1, const Fraction& f2) { return !(f1 == f2); }
+bool operator>(const Fraction& f1, const Fraction& f2)  { return f2 < f1; }
+bool operator<=(const Fraction& f1, const Fraction& f2) { return !(f2 < f1); }
+bool operator>=(const Fraction& f1, const Fraction& f2) { return !(f1 < f2); }
 
 Fraction operator*(const Fraction& f1, const Fraction& f2)
 {
     return Fraction { f1.m_numerator*f2.m_numerator, f1.m_denominator*f2.m_denominator };
 }
 
-Fraction operator*(const Fraction& f, int x) 
-{
-    return f * Fraction { x, 1 }; 
-}
-
-Fraction operator*(int x, const Fraction& f) 
-{
-    return Fraction { x, 1 } * f;
-}
-
 
 int main()
 {
-    Fraction f1{};
-    std::cout << "Enter fraction 1: ";
-    std::cin >> f1;
+    Fraction f1{ 3, 2 };
+    Fraction f2{ 5, 8 };
 
-    Fraction f2{};
-    std::cout << "Enter fraction 2: ";
-    std::cin >> f2;
-
-    std::cout << f1 << " * " << f2 << " is " << f1 * f2 << '\n';
+    std::cout << f1 << ((f1 == f2) ? " == " : " not == ") << f2 << '\n';
+    std::cout << f1 << ((f1 != f2) ? " != " : " not != ") << f2 << '\n';
+    std::cout << f1 << ((f1 < f2) ? " < " : " not < ") << f2 << '\n';
+    std::cout << f1 << ((f1 > f2) ? " > " : " not > ") << f2 << '\n';
+    std::cout << f1 << ((f1 <= f2) ? " <= " : " not <= ") << f2 << '\n';
+    std::cout << f1 << ((f1 >= f2) ? " >= " : " not >= ") << f2 << '\n';
 
     return 0;
 }
