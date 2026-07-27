@@ -1,0 +1,5 @@
+c)
+Integers will implicitly convert to Fraction with arg { value, 1 }
+
+d)
+cannot bind non-const references to temporary objects
