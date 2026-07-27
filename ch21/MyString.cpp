@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include <string>
+#include <string_view>
 
 using Idx = std::size_t;
 
@@ -10,10 +11,10 @@ public:
     MyString(const std::string& str)
         : m_str{ str } {}
 
-    MyString operator()(Idx i, Idx len)
+    std::string_view operator()(Idx i, Idx len)
     {
-        assert(i + len < m_str.size());
-        return m_str.substr(i, len);
+        assert(i + len < m_str.size() && "MyString::() - Invalid substr range.");
+        return std::string_view { m_str }.substr(i, len);
     }
 
     friend std::ostream& operator<<(std::ostream& out, const MyString& ms)
