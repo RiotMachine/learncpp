@@ -9,10 +9,10 @@
 
 class FixedPoint2
 {
+public:
     using Base = std::int16_t;
     using Decimal = std::int8_t;
 
-public:
     FixedPoint2(Base x, Decimal y)
         : m_base{ x }, m_decimal{ y }
     {
@@ -46,7 +46,7 @@ public:
     friend bool testDecimal(const FixedPoint2& fp);
 
 private:
-    // ensure m_decimal is [0, 99]
+    // ensure m_decimal is [-99, 99]
     void boundDecimal()
     {
         m_base += m_decimal / 100;
