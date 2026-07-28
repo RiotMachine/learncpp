@@ -38,8 +38,11 @@ public:
     }
 
     explicit operator double() const;
+    FixedPoint2 operator-() const;
 
-    friend bool testDecimal(const FixedPoint2 &fp);
+    friend bool operator==(const FixedPoint2& fp1, const FixedPoint2& fp2);
+    friend FixedPoint2 operator+(const FixedPoint2& fp1, const FixedPoint2& fp2);
+    friend bool testDecimal(const FixedPoint2& fp);
 
 private:
     // ensure m_decimal is [0, 99]
