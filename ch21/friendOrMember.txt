@@ -1,0 +1,15 @@
+1)
+binary operator that does not modify
+normal/friend
+
+2)
+unary operator
+member
+
+3)
+binary operator whose modified left operand def is offlimits
+normal/friend
+
+4)
+assignment
+member
