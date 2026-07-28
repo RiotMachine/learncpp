@@ -2,29 +2,39 @@
 #define FIXEDPOINT2_H
 
 #include <cassert>
+#include <cmath>
 #include <cstdint>
-#include <ostream>
+#include <iostream>
+
+using Base = std::int16_t;
+using Decimal = std::int8_t;
 
 class FixedPoint2
 {
 public:
-    FixedPoint2(int x, int y)
+    FixedPoint2(Base x, Decimal y)
+        : m_base{ x }, m_decimal{ y }
     {
-        assert(x >= INT16_MIN && x <= INT16_MAX);
-        assert(y >= INT8_MIN && y <= INT8_MAX);
-
-        if (x < 0 || y < 0)
+        if (m_base < 0 || m_decimal < 0)
         {
-            if (x > 0)
-                x = -x;
-            else if (y > 0)
-                y = -y;
+            if (m_base > 0)
+                m_base = -m_base;
+            else if (m_decimal > 0)
+                m_decimal = -m_decimal;
         }
-        x += y / 100;
-        y %= 100;
+        boundDecimal();
+    }
 
-        m_wholeDigits = x;
-        m_fractDigits = y;
+    FixedPoint2(double d)
+    {
+        double base{ };
+        double decimal{ std::modf(d, &base) };
+        decimal = std::round(decimal * 100);
+
+        assert(base >= INT16_MIN && base <= INT16_MAX);
+        m_base = static_cast<Base>(base);
+        m_decimal = static_cast<Decimal>(decimal);
+        boundDecimal();
     }
 
     explicit operator double() const;
@@ -32,8 +42,15 @@ public:
     friend bool testDecimal(const FixedPoint2 &fp);
 
 private:
-    std::int16_t m_wholeDigits{ };
-    std::int8_t m_fractDigits{ };
+    // ensure m_decimal is [0, 99]
+    void boundDecimal()
+    {
+        m_base += m_decimal / 100;
+        m_decimal %= 100;
+    }
+
+    Base m_base{ };
+    Decimal m_decimal{ };
 };
 
 #endif
