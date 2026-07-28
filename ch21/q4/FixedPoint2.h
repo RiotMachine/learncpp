@@ -4,13 +4,14 @@
 #include <cassert>
 #include <cmath>
 #include <cstdint>
-#include <iostream>
+#include <iosfwd>
 
-using Base = std::int16_t;
-using Decimal = std::int8_t;
 
 class FixedPoint2
 {
+    using Base = std::int16_t;
+    using Decimal = std::int8_t;
+
 public:
     FixedPoint2(Base x, Decimal y)
         : m_base{ x }, m_decimal{ y }
@@ -55,5 +56,8 @@ private:
     Base m_base{ };
     Decimal m_decimal{ };
 };
+
+std::istream& operator>>(std::istream& in, FixedPoint2& fp);
+std::ostream& operator<<(std::ostream& out, const FixedPoint2& fp);
 
 #endif
