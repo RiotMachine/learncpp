@@ -12,8 +12,8 @@ FixedPoint2::operator double() const
 
 FixedPoint2 FixedPoint2::operator-() const
 {
-    assert(-m_base >= INT16_MIN && -m_base <= INT16_MAX);
-    assert(-m_decimal >= INT8_MIN && -m_decimal <= INT8_MAX);
+    assert(-m_base >= BASE_MIN && -m_base <= BASE_MAX);
+    assert(-m_decimal >= DECIMAL_MIN && -m_decimal <= DECIMAL_MAX);
 
     return FixedPoint2 { 
         static_cast<Base>(-m_base), static_cast<Decimal>(-m_decimal) 
@@ -29,11 +29,18 @@ bool operator==(const FixedPoint2& fp1, const FixedPoint2& fp2)
 
 FixedPoint2 operator+(const FixedPoint2& fp1, const FixedPoint2& fp2)
 {
-    double f1{ static_cast<double>(fp1) };
-    double f2{ static_cast<double>(fp2) };
-    double sum{ f1+f2 };
+    assert (
+        fp1.m_base + fp2.m_base >= FixedPoint2::BASE_MIN
+        &&  fp1.m_base + fp2.m_base <= FixedPoint2::BASE_MAX
+    );
 
-    return FixedPoint2 { sum };
+    std::int64_t bigDigit{
+        fp1.m_base*100 + fp2.m_base*100 + fp1.m_decimal + fp2.m_decimal 
+    };
+    return FixedPoint2 {
+        static_cast<FixedPoint2::Base>(bigDigit / 100),
+        static_cast<FixedPoint2::Decimal>(bigDigit % 100) 
+    };
 }
 
 bool testDecimal(const FixedPoint2& fp)
