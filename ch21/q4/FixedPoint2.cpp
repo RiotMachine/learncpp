@@ -29,14 +29,15 @@ bool operator==(const FixedPoint2& fp1, const FixedPoint2& fp2)
 
 FixedPoint2 operator+(const FixedPoint2& fp1, const FixedPoint2& fp2)
 {
-    assert (
-        fp1.m_base + fp2.m_base >= FixedPoint2::BASE_MIN
-        &&  fp1.m_base + fp2.m_base <= FixedPoint2::BASE_MAX
-    );
-
     std::int64_t bigDigit{
         fp1.m_base*100 + fp2.m_base*100 + fp1.m_decimal + fp2.m_decimal 
     };
+
+    assert (
+        bigDigit / 100 >= FixedPoint2::BASE_MIN
+        && bigDigit / 100 <= FixedPoint2::BASE_MAX
+    );
+
     return FixedPoint2 {
         static_cast<FixedPoint2::Base>(bigDigit / 100),
         static_cast<FixedPoint2::Decimal>(bigDigit % 100) 

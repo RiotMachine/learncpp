@@ -37,7 +37,9 @@ public:
         double decimal{ std::modf(d, &base) };
         decimal = std::round(decimal * 100);
 
-        assert(base >= BASE_MIN && base <= BASE_MAX);
+        assert(
+            base >= BASE_MIN && base <= BASE_MAX
+        );
         m_base = static_cast<Base>(base);
         m_decimal = static_cast<Decimal>(decimal);
         boundDecimal();
@@ -54,6 +56,10 @@ private:
     // ensure m_decimal is [-99, 99]
     void boundDecimal()
     {
+        assert(
+            std::abs(m_decimal) < 100
+            || (m_base != BASE_MIN && m_base != BASE_MAX)
+        );
         m_base += m_decimal / 100;
         m_decimal %= 100;
     }
