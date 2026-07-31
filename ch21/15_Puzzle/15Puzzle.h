@@ -6,6 +6,10 @@ public:
 
 
 
+    void welcome();
+    void play();
+    void printResults();
+
 private:
     constexpr static int s_rows{ 4 };
     constexpr static int s_cols{ 4 };
