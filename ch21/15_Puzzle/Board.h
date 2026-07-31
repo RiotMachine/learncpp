@@ -9,30 +9,27 @@ template <int rows, int cols, int emptySpaces>
 class BoardSet
 {
 public:
-    using Tile = int;
-    using TileTray = std::array<Tile, tilesQuant>;
+    using Idx   = std::size_t;
+    using Tile  = int;
     using Board = std::array<std::array<Tile, cols>, rows>;
 
-    constexpr Tile emptySpace{ -1 };
-    constexpr Idx spaces{ rows * cols };
-    constexpr int tilesQuant{ spaces - emptySpaces };
+    constexpr static Tile s_emptySpace{ -1 };
+    constexpr static Idx  s_spaces    { rows * cols };
+    constexpr static Idx  s_tilesQuant{ s_spaces - emptySpaces };
 
-    BoardSet()
-    :  m_board{
+    using TileTray = std::array<Tile, s_tilesQuant>;
+
+    BoardSet() = default;
 
     void shuffleTiles();
     void setBoard();
 
 private:
-    using Idx = std::size_t;
+    constexpr static TileTray createTiles();
+    constexpr static TileTray s_tileInventory{ createTiles() };
 
-    constexpr std::array<Tile, tilesQuant> createTiles();
-
-    constexpr TileTray s_tileInventory { createTiles() }
-
-
-    Board m_board{};
-    TileTray m_tiles{ } 
+    TileTray m_tiles{ s_tileInventory };
+    Board m_board{ };
 };
 
 #endif
