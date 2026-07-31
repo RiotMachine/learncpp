@@ -1,3 +1,6 @@
+#ifndef 15PUZZLE_H
+#define 15PUZZLE_H
+
 class 15Puzzle
 {
 public:
@@ -20,4 +23,6 @@ private:
     Board m_board
 
 
-}
+};
+
+#endif
