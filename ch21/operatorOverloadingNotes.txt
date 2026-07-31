@@ -1,0 +1,29 @@
+*friend/helper*
+binary arithmetic - return object/outcome by value
+    operator+ - * / %
+	
+comparison - return bool
+    operator== != < <= > >=
+	
+I/O - return reference to stream (side effects on stream)
+    operator<< >>
+	
+	
+*member*
+unary
+    operator+ - !   - return object/outcome by value
+	operator++()    - return reference to *this (side effects)
+	operator++(int) - return value (side effects)
+	
+typecast
+    operator type() - return type by value
+	
+access
+    operator[] - return reference to array member
+	operator-> - return pointer to member variable
+	
+assignment - return *this reference (side effects on *this)
+    operator= += -= *= /= %=
+	
+functor - return whatever we want
+    operator()

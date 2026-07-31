@@ -1,0 +1,66 @@
+A) Functionality
+
+Board
+    init with randomized elements
+    display
+    shift elements on command
+
+15 Puzzle
+    initialize Board
+    recognize when Board is sequentially ordered
+    take user input until Board is sequentially ordered
+    translate user input to board instructions
+    track && print user moves/time
+
+User
+    input tile commands  
+    decide to exit
+    request moves/time so-far during game
+
+
+B) Implementation
+
+namespace Board
+    tiles = int[4][4]
+    .print(tiles)
+    .randomize(tiles)
+    .shift(tiles, input)
+    .validate(input) - check whether user input is valid option
+
+class 15Puzzle
+        m_moves
+        m_time
+        m_board
+        .welcome()
+            print welcome msg
+            initialize new board
+        .play()
+            start timer
+            count moves
+            display board
+            loop taking user input
+                until board is in order
+                || user wants to exit
+            stop timer
+        .printResults()
+            print moves and time taken
+
+main()
+    instantiates 15Puzzle object
+    calls 15Puzzle.welcome(), .play(), .printResults()
+
+
+C) Helpers
+
+namespace Input
+    getChar() - buffer mgmt
+
+
+D) Development
+
+write main.cpp
+write 15Puzzle.h and 15Puzzle.cpp
+puzzle out Board
+compile
+    display
+    gameplay
