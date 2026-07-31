@@ -14,7 +14,7 @@ void BoardSet::setBoard()
     for (Idx i{ }; i < rows; ++i)
     {
         for (Idx j{ }; j < cols; ++j)
-            m_board[i][j] = m_tiles[i+j];
+            m_board[i][j] = (i+j < m_tiles.size() ? m_tiles[i+j] : s_emptySpace);
     }
 }
 

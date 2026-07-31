@@ -8,10 +8,19 @@ public:
     : m_time{ 
 
     void welcome();
-    void play()
+    void play();
     void printResults();
 
 private:
+    enum Input
+    {
+        up    = 'w',
+        down  = 's',
+        left  = 'a',
+        right = 'd',
+        quit  = 'q'
+    };
+
     constexpr static int s_rows{ 4 };
     constexpr static int s_cols{ 4 };
     constexpr static int s_blankSpaces{ 1 }
@@ -19,6 +28,7 @@ private:
     BoardSet<s_rows, s_cols, s_blankSpaces>  m_boardSet{ };
     int m_moves{ };
     m_time{ };
+    BoardSet::Idx m_emptySpaceIdx;
 };
 
 #endif
