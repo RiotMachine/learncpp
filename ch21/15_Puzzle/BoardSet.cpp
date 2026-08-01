@@ -1,9 +1,9 @@
-#include "Board.h"
+#include "BoardSet.h"
 #include "Random.h"
 #include <algorithm>
 
 
-void Board::shuffleTiles()
+void BoardSet::shuffleTiles()
 {
     std::shuffle(m_tiles.begin(), m_tiles.end(), Random::mt);
 }

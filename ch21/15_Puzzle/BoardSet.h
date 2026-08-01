@@ -1,5 +1,5 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef BOARDSET_H
+#define BOARDSET_H
 
 #include <array>
 
