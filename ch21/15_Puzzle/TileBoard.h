@@ -4,6 +4,7 @@
 #include "Random.h"
 #include <algorithm>
 #include <array>
+#include <iostream>
 
 // Implements a rectangular game board with movable tiles
 // Future improvement: variable-sized tileBank that m_tiles pulls from
@@ -22,6 +23,7 @@ public:
 
     TileBoard() = default;
 
+    const Board& board() const { return m_board; }
     void shuffleTiles()
     {
         std::shuffle(m_tiles.begin(), m_tiles.end(), Random::mt);
@@ -53,5 +55,26 @@ private:
     TileTray m_tiles{ createTiles() };
     Board m_board   { createBoard() };
 };
+
+
+template <int rows, int cols, int tiles>
+std::ostream& TileBoard<rows,cols,tiles>::operator<<(
+    std::ostream& out, const TileBoard& tb
+)
+{
+    auto board{ tb.board() };
+    for (const auto& row : board)
+    {
+        for (const auto Tile : row)
+        {
+            out << 
+
+
+        }
+        out << '\n';
+    }
+    return out;
+}
+
 
 #endif
