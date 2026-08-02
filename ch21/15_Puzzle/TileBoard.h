@@ -1,6 +1,7 @@
 #ifndef TILEBOARD_H
 #define TILEBOARD_H
 
+#include "Helpers.h"
 #include "Random.h"
 #include <algorithm>
 #include <array>
@@ -68,6 +69,7 @@ private:
 template <int rows, int cols, int tiles>
 std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& tb)
 {
+    Helpers::OStreamSaver oss{ out };
     auto board{ tb.board() };
     out << std::left;
     for (const auto& row : board)
@@ -82,7 +84,7 @@ std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& tb
         }
         out << '\n';
     }
-    return out << std::right;
+    return out;
 }
 
 
