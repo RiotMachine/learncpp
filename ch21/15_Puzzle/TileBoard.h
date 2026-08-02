@@ -4,6 +4,7 @@
 #include "Random.h"
 #include <algorithm>
 #include <array>
+#include <iomanip>
 #include <iostream>
 
 // Implements a rectangular game board with movable tiles
@@ -33,6 +34,8 @@ public:
 private:
     using TileTray = std::array<Tile, tiles>;
 
+    static Idx convert2dIdx(Idx row, Idx col) { return row * cols + col; }
+
     constexpr static TileTray createTiles(int start=1, int factor=1)
     {
         TileTray tt;
@@ -47,7 +50,12 @@ private:
         for (Idx i{ }; i < rows; ++i)
         {
             for (Idx j{ }; j < cols; ++j)
-                board[i][j] = i+j < m_tiles.size() ? m_tiles[i+j] : s_emptySpace;
+            {
+                if (convert2dIdx(i, j) < m_tiles.size())
+                    board[i][j] = m_tiles[convert2dIdx(i, j)];
+                else
+                    board[i][j] = s_emptySpace;
+            }
         }
         return board;
     }
@@ -58,22 +66,23 @@ private:
 
 
 template <int rows, int cols, int tiles>
-std::ostream& TileBoard<rows,cols,tiles>::operator<<(
-    std::ostream& out, const TileBoard& tb
-)
+std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& tb)
 {
     auto board{ tb.board() };
+    out << std::left;
     for (const auto& row : board)
     {
-        for (const auto Tile : row)
+        for (const auto tile : row)
         {
-            out << 
-
-
+            out << std::setw(6);
+            if (tile == TileBoard<rows,cols,tiles>::s_emptySpace)
+                out << ' ';
+            else
+                out << tile;
         }
         out << '\n';
     }
-    return out;
+    return out << std::right;
 }
 
 
