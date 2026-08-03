@@ -9,7 +9,6 @@
 #include <iostream>
 
 // Implements a rectangular game board with movable tiles
-// Future improvement: variable-sized tileBank that m_tiles pulls from
 
 template <int rows, int cols, int tiles>
 class TileBoard
@@ -35,8 +34,6 @@ public:
 private:
     using TileTray = std::array<Tile, tiles>;
 
-    static Idx convert2dIdx(Idx row, Idx col) { return row * cols + col; }
-
     constexpr static TileTray createTiles(int start=1, int factor=1)
     {
         TileTray tt;
@@ -52,8 +49,9 @@ private:
         {
             for (Idx j{ }; j < cols; ++j)
             {
-                if (convert2dIdx(i, j) < m_tiles.size())
-                    board[i][j] = m_tiles[convert2dIdx(i, j)];
+                Idx trayIdx{ Helpers::convert2dIdx(i, j, cols) };
+                if (trayIdx < m_tiles.size())
+                    board[i][j] = m_tiles[trayIdx];
                 else
                     board[i][j] = s_emptySpace;
             }
