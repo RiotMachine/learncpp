@@ -5,6 +5,12 @@ namespace Helpers
 {
     using Idx = std::size_t;
 
+    struct Idx2d
+    {
+        Idx row{ };
+        Idx col{ };
+    };
+
     Idx convert2dIdx(Idx row, Idx col, Idx cols)
     { 
         return row * cols + col; 

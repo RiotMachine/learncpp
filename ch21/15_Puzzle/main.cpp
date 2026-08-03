@@ -1,17 +1,11 @@
-#include "TileBoard.h"
-#include <iostream>
-// #include "15Puzzle.h"
+#include "FifteenPuzzle.h"
 
 int main()
 {
-    TileBoard<4, 4, 15> tb{ };
-    std::cout << tb;
-
-/*
-    15Puzzle puzzle{ };
-    puzzle.welcome();
+    FifteenPuzzle puzzle{ };
+    // puzzle.welcome();
     puzzle.play();
-    puzzle.printResults();
-*/
+    // puzzle.printResults();
+
     return 0;
 }

@@ -5,8 +5,10 @@
 #include "Random.h"
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <iomanip>
 #include <iostream>
+#include <utility>   // for std::swap
 
 // Implements a rectangular game board with movable tiles
 
@@ -14,6 +16,7 @@ template <int rows, int cols, int tiles>
 class TileBoard
 {
 public:
+    static_assert(rows > 0 && cols > 0);
     static_assert(rows * cols >= tiles);
 
     using Idx   = std::size_t;
@@ -25,6 +28,12 @@ public:
     TileBoard() = default;
 
     const Board& board() const { return m_board; }
+    void swap(Idx rowA, Idx colA, Idx rowB, Idx colB)
+    {
+        assert(rowA < rows && colA < cols);
+        assert(rowB < rows && colB < cols);
+        std::swap(m_board[rowA][colA], m_board[rowB][colB]);
+    }
     void shuffleTiles()
     {
         std::shuffle(m_tiles.begin(), m_tiles.end(), Random::mt);
@@ -68,7 +77,7 @@ template <int rows, int cols, int tiles>
 std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& tb)
 {
     Helpers::OStreamSaver oss{ out };
-    auto board{ tb.board() };
+    const auto& board{ tb.board() };
     out << std::left;
     for (const auto& row : board)
     {
