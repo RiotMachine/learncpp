@@ -1,6 +1,7 @@
 #ifndef FIFTEENPUZZLE_H
 #define FIFTEENPUZZLE_H
 
+#include "Indices.h"
 #include "TileBoard.h"
 #include <cassert>
 #include <iostream>
@@ -31,10 +32,10 @@ private:
     constexpr static int s_tiles{ s_rows * s_cols - 1 };
 
     using BoardSet = TileBoard<s_rows, s_cols, s_tiles>;
-    using Idx      = BoardSet::Idx;
-    using Idx2d    = Helpers::Idx2d;
+    using Idx      = Indices::Idx;
+    using Idx2D    = Indices::Idx2D;
 
-    Idx2d findEmptySpace() const
+    Idx2D findEmptySpace() const
     {
         const auto& b{ m_boardSet.board() };
         for (Idx i{ }; i < b.size(); ++i)
@@ -42,14 +43,14 @@ private:
             for (Idx j{ }; j < b[i].size(); ++j)
             {
                 if (b[i][j] == BoardSet::s_emptySpace)
-                    return Idx2d { i, j };
+                    return Idx2D { i, j };
             }
         }
         assert (false && "Missing empty space");
     }       
 
     BoardSet m_boardSet{ };
-    Idx2d m_emptySpaceIdx{ findEmptySpace() };
+    Idx2D m_emptySpaceIdx{ findEmptySpace() };
 };
 
 #endif

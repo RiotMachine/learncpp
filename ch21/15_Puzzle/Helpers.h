@@ -1,20 +1,12 @@
-#include <cstddef>
+#ifndef HELPERS_H
+#define HELPERS_H
+
 #include <iostream>
+
 
 namespace Helpers
 {
-    using Idx = std::size_t;
 
-    struct Idx2d
-    {
-        Idx row{ };
-        Idx col{ };
-    };
-
-    Idx convert2dIdx(Idx row, Idx col, Idx cols)
-    { 
-        return row * cols + col; 
-    }
 
     // thanks qbert220
     // https://stackoverflow.com/a/18822888
@@ -24,16 +16,16 @@ namespace Helpers
         explicit OStreamSaver(std::ostream& out)
         :  m_out{ out }, m_flags{ out.flags() } {}
 
-        ~OStreamSaver() { m_out.flags(m_flags); }
-
         OStreamSaver(const OStreamSaver& oss) = delete;
 
         OStreamSaver& operator=(const OStreamSaver& oss) = delete;
+
+        ~OStreamSaver() { m_out.flags(m_flags); }
 
     private:
         std::ostream& m_out;
         std::ios::fmtflags m_flags;
     };
-
-    
 }
+
+#endif

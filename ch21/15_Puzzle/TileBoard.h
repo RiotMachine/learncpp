@@ -2,6 +2,7 @@
 #define TILEBOARD_H
 
 #include "Helpers.h"
+#include "Indices.h"
 #include "Random.h"
 #include <algorithm>
 #include <array>
@@ -19,7 +20,7 @@ public:
     static_assert(rows > 0 && cols > 0);
     static_assert(rows * cols >= tiles);
 
-    using Idx   = std::size_t;
+    using Idx   = Indices::Idx;
     using Tile  = int;
     using Board = std::array<std::array<Tile, cols>, rows>;
 
@@ -28,11 +29,11 @@ public:
     TileBoard() = default;
 
     const Board& board() const { return m_board; }
-    void swap(Idx rowA, Idx colA, Idx rowB, Idx colB)
+    void swap(Indices::Idx2D a, Indices::Idx2D b)
     {
-        assert(rowA < rows && colA < cols);
-        assert(rowB < rows && colB < cols);
-        std::swap(m_board[rowA][colA], m_board[rowB][colB]);
+        assert(a.row < rows && a.col < cols);
+        assert(b.row < rows && b.col < cols);
+        std::swap(m_board[a.row][a.col], m_board[b.row][b.col]);
     }
     void shuffleTiles()
     {
@@ -58,7 +59,7 @@ private:
         {
             for (Idx j{ }; j < cols; ++j)
             {
-                Idx trayIdx{ Helpers::convert2dIdx(i, j, cols) };
+                Idx trayIdx{ Indices::make1D(i, j, cols) };
                 if (trayIdx < m_tiles.size())
                     board[i][j] = m_tiles[trayIdx];
                 else
@@ -93,6 +94,5 @@ std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& tb
     }
     return out;
 }
-
 
 #endif
