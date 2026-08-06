@@ -11,10 +11,18 @@ class FifteenPuzzle
 public:
     FifteenPuzzle() = default;
 
+    void welcome()
+    {
+        std::cout << "Welcome to 15 Puzzle.\n";
+    }
     void play()
     {
         std::cout << m_boardSet;
-    };
+    }
+    void printResults()
+    {
+
+    }
 
 private:
     enum Move
@@ -27,13 +35,14 @@ private:
        quit  = 'q'
     };
 
+    using Idx      = Indices::Idx;
+    using Idx2D    = Indices::Idx2D;
+
     constexpr static int s_rows { 4 };
     constexpr static int s_cols { 4 };
     constexpr static int s_tiles{ s_rows * s_cols - 1 };
 
     using BoardSet = TileBoard<s_rows, s_cols, s_tiles>;
-    using Idx      = Indices::Idx;
-    using Idx2D    = Indices::Idx2D;
 
     Idx2D findEmptySpace() const
     {

@@ -1,11 +1,13 @@
 #include "FifteenPuzzle.h"
+#include <iostream>
 
 int main()
 {
     FifteenPuzzle puzzle{ };
-    // puzzle.welcome();
+    puzzle.welcome();
+    std::cout << '\n';
     puzzle.play();
-    // puzzle.printResults();
+    puzzle.printResults();
 
     return 0;
 }

@@ -20,7 +20,6 @@ public:
     static_assert(rows > 0 && cols > 0);
     static_assert(rows * cols >= tiles);
 
-    using Idx   = Indices::Idx;
     using Tile  = int;
     using Board = std::array<std::array<Tile, cols>, rows>;
 
@@ -29,11 +28,11 @@ public:
     TileBoard() = default;
 
     const Board& board() const { return m_board; }
-    void swap(Indices::Idx2D a, Indices::Idx2D b)
+    void swap(std::size_t aRow, std::size_t aCol, std::size_t bRow, std::size_t bCol)
     {
-        assert(a.row < rows && a.col < cols);
-        assert(b.row < rows && b.col < cols);
-        std::swap(m_board[a.row][a.col], m_board[b.row][b.col]);
+        assert(aRow < rows && aCol < cols);
+        assert(bRow < rows && bCol < cols);
+        std::swap(m_board[aRow][aCol], m_board[bRow][bCol]);
     }
     void shuffleTiles()
     {
@@ -42,6 +41,7 @@ public:
     }
 
 private:
+    using Idx      = Indices::Idx;
     using TileTray = std::array<Tile, tiles>;
 
     constexpr static TileTray createTiles(int start=1, int factor=1)

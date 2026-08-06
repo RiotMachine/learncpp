@@ -3,7 +3,6 @@
 
 #include <cstddef>
 
-
 namespace Indices
 {
     using Idx = std::size_t;
