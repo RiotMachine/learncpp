@@ -34,6 +34,10 @@ public:
         assert(bRow < rows && bCol < cols);
         std::swap(m_board[aRow][aCol], m_board[bRow][bCol]);
     }
+    void swap(Indices::Idx2D a, Indices::Idx2D b)
+    {
+        swap(a.row, a.col, b.row, b.col);
+    }
     void shuffleTiles()
     {
         std::shuffle(m_tiles.begin(), m_tiles.end(), Random::mt);

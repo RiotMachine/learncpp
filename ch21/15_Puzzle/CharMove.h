@@ -1,11 +1,13 @@
 #ifndef CHARMOVE_H
 #define CHARMOVE_H
 
+#include <array>
+#include <iostream>
 #include <string_view>
 
 namespace CharMove
 {
-    enum Type
+    enum Option
     {
         left  = 'a',
         right = 'd',
@@ -14,13 +16,34 @@ namespace CharMove
         reset = 'r',
         quit  = 'q'
     };
-    constexpr static std::string_view str{ "adwsrq" };
-    constexpr static std::string_view menu{
-        "a - left\n"
-        "d - right\n"
-        "w - up\n"
-        "s - down\n
-        "r - reset\n"
-        "q - quit"
+    constexpr inline std::string_view str{ "adwsrq" };
+    constexpr inline std::array options{
+        left, right, up, down, reset, quit
     };
+    static_assert(str.size() == options.size());
+
+    bool isOption(char c) { return str.find(c) != std::string_view::npos; }
+
+    std::ostream& operator<<(std::ostream& out, Option option)
+    {
+        out << option << " - ";
+        switch (option)
+        {
+        case left:
+            return out << "left";
+        case right:
+            return out << "right";
+        case up:
+            return out << "up";
+        case down:
+            return out << "down";
+        case reset:
+            return out << "reset";
+        case quit:
+            return out << "quit";
+        default:
+            return out << "???";
+    }
 }
+
+#endif

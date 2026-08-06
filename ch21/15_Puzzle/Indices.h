@@ -22,6 +22,11 @@ namespace Indices
     {
         return make1D(Idx2D { row, col }, cols);
     }
+
+    inline Idx2D make2D(Idx index, Idx cols)
+    {
+        return Idx2D { index / cols, index % cols };
+    }
 }
 
 #endif
