@@ -2,41 +2,21 @@
 #define FIFTEENPUZZLE_H
 
 #include "Indices.h"
+#include "Helpers.h"
 #include "TileBoard.h"
-#include <cassert>
-#include <iostream>
 
 class FifteenPuzzle
 {
 public:
     FifteenPuzzle() = default;
 
-    void welcome()
-    {
-        std::cout << "Welcome to 15 Puzzle.\n";
-    }
-    void play()
-    {
-        std::cout << m_boardSet;
-    }
-    void printResults()
-    {
-
-    }
+    void welcome();
+    void play();
+    void printResults();
 
 private:
-    enum Move
-    {
-       left  = 'a',
-       right = 'd',
-       up    = 'w',
-       down  = 's',
-       reset = 'r',
-       quit  = 'q'
-    };
-
-    using Idx      = Indices::Idx;
-    using Idx2D    = Indices::Idx2D;
+    using Idx   = Indices::Idx;
+    using Idx2D = Indices::Idx2D;
 
     constexpr static int s_rows { 4 };
     constexpr static int s_cols { 4 };
@@ -44,22 +24,13 @@ private:
 
     using BoardSet = TileBoard<s_rows, s_cols, s_tiles>;
 
-    Idx2D findEmptySpace() const
-    {
-        const auto& b{ m_boardSet.board() };
-        for (Idx i{ }; i < b.size(); ++i)
-        {
-            for (Idx j{ }; j < b[i].size(); ++j)
-            {
-                if (b[i][j] == BoardSet::s_emptySpace)
-                    return Idx2D { i, j };
-            }
-        }
-        assert (false && "Missing empty space");
-    }       
+    Idx2D findEmptySpace() const;
+    void reset();
 
     BoardSet m_boardSet{ };
     Idx2D m_emptySpaceIdx{ findEmptySpace() };
+    int m_totalMoves{ };
+    Helpers::Timer m_timer{ };
 };
 
 #endif
