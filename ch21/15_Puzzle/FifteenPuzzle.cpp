@@ -19,12 +19,13 @@ void FifteenPuzzle::play()
     resetGame();
     while (!checkBoard())
     {
-        std::cout << m_boardSet << '\n' << "Enter a command: ";
-        char input;
-        do
+        std::cout << m_boardSet << '\n';
+        char input{ };
+        while (!CharMove::isOption(input))
         {
-            input = Helpers::getChar();
-        } while (!CharMove::isOption(input));
+            std::cout << "Enter a command: ";
+            input = Helpers::getChar();   
+        }
 
         CharMove::Option selection{ input };
         switch (selection)
