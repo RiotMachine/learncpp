@@ -4,14 +4,13 @@
 #include "Helpers.h"
 #include "Indices.h"
 #include "Random.h"
-#include <algorithm>
 #include <array>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <utility>   // for std::swap
 
-// Implements a rectangular game board with movable tiles
+// Implements a rectangular game board of tiles
 
 template <int rows, int cols, int tiles>
 class TileBoard
@@ -37,11 +36,6 @@ public:
     void swap(Indices::Idx2D a, Indices::Idx2D b)
     {
         swap(a.row, a.col, b.row, b.col);
-    }
-    void shuffleTiles()
-    {
-        std::shuffle(m_tiles.begin(), m_tiles.end(), Random::mt);
-        m_board = createBoard();
     }
 
 private:
