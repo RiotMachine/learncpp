@@ -22,11 +22,11 @@ namespace CharMove
     };
     static_assert(str.size() == options.size());
 
-    bool isOption(char c) { return str.find(c) != std::string_view::npos; }
+    inline bool isOption(char c) { return str.find(c) != std::string_view::npos; }
 
-    std::ostream& operator<<(std::ostream& out, Option option)
+    inline std::ostream& operator<<(std::ostream& out, Option option)
     {
-        out << option << " - ";
+        out << static_cast<char>(option) << " - ";
         switch (option)
         {
         case left:
@@ -43,6 +43,7 @@ namespace CharMove
             return out << "quit";
         default:
             return out << "???";
+        }
     }
 }
 

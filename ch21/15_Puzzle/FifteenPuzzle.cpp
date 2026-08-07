@@ -10,7 +10,7 @@
 void FifteenPuzzle::welcome() const
 {
     std::cout << "Welcome to 15 Puzzle.\nOptions:\n";
-    for (const auto& option : CharMove::options)
+    for (const auto option : CharMove::options)
         std::cout << '\t' << option << '\n';
 }
 
@@ -20,10 +20,10 @@ void FifteenPuzzle::play()
     while (!checkBoard())
     {
         std::cout << m_boardSet << '\n';
-        char selection;
+        CharMove::Option selection;
         do
         {
-            selection = Helpers::getChar();
+            selection = static_cast<CharMove::Option>(Helpers::getChar());
         } while (!CharMove::isOption(selection));
 
         switch (selection)
@@ -46,7 +46,7 @@ void FifteenPuzzle::play()
 void FifteenPuzzle::printResults() const
 {
     std::cout << "You performed " << m_totalMoves << " moves in " 
-              << m_timer.elapsed() << " seconds."
+              << m_timer.elapsed() << " seconds.";
 }
 
 
@@ -59,8 +59,8 @@ bool FifteenPuzzle::checkBoard() const
     /// but the last tile will be s_emptySpace 
     for (Idx i{ }; i < s_tiles-3; ++i)
     {
-        Idx2D currIdx{ make2D(i), s_cols };
-        Idx2D nextIdx{ make2D(i+1), s_cols };
+        Idx2D currIdx{ Indices::make2D(i, s_cols) };
+        Idx2D nextIdx{ Indices::make2D(i+1, s_cols) };
         if (b[currIdx.row][currIdx.col] + 1 != b[nextIdx.row][nextIdx.col])
             return false;
     }
@@ -85,6 +85,7 @@ void FifteenPuzzle::moveTile(CharMove::Option move)
 {
     switch (move)
     {
+        using namespace CharMove;
     case left:
         if (m_emptyLoc.col < s_cols - 1)
             m_boardSet.swap(
@@ -115,7 +116,7 @@ void FifteenPuzzle::moveTile(CharMove::Option move)
 void FifteenPuzzle::resetBoard()
 {
     m_boardSet.shuffleTiles();
-    m_emptySpaceIdx = findEmptySpace();
+    m_emptyLoc = findEmptySpace();
 }
 
 void FifteenPuzzle::resetGame()
