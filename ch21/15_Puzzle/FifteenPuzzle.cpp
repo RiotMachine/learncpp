@@ -2,6 +2,7 @@
 #include "FifteenPuzzle.h"
 #include "Helpers.h"
 #include "Indices.h"
+#include "Random.h"
 #include <cassert>
 #include <iostream>
 
@@ -32,7 +33,7 @@ void FifteenPuzzle::play()
         {
             using namespace CharMove;
         case quit:
-            break;
+            return;
         case reset:
             resetBoard();
             continue;
@@ -94,6 +95,7 @@ void FifteenPuzzle::moveTile(CharMove::Option command)
                 m_emptyLoc, Idx2D { m_emptyLoc.row, m_emptyLoc.col+1 }
             );
             ++m_emptyLoc.col;
+            ++m_totalMoves;
         }
         return;
     case CharMove::right:
@@ -103,6 +105,7 @@ void FifteenPuzzle::moveTile(CharMove::Option command)
                 m_emptyLoc, Idx2D { m_emptyLoc.row, m_emptyLoc.col-1 }
             );
             --m_emptyLoc.col;
+            ++m_totalMoves;
         }
         return;
     case CharMove::up:
@@ -112,6 +115,7 @@ void FifteenPuzzle::moveTile(CharMove::Option command)
                 m_emptyLoc, Idx2D { m_emptyLoc.row+1, m_emptyLoc.col }
             );
             ++m_emptyLoc.row;
+            ++m_totalMoves;
         }
         return;
     case CharMove::down:
@@ -121,6 +125,7 @@ void FifteenPuzzle::moveTile(CharMove::Option command)
                 m_emptyLoc, Idx2D { m_emptyLoc.row-1, m_emptyLoc.col }
             );
             --m_emptyLoc.row;
+            ++m_totalMoves;
         }
         return;
     }
@@ -128,7 +133,11 @@ void FifteenPuzzle::moveTile(CharMove::Option command)
 
 void FifteenPuzzle::resetBoard()
 {
-    m_boardSet.shuffleTiles();
+    for (Idx i{ }; i < 20; ++i)
+    {
+        CharMove::Option o{ CharMove::options[Random::get(0, 3)] };
+        moveTile(o);
+    }
     m_emptyLoc = findEmptySpace();
 }
 
