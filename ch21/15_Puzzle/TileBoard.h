@@ -1,9 +1,8 @@
 #ifndef TILEBOARD_H
 #define TILEBOARD_H
 
-#include "Helpers.h"
-#include "Indices.h"
-#include "Random.h"
+#include "Idx.h"
+#include "IOHelper.h"
 #include <array>
 #include <cassert>
 #include <iomanip>
@@ -17,76 +16,101 @@ class TileBoard
 {
 public:
     static_assert(rows > 0 && cols > 0);
-    static_assert(rows * cols >= tiles);
+    constexpr static int s_spaces{ rows * cols };
+    static_assert(s_spaces >= tiles);
 
-    using Tile  = int;
-    using Board = std::array<std::array<Tile, cols>, rows>;
-
+    using Tile = int;
     constexpr static Tile s_emptySpace{ -1 };
 
     TileBoard() = default;
 
-    const Board& board() const { return m_board; }
-    void swap(std::size_t aRow, std::size_t aCol, std::size_t bRow, std::size_t bCol)
+    Tile& operator() (Idx::D1 row, Idx::D1 col)       { return m_board[row][col]; }
+    Tile operator()  (Idx::D1 row, Idx::D1 col) const { return m_board[row][col]; }
+    Tile& operator[] (Idx::D1 index)
     {
-        assert(aRow < rows && aCol < cols);
-        assert(bRow < rows && bCol < cols);
-        std::swap(m_board[aRow][aCol], m_board[bRow][bCol]);
+        Idx::D2 d2Index{ Idx::toD2(index, cols) };
+        return m_board[d2Index.row][d2Index.col];
     }
-    void swap(Indices::Idx2D a, Indices::Idx2D b)
+    Tile operator[] (Idx::D1 index) const
     {
-        swap(a.row, a.col, b.row, b.col);
+        Idx::D2 d2Index{ Idx::toD2(index, cols) };
+        return m_board[d2Index.row][d2Index.col];
     }
+
+    Idx::D2 find(Tile t) const
+    {
+        for (Idx::D1 i{ }; i < rows; ++i)
+        {
+            for (Idx::D1 j{ }; j < cols; ++j)
+            {
+                if (m_board[i][j] == t)
+                    return { i, j };
+            }
+        }
+        return { rows, cols };
+    }
+
+    void reset() { m_board = createBoard(m_tileTray); }
+
+    void save()
+    {
+        for (Idx::D1 i{ }; i < rows; ++i)
+        {
+            for (Idx::D1 j{ }; j < cols; ++j)
+                m_tileTray[Idx::toD1(i, j, cols)] = m_board[i][j];
+        }
+    }
+
+    void swap(Idx::D2 a, Idx::D2 b)
+    {
+        assert(a.row < rows && a.col < cols);
+        assert(b.row < rows && b.col < cols);
+        std::swap(m_board[a.row][a.col], m_board[b.row][b.col]);
+    }
+
 
 private:
-    using Idx      = Indices::Idx;
-    using TileTray = std::array<Tile, tiles>;
+    using TileTray = std::array<Tile, s_spaces>;
+    using Board = std::array<std::array<Tile, cols>, rows>;
 
-    constexpr static TileTray createTiles(int start=1, int factor=1)
+    constexpr static TileTray createTileTray(int start=1, int factor=1)
     {
         TileTray tt;
-        for (Idx i{ 0 }; i < tt.size(); ++i)
-            tt[i] = (i+start) * factor;
+        for (Idx::D1 i{ }; i < s_spaces; ++i)
+            tt[i] = (i < tiles ? (i + start) * factor : s_emptySpace);
         return tt;
     }
 
-    Board createBoard()
+    constexpr static Board createBoard(TileTray tray)
     {
         Board board;
-        for (Idx i{ }; i < rows; ++i)
+        for (Idx::D1 i{ }; i < rows; ++i)
         {
-            for (Idx j{ }; j < cols; ++j)
-            {
-                Idx trayIdx{ Indices::make1D(i, j, cols) };
-                if (trayIdx < m_tiles.size())
-                    board[i][j] = m_tiles[trayIdx];
-                else
-                    board[i][j] = s_emptySpace;
-            }
+            for (Idx::D1 j{ }; j < cols; ++j)
+                board[i][j] = tray[Idx::toD1(i, j, cols)];
         }
         return board;
     }
 
-    TileTray m_tiles{ createTiles() };
-    Board m_board   { createBoard() };
+    TileTray m_tileTray{ createTileTray() };
+    Board m_board{ createBoard(m_tileTray) };
 };
 
 
 template <int rows, int cols, int tiles>
-std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& tb)
+std::ostream& operator<<(std::ostream& out, const TileBoard<rows,cols,tiles>& board)
 {
-    Helpers::OStreamSaver oss{ out };
-    const auto& board{ tb.board() };
+    IOHelper::OStreamSaver oss{ out };
     out << std::left;
-    for (const auto& row : board)
+    for (Idx::D1 i{ }; i < rows; ++i)
     {
-        for (const auto tile : row)
+        for (Idx::D1 j{ }; j < cols; ++j)
         {
             out << std::setw(6);
-            if (tile == TileBoard<rows,cols,tiles>::s_emptySpace)
+            if (board(i, j) == TileBoard<rows,cols,tiles>::s_emptySpace)
                 out << ' ';
             else
-                out << tile;
+                out << board(i, j);
         }
         out << '\n';
     }

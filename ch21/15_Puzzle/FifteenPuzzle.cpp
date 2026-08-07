@@ -1,47 +1,52 @@
-#include "CharMove.h"
+#include "CharCommand.h"
 #include "FifteenPuzzle.h"
-#include "Helpers.h"
-#include "Indices.h"
+#include "Idx.h"
+#include "IOHelper.h"
 #include "Random.h"
 #include <cassert>
 #include <iostream>
 
-// public methods
+// Public methods
 
 void FifteenPuzzle::welcome() const
 {
     std::cout << "Welcome to 15 Puzzle.\nCommands:\n";
-    for (const auto option : CharMove::options)
+    for (const auto option : CharCommand::commands)
         std::cout << '\t' << option << '\n';
 }
 
 void FifteenPuzzle::play()
 {
-    resetGame();
-    while (!checkBoard())
+    int input{ IOHelper::getInt("Enter the number of shuffles: ") };
+    setupGame(input);
+
+    while (true)
     {
         std::cout << m_boardSet << '\n';
+        if (isOrdered())
+            break;
+
         char input{ };
-        while (!CharMove::isOption(input))
+        while (!CharCommand::isCommand(input))
         {
             std::cout << "Enter a command: ";
-            input = Helpers::getChar();   
+            input = IOHelper::getChar();   
         }
 
-        CharMove::Option selection{ input };
-        switch (selection)
+        CharCommand::Command command{ input };
+        switch (command)
         {
-            using namespace CharMove;
+            using namespace CharCommand;
         case quit:
             return;
         case reset:
-            resetBoard();
+            resetGame();
             continue;
         case left:
         case right:
         case up:
         case down:
-            moveTile(selection);
+            moveTile(command);
         }
     }
 }
@@ -53,76 +58,63 @@ void FifteenPuzzle::printResults() const
 }
 
 
-// private methods
+// Private methods
 
-bool FifteenPuzzle::checkBoard() const
+bool FifteenPuzzle::isOrdered() const
 {
-    const auto& b{ m_boardSet.board() };
     // s_tiles-2 would test all elements, but the last tile will be s_emptySpace
-    for (Idx i{ }; i < s_tiles-3; ++i)
+    for (Idx::D1 i{ }; i < s_tiles-3; ++i)
     {
-        Idx2D currIdx{ Indices::make2D(i, s_cols) };
-        Idx2D nextIdx{ Indices::make2D(i+1, s_cols) };
-        if (b[currIdx.row][currIdx.col] + 1 != b[nextIdx.row][nextIdx.col])
+        if (m_boardSet[i] + 1 != m_boardSet[i + 1])
             return false;
     }
     return true;
 }
 
-Indices::Idx2D FifteenPuzzle::findEmptySpace() const
+Idx::D2 FifteenPuzzle::findEmptySpace() const
 {
-    const auto& b{ m_boardSet.board() };
-    for (Idx i{ }; i < b.size(); ++i)
-    {
-        for (Idx j{ }; j < b[i].size(); ++j)
-        {
-            if (b[i][j] == BoardSet::s_emptySpace)
-                return Idx2D { i, j };
-        }
-    }
-    assert (false && "Missing empty space");
-    return Idx2D { s_rows, s_cols };
+    return m_boardSet.find(BoardSet::s_emptySpace);
 }
 
-void FifteenPuzzle::moveTile(CharMove::Option command)
+void FifteenPuzzle::moveTile(CharCommand::Command direction)
 {
-    switch (command)
+    switch (direction)
     {
-    case CharMove::left:
+    case CharCommand::left:
         if (m_emptyLoc.col < s_cols - 1)
         {
             m_boardSet.swap(
-                m_emptyLoc, Idx2D { m_emptyLoc.row, m_emptyLoc.col+1 }
+                m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col+1 }
             );
             ++m_emptyLoc.col;
             ++m_totalMoves;
         }
         return;
-    case CharMove::right:
+    case CharCommand::right:
         if (m_emptyLoc.col > 0)
         {
             m_boardSet.swap(
-                m_emptyLoc, Idx2D { m_emptyLoc.row, m_emptyLoc.col-1 }
+                m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col-1 }
             );
             --m_emptyLoc.col;
             ++m_totalMoves;
         }
         return;
-    case CharMove::up:
+    case CharCommand::up:
         if (m_emptyLoc.row < s_rows - 1)
         {
             m_boardSet.swap(
-                m_emptyLoc, Idx2D { m_emptyLoc.row+1, m_emptyLoc.col }
+                m_emptyLoc, Idx::D2 { m_emptyLoc.row+1, m_emptyLoc.col }
             );
             ++m_emptyLoc.row;
             ++m_totalMoves;
         }
         return;
-    case CharMove::down:
+    case CharCommand::down:
         if (m_emptyLoc.row > 0)
         {
             m_boardSet.swap(
-                m_emptyLoc, Idx2D { m_emptyLoc.row-1, m_emptyLoc.col }
+                m_emptyLoc, Idx::D2 { m_emptyLoc.row-1, m_emptyLoc.col }
             );
             --m_emptyLoc.row;
             ++m_totalMoves;
@@ -131,19 +123,26 @@ void FifteenPuzzle::moveTile(CharMove::Option command)
     }
 }
 
-void FifteenPuzzle::resetBoard()
+void FifteenPuzzle::resetTracking()
 {
-    for (Idx i{ }; i < 20; ++i)
-    {
-        CharMove::Option o{ CharMove::options[Random::get(0, 3)] };
-        moveTile(o);
-    }
     m_emptyLoc = findEmptySpace();
+    m_totalMoves = 0;
+    m_timer.reset();
 }
 
 void FifteenPuzzle::resetGame()
 {
-    resetBoard();
-    m_totalMoves = 0;
-    m_timer.reset();
+    m_boardSet.reset();
+    resetTracking();
+}
+
+void FifteenPuzzle::setupGame(int rounds)
+{
+    while (rounds--)
+    {
+        Idx::D1 randomIdx{ Random::get<Idx::D1>(0, CharCommand::moves.size()) };
+        moveTile(CharCommand::moves[randomIdx]);
+    }
+    m_boardSet.save();
+    resetTracking();
 }

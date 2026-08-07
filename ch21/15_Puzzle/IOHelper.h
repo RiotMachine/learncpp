@@ -1,13 +1,14 @@
-#ifndef HELPERS_H
-#define HELPERS_H
+#ifndef IOHELPER_H
+#define IOHELPER_H
 
-#include <chrono>
+#include <cstdlib>
 #include <iostream>
 #include <limits>
+#include <string>
+#include <string_view>
 
-namespace Helpers
+namespace IOHelper
 {
-    // IO
     inline void clearBuffer()
     {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -23,6 +24,19 @@ namespace Helpers
         }
         clearBuffer();
         return c;
+    }
+
+    inline int getInt(std::string_view sv)
+    {
+        int x{ };
+        while (!x)
+        {
+            std::cout << sv;aa
+            std::string input{ };
+            std::getline(std::cin >> std::ws, input);
+            x = std::atoi(input.c_str());
+        }
+        return x;
     }
 
     // thanks qbert220
@@ -42,24 +56,6 @@ namespace Helpers
     private:
         std::ostream& m_out;
         std::ios::fmtflags m_flags;
-    };
-
-
-    // Timing
-    class Timer
-    {
-    public:
-        void reset() { m_beg = Clock::now(); }
-        double elapsed() const
-        { 
-            return std::chrono::duration_cast<Second>(Clock::now() - m_beg).count();
-        }
-
-    private:
-        using Clock  = std::chrono::steady_clock;
-        using Second = std::chrono::duration<double, std::ratio<1>>;
-
-        std::chrono::time_point<Clock> m_beg{ Clock::now() };
     };
 }
 

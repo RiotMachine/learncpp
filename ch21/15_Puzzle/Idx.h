@@ -1,31 +1,31 @@
-#ifndef INDICES_H
-#define INDICES_H
+#ifndef IDX_H
+#define IDX_H
 
 #include <cstddef>
 
-namespace Indices
+namespace Idx
 {
-    using Idx = std::size_t;
+    using D1 = std::size_t;
 
-    struct Idx2D
+    struct D2
     {
-        Idx row{ };
-        Idx col{ };
+        D1 row{ };
+        D1 col{ };
     };
 
-    inline Idx make1D(Idx2D d, Idx cols)
+    inline D1 toD1(D2 d, D1 cols)
     { 
         return d.row * cols + d.col; 
     }
 
-    inline Idx make1D(Idx row, Idx col, Idx cols)
+    inline D1 toD1(D1 row, D1 col, D1 cols)
     {
-        return make1D(Idx2D { row, col }, cols);
+        return toD1(D2 { row, col }, cols);
     }
 
-    inline Idx2D make2D(Idx index, Idx cols)
+    inline D2 toD2(D1 index, D1 cols)
     {
-        return Idx2D { index / cols, index % cols };
+        return { index / cols, index % cols };
     }
 }
 

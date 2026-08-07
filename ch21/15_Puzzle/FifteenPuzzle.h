@@ -1,10 +1,10 @@
 #ifndef FIFTEENPUZZLE_H
 #define FIFTEENPUZZLE_H
 
-#include "CharMove.h"
-#include "Indices.h"
-#include "Helpers.h"
+#include "CharCommand.h"
+#include "Idx.h"
 #include "TileBoard.h"
+#include "Timer.h"
 
 class FifteenPuzzle
 {
@@ -16,25 +16,23 @@ public:
     void printResults() const;
 
 private:
-    using Idx   = Indices::Idx;
-    using Idx2D = Indices::Idx2D;
-
     constexpr static int s_rows { 4 };
     constexpr static int s_cols { 4 };
     constexpr static int s_tiles{ s_rows * s_cols - 1 };
 
     using BoardSet = TileBoard<s_rows, s_cols, s_tiles>;
 
-    bool checkBoard() const;
-    Idx2D findEmptySpace() const;
-    void moveTile(CharMove::Option move);
-    void resetBoard();
+    bool isOrdered() const;
+    Idx::D2 findEmptySpace() const;
+    void moveTile(CharCommand::Command command);
+    void resetTracking();
     void resetGame();
+    void setupGame(int rounds);
 
     BoardSet m_boardSet{ };
-    Idx2D m_emptyLoc{ findEmptySpace() };
+    Idx::D2 m_emptyLoc{ findEmptySpace() };
     int m_totalMoves{ };
-    Helpers::Timer m_timer{ };
+    Timer m_timer{ };
 };
 
 #endif
