@@ -31,7 +31,7 @@ namespace IOHelper
         int x{ };
         while (!x)
         {
-            std::cout << sv;aa
+            std::cout << sv;
             std::string input{ };
             std::getline(std::cin >> std::ws, input);
             x = std::atoi(input.c_str());
