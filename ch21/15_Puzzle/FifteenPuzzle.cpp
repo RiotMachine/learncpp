@@ -9,7 +9,7 @@
 
 void FifteenPuzzle::welcome() const
 {
-    std::cout << "Welcome to 15 Puzzle.\nOptions:\n";
+    std::cout << "Welcome to 15 Puzzle.\nCommands:\n";
     for (const auto option : CharMove::options)
         std::cout << '\t' << option << '\n';
 }
@@ -19,13 +19,14 @@ void FifteenPuzzle::play()
     resetGame();
     while (!checkBoard())
     {
-        std::cout << m_boardSet << '\n';
-        CharMove::Option selection;
+        std::cout << m_boardSet << '\n' << "Enter a command: ";
+        char input;
         do
         {
-            selection = static_cast<CharMove::Option>(Helpers::getChar());
-        } while (!CharMove::isOption(selection));
+            input = Helpers::getChar();
+        } while (!CharMove::isOption(input));
 
+        CharMove::Option selection{ input };
         switch (selection)
         {
             using namespace CharMove;
@@ -46,7 +47,7 @@ void FifteenPuzzle::play()
 void FifteenPuzzle::printResults() const
 {
     std::cout << "You performed " << m_totalMoves << " moves in " 
-              << m_timer.elapsed() << " seconds.";
+        << m_timer.elapsed() << " seconds.";
 }
 
 
@@ -55,8 +56,7 @@ void FifteenPuzzle::printResults() const
 bool FifteenPuzzle::checkBoard() const
 {
     const auto& b{ m_boardSet.board() };
-    // s_tiles-1 == maxIdx; s_tiles-2 would test all elements,
-    /// but the last tile will be s_emptySpace 
+    // s_tiles-2 would test all elements, but the last tile will be s_emptySpace
     for (Idx i{ }; i < s_tiles-3; ++i)
     {
         Idx2D currIdx{ Indices::make2D(i, s_cols) };
@@ -79,36 +79,48 @@ Indices::Idx2D FifteenPuzzle::findEmptySpace() const
         }
     }
     assert (false && "Missing empty space");
+    return Idx2D { s_rows, s_cols };
 }
 
-void FifteenPuzzle::moveTile(CharMove::Option move)
+void FifteenPuzzle::moveTile(CharMove::Option command)
 {
-    switch (move)
+    switch (command)
     {
-        using namespace CharMove;
-    case left:
+    case CharMove::left:
         if (m_emptyLoc.col < s_cols - 1)
+        {
             m_boardSet.swap(
                 m_emptyLoc, Idx2D { m_emptyLoc.row, m_emptyLoc.col+1 }
             );
+            ++m_emptyLoc.col;
+        }
         return;
-    case right:
+    case CharMove::right:
         if (m_emptyLoc.col > 0)
+        {
             m_boardSet.swap(
                 m_emptyLoc, Idx2D { m_emptyLoc.row, m_emptyLoc.col-1 }
             );
+            --m_emptyLoc.col;
+        }
         return;
-    case up:
+    case CharMove::up:
         if (m_emptyLoc.row < s_rows - 1)
+        {
             m_boardSet.swap(
                 m_emptyLoc, Idx2D { m_emptyLoc.row+1, m_emptyLoc.col }
             );
+            ++m_emptyLoc.row;
+        }
         return;
-    case down:
+    case CharMove::down:
         if (m_emptyLoc.row > 0)
+        {
             m_boardSet.swap(
                 m_emptyLoc, Idx2D { m_emptyLoc.row-1, m_emptyLoc.col }
             );
+            --m_emptyLoc.row;
+        }
         return;
     }
 }

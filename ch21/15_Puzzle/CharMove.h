@@ -7,7 +7,7 @@
 
 namespace CharMove
 {
-    enum Option
+    enum Option : char
     {
         left  = 'a',
         right = 'd',
