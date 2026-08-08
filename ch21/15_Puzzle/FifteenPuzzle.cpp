@@ -17,7 +17,9 @@ void FifteenPuzzle::welcome() const
 
 void FifteenPuzzle::play()
 {
-    int input{ IOHelper::getInt("Enter the number of shuffles: ") };
+    int input{ -1 };
+    while (input < 0)
+        input = IOHelper::getInt("Enter the number of shuffles: ");
     setupGame(input);
 
     while (true)
@@ -136,11 +138,12 @@ void FifteenPuzzle::resetGame()
     resetTracking();
 }
 
-void FifteenPuzzle::setupGame(int rounds)
+void FifteenPuzzle::setupGame(int shuffles)
 {
-    while (rounds--)
+    assert(shuffles >= 0);
+    while (shuffles--)
     {
-        Idx::D1 randomIdx{ Random::get<Idx::D1>(0, CharCommand::moves.size()) };
+        auto randomIdx{ Random::get<Idx::D1>(0, CharCommand::moves.size()-1) };
         moveTile(CharCommand::moves[randomIdx]);
     }
     m_boardSet.save();

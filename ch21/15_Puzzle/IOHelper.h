@@ -29,14 +29,17 @@ namespace IOHelper
     inline int getInt(std::string_view sv)
     {
         int x{ };
-        while (!x)
+        while (true)
         {
             std::cout << sv;
-            std::string input{ };
-            std::getline(std::cin >> std::ws, input);
-            x = std::atoi(input.c_str());
+            if (std::cin >> x)
+            {
+                clearBuffer();
+                return x;
+            }
+            std::cin.clear();
+            clearBuffer();
         }
-        return x;
     }
 
     // thanks qbert220

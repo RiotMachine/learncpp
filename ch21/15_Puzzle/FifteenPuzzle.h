@@ -27,7 +27,7 @@ private:
     void moveTile(CharCommand::Command command);
     void resetTracking();
     void resetGame();
-    void setupGame(int rounds);
+    void setupGame(int shuffles);
 
     BoardSet m_boardSet{ };
     Idx::D2 m_emptyLoc{ findEmptySpace() };
