@@ -17,10 +17,10 @@ void FifteenPuzzle::welcome() const
 
 bool FifteenPuzzle::play()
 {
-    int input{ -1 };
-    while (input < 0)
-        input = IOHelper::getInt("Enter the number of random shuffles: ");
-    setupGame(input);
+    int shuffles{ -1 };
+    while (shuffles < 0)
+        shuffles = IOHelper::getInt("Enter the number of random shuffles: ");
+    setupGame(shuffles);
 
     while (true)
     {
@@ -48,7 +48,8 @@ bool FifteenPuzzle::play()
         case right:
         case up:
         case down:
-            moveTile(command);
+            if (moveTile(command))
+                ++m_totalMoves;
         }
     }
 }
@@ -80,7 +81,7 @@ Idx::D2 FifteenPuzzle::findEmptySpace() const
     return m_boardSet.find(BoardSet::s_emptySpace);
 }
 
-void FifteenPuzzle::moveTile(CharCommand::Command direction)
+bool FifteenPuzzle::moveTile(CharCommand::Command direction)
 {
     switch (direction)
     {
@@ -91,9 +92,9 @@ void FifteenPuzzle::moveTile(CharCommand::Command direction)
                 m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col+1 }
             );
             ++m_emptyLoc.col;
-            ++m_totalMoves;
+            return true;
         }
-        return;
+        return false;
     case CharCommand::right:
         if (m_emptyLoc.col > 0)
         {
@@ -101,9 +102,9 @@ void FifteenPuzzle::moveTile(CharCommand::Command direction)
                 m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col-1 }
             );
             --m_emptyLoc.col;
-            ++m_totalMoves;
+            return true;
         }
-        return;
+        return false;
     case CharCommand::up:
         if (m_emptyLoc.row < s_rows - 1)
         {
@@ -111,9 +112,9 @@ void FifteenPuzzle::moveTile(CharCommand::Command direction)
                 m_emptyLoc, Idx::D2 { m_emptyLoc.row+1, m_emptyLoc.col }
             );
             ++m_emptyLoc.row;
-            ++m_totalMoves;
+            return true;
         }
-        return;
+        return false;
     case CharCommand::down:
         if (m_emptyLoc.row > 0)
         {
@@ -121,9 +122,12 @@ void FifteenPuzzle::moveTile(CharCommand::Command direction)
                 m_emptyLoc, Idx::D2 { m_emptyLoc.row-1, m_emptyLoc.col }
             );
             --m_emptyLoc.row;
-            ++m_totalMoves;
+            return true;
         }
-        return;
+        return false;
+    default:
+        assert("Invalid command");
+        return false;
     }
 }
 
@@ -143,10 +147,11 @@ void FifteenPuzzle::resetGame()
 void FifteenPuzzle::setupGame(int shuffles)
 {
     assert(shuffles >= 0);
-    while (shuffles--)
+    while (shuffles)
     {
         auto randomIdx{ Random::get<Idx::D1>(0, CharCommand::moves.size()-1) };
-        moveTile(CharCommand::moves[randomIdx]);
+        if (moveTile(CharCommand::moves[randomIdx]))
+            --shuffles;
     }
     m_boardSet.save();
     resetTracking();
