@@ -8,6 +8,7 @@ int main()
     std::cout << '\n';
     puzzle.play();
     puzzle.printResults();
+    std::cout << '\n';
 
     return 0;
 }

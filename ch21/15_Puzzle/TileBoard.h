@@ -16,8 +16,7 @@ class TileBoard
 {
 public:
     static_assert(rows > 0 && cols > 0);
-    constexpr static int s_spaces{ rows * cols };
-    static_assert(s_spaces >= tiles);
+    static_assert(rows * cols >= tiles);
 
     using Tile = int;
     constexpr static Tile s_emptySpace{ -1 };
@@ -50,16 +49,9 @@ public:
         return { rows, cols };
     }
 
-    void reset() { m_board = createBoard(m_tileTray); }
+    void reset() { m_board = m_savedBoard; }
 
-    void save()
-    {
-        for (Idx::D1 i{ }; i < rows; ++i)
-        {
-            for (Idx::D1 j{ }; j < cols; ++j)
-                m_tileTray[Idx::toD1(i, j, cols)] = m_board[i][j];
-        }
-    }
+    void save() { m_savedBoard = m_board; }
 
     void swap(Idx::D2 a, Idx::D2 b)
     {
@@ -70,30 +62,27 @@ public:
 
 
 private:
-    using TileTray = std::array<Tile, s_spaces>;
     using Board = std::array<std::array<Tile, cols>, rows>;
 
-    constexpr static TileTray createTileTray(int start=1, int factor=1)
-    {
-        TileTray tt;
-        for (Idx::D1 i{ }; i < s_spaces; ++i)
-            tt[i] = (i < tiles ? (i + start) * factor : s_emptySpace);
-        return tt;
-    }
-
-    constexpr static Board createBoard(TileTray tray)
+    constexpr static Board createBoard(int start=1, int factor=1)
     {
         Board board;
         for (Idx::D1 i{ }; i < rows; ++i)
         {
             for (Idx::D1 j{ }; j < cols; ++j)
-                board[i][j] = tray[Idx::toD1(i, j, cols)];
+            {
+                Idx::D1 locD1{ Idx::toD1(i, j, cols) };
+                if (locD1 < tiles)
+                    board[i][j] = (locD1 + start) * factor;
+                else
+                    board[i][j] = s_emptySpace;
+            }
         }
         return board;
     }
 
-    TileTray m_tileTray{ createTileTray() };
-    Board m_board{ createBoard(m_tileTray) };
+    Board m_board{ createBoard() };
+    Board m_savedBoard{ m_board };
 };
 
 

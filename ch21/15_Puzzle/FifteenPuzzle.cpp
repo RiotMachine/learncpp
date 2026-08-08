@@ -62,8 +62,8 @@ void FifteenPuzzle::printResults() const
 
 bool FifteenPuzzle::isOrdered() const
 {
-    // s_tiles-2 would test all elements, but the last tile will be s_emptySpace
-    for (Idx::D1 i{ }; i < s_tiles-3; ++i)
+    // s_tiles would test all elements, but the last tile will be s_emptySpace
+    for (Idx::D1 i{ }; i < s_tiles-1; ++i)
     {
         if (m_boardSet[i] + 1 != m_boardSet[i + 1])
             return false;
