@@ -83,50 +83,45 @@ Idx::D2 FifteenPuzzle::findEmptySpace() const
 
 bool FifteenPuzzle::moveTile(CharCommand::Command direction)
 {
+    {
+        using namespace CharCommand;
+        if (
+            (direction == left && m_emptyLoc.col >= s_cols - 1)
+            || (direction == right && m_emptyLoc.col <= 0)
+            || (direction == up    && m_emptyLoc.row >= s_rows - 1)
+            || (direction == down  && m_emptyLoc.row <= 0)
+        )
+        return false;
+    }
+
     switch (direction)
     {
     case CharCommand::left:
-        if (m_emptyLoc.col < s_cols - 1)
-        {
-            m_boardSet.swap(
-                m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col+1 }
-            );
-            ++m_emptyLoc.col;
-            return true;
-        }
-        return false;
+        m_boardSet.swap(
+            m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col+1 }
+        );
+        ++m_emptyLoc.col;
+        return true;
     case CharCommand::right:
-        if (m_emptyLoc.col > 0)
-        {
-            m_boardSet.swap(
-                m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col-1 }
-            );
-            --m_emptyLoc.col;
-            return true;
-        }
-        return false;
+        m_boardSet.swap(
+            m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col-1 }
+        );
+        --m_emptyLoc.col;
+        return true;
     case CharCommand::up:
-        if (m_emptyLoc.row < s_rows - 1)
-        {
-            m_boardSet.swap(
-                m_emptyLoc, Idx::D2 { m_emptyLoc.row+1, m_emptyLoc.col }
-            );
-            ++m_emptyLoc.row;
-            return true;
-        }
-        return false;
+        m_boardSet.swap(
+            m_emptyLoc, Idx::D2 { m_emptyLoc.row+1, m_emptyLoc.col }
+        );
+        ++m_emptyLoc.row;
+        return true;
     case CharCommand::down:
-        if (m_emptyLoc.row > 0)
-        {
-            m_boardSet.swap(
-                m_emptyLoc, Idx::D2 { m_emptyLoc.row-1, m_emptyLoc.col }
-            );
-            --m_emptyLoc.row;
-            return true;
-        }
-        return false;
+        m_boardSet.swap(
+            m_emptyLoc, Idx::D2 { m_emptyLoc.row-1, m_emptyLoc.col }
+        );
+        --m_emptyLoc.row;
+        return true;
     default:
-        assert("Invalid command");
+        assert(false && "Invalid command");
         return false;
     }
 }
