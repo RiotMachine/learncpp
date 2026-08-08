@@ -73,7 +73,7 @@ private:
             {
                 Idx::D1 locD1{ Idx::toD1(i, j, cols) };
                 if (locD1 < tiles)
-                    board[i][j] = (locD1 + start) * factor;
+                    board[i][j] = static_cast<Tile>((locD1 + start) * factor);
                 else
                     board[i][j] = s_emptySpace;
             }
