@@ -30,8 +30,6 @@ private:
     void setupGame(int shuffles);
 
     BoardSet m_boardSet{ };
-    // must compute after initializing m_boardSet
-    Idx::D2 m_emptyLoc{ findEmptySpace() };
     int m_totalMoves{ };
     Timer m_timer{ };
 };

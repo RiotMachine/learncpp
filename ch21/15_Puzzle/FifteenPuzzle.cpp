@@ -83,13 +83,14 @@ Idx::D2 FifteenPuzzle::findEmptySpace() const
 
 bool FifteenPuzzle::moveTile(CharCommand::Command direction)
 {
+    Idx::D2 emptyLoc{ findEmptySpace() };
     {
         using namespace CharCommand;
         if (
-            (direction == left && m_emptyLoc.col >= s_cols - 1)
-            || (direction == right && m_emptyLoc.col <= 0)
-            || (direction == up    && m_emptyLoc.row >= s_rows - 1)
-            || (direction == down  && m_emptyLoc.row <= 0)
+            (direction == left && emptyLoc.col >= s_cols - 1)
+            || (direction == right && emptyLoc.col <= 0)
+            || (direction == up    && emptyLoc.row >= s_rows - 1)
+            || (direction == down  && emptyLoc.row <= 0)
         )
         return false;
     }
@@ -98,27 +99,23 @@ bool FifteenPuzzle::moveTile(CharCommand::Command direction)
     {
     case CharCommand::left:
         m_boardSet.swap(
-            m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col+1 }
+            emptyLoc, Idx::D2 { emptyLoc.row, emptyLoc.col+1 }
         );
-        ++m_emptyLoc.col;
         return true;
     case CharCommand::right:
         m_boardSet.swap(
-            m_emptyLoc, Idx::D2 { m_emptyLoc.row, m_emptyLoc.col-1 }
+            emptyLoc, Idx::D2 { emptyLoc.row, emptyLoc.col-1 }
         );
-        --m_emptyLoc.col;
         return true;
     case CharCommand::up:
         m_boardSet.swap(
-            m_emptyLoc, Idx::D2 { m_emptyLoc.row+1, m_emptyLoc.col }
+            emptyLoc, Idx::D2 { emptyLoc.row+1, emptyLoc.col }
         );
-        ++m_emptyLoc.row;
         return true;
     case CharCommand::down:
         m_boardSet.swap(
-            m_emptyLoc, Idx::D2 { m_emptyLoc.row-1, m_emptyLoc.col }
+            emptyLoc, Idx::D2 { emptyLoc.row-1, emptyLoc.col }
         );
-        --m_emptyLoc.row;
         return true;
     default:
         assert(false && "Invalid command");
@@ -128,7 +125,6 @@ bool FifteenPuzzle::moveTile(CharCommand::Command direction)
 
 void FifteenPuzzle::resetTracking()
 {
-    m_emptyLoc = findEmptySpace();
     m_totalMoves = 0;
     m_timer.reset();
 }
