@@ -75,6 +75,8 @@ bool FifteenPuzzle::isOrdered() const
 
 Idx::D2 FifteenPuzzle::findEmptySpace() const
 {
+    assert(m_boardSet.find(BoardSet::s_emptySpace).row < s_rows);
+    assert(m_boardSet.find(BoardSet::s_emptySpace).col < s_cols);
     return m_boardSet.find(BoardSet::s_emptySpace);
 }
 
