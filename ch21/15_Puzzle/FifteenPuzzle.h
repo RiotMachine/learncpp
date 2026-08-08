@@ -12,7 +12,7 @@ public:
     FifteenPuzzle() = default;
 
     void welcome() const;
-    void play();
+    bool play();
     void printResults() const;
 
 private:

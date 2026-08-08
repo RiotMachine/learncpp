@@ -15,18 +15,18 @@ void FifteenPuzzle::welcome() const
         std::cout << '\t' << option << '\n';
 }
 
-void FifteenPuzzle::play()
+bool FifteenPuzzle::play()
 {
     int input{ -1 };
     while (input < 0)
-        input = IOHelper::getInt("Enter the number of shuffles: ");
+        input = IOHelper::getInt("Enter the number of random shuffles: ");
     setupGame(input);
 
     while (true)
     {
         std::cout << m_boardSet << '\n';
         if (isOrdered())
-            break;
+            return true;
 
         char input{ };
         while (!CharCommand::isCommand(input))
@@ -40,7 +40,7 @@ void FifteenPuzzle::play()
         {
             using namespace CharCommand;
         case quit:
-            return;
+            return false;
         case reset:
             resetGame();
             continue;
