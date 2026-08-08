@@ -24,12 +24,13 @@ private:
 
     bool isOrdered() const;
     Idx::D2 findEmptySpace() const;
-    void moveTile(CharCommand::Command command);
+    bool moveTile(CharCommand::Command command);
     void resetTracking();
     void resetGame();
     void setupGame(int shuffles);
 
     BoardSet m_boardSet{ };
+    // must compute after initializing m_boardSet
     Idx::D2 m_emptyLoc{ findEmptySpace() };
     int m_totalMoves{ };
     Timer m_timer{ };
