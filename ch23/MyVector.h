@@ -43,8 +43,10 @@ public:
         return *this;
     }
 
-    MyVector& operator=(MyVector&& v)
+    MyVector& operator=(MyVector&& v) noexcept
     {
+        if (&v == this)
+            return *this;
         m_length = v.m_length;
         m_data = std::move(v.m_data);
         v.reset();
@@ -57,7 +59,7 @@ public:
         return m_data[index];
     }
 
-    T operator[](std::size_t index) const
+    const T& operator[](std::size_t index) const
     {
         assert(index < m_length);
         return m_data[index];
@@ -106,7 +108,7 @@ public:
         auto start{ m_data.get() };
 
         std::move(start, start+index, ptr.get());
-        ptr[index] = value;
+        ptr[index] = std::move(value);
         std::move(start+index, start+m_length, ptr.get()+index+1);
 
         ++m_length;
