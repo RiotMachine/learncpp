@@ -3,7 +3,6 @@
 
 int main()
 {
-
     MyVector<int> vector(10);
 
     for (std::size_t i{ }; i < 10; ++i)
