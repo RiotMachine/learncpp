@@ -3,7 +3,7 @@
 #include <iostream>
 
 template <typename T>
-void print(MyVector<T> v)
+void print(const MyVector<T>& v)
 {
     for (std::size_t i{ }; i < v.size(); ++i)
         std::cout << v[i] << ' ';
