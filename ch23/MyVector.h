@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <initializer_list>
 #include <memory>
 #include <utility>
 
@@ -17,8 +18,15 @@ class MyVector
 {
 public:
     MyVector() = default;
-    MyVector(std::size_t length)
+
+    explicit MyVector(std::size_t length)
       : m_length{ length }, m_data{ std::make_unique<T[]>(length) } {}
+
+    MyVector(std::initializer_list<T> list)
+      : MyVector(list.size())
+    {
+        std::copy(list.begin(), list.end(), m_data.get());
+    }
 
     ~MyVector() = default;
 
