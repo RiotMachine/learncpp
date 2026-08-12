@@ -39,12 +39,14 @@ public:
             return *this;
         reallocate(v.m_length);
         std::copy_n(v.m_data.get(), m_length, m_data.get());
+        return *this;
     }
 
     MyVector& operator=(MyVector&& v)
     {
         m_length = v.m_length;
         m_data.swap(v.m_data);
+        return *this;
     }
 
     int& operator[](std::size_t index)
@@ -69,31 +71,73 @@ public:
 
     void reallocate(std::size_t newLength)
     {
+        m_data.reset();
         m_length = newLength;
-        m_data.reset(
-            std::make_unique<T[]>(newLength)
-        );
+        m_data = std::make_unique<T[]>(newLength);
     }
 
     void resize(std::size_t newLength)
     {
-        switch (newLength)
+        if (newLength == m_length)
+            return;
+
+        if (newLength == 0)
         {
-        case 0:        reset();
-        case m_length: return;
+            reset();
+            return;
         }
 
-        auto ptr{ std::make_unique<T[]>(newLength) };
-        auto moveLength{ std::min(m_length, newLength) };
-        std::copy_n(m_data.get(), moveLength, ptr.get());
+        auto ptr  { std::make_unique<T[]>(newLength) };
+        auto start{ m_data.get() };
+        auto end  { start + std::min(m_length, newLength) };
+
+        std::move(start, end, ptr.get());
 
         m_length = newLength;
-        m_data.reset(ptr);
+        m_data = std::move(ptr);
     }
+
+    void insert(T value, std::size_t index)
+    {
+        assert(index <= m_length);
+
+        auto ptr  { std::make_unique<T[]>(m_length+1) };
+        auto start{ m_data.get() };
+
+        std::move(start, start+index, ptr.get());
+        ptr[index] = value;
+        std::move(start+index, start+m_length, ptr.get()+index+1);
+
+        ++m_length;
+        m_data = std::move(ptr);
+    }
+
+    void remove(std::size_t index)
+    {
+        assert(index < m_length);
+
+        switch (m_length)
+        {
+        case 1: reset();
+        case 0: return;
+        }
+
+        auto ptr  { std::make_unique<T[]>(m_length-1) };
+        auto start{ m_data.get() };
+
+        std::move(start, start+index, ptr.get());
+        std::move(start+index+1, start+m_length, ptr.get()+index);
+
+        --m_length;
+        m_data = std::move(ptr);
+    }
+
+    void push_front(T value) { insert(value, 0); }
+    void push_back(T value)  { insert(value, m_length); }
 
 private:
     std::size_t m_length{ };
-    std::unique_ptr<T> m_data{ };
+    std::unique_ptr<T[]> m_data{ };
 };
 
 #endif
