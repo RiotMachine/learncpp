@@ -1,6 +1,7 @@
 std::unique_ptr
   assignment first cleans up current object
   destructor cleans up current object
+  no copy constructor or copy assignment
 
   type and scalar/array are what matter
       std::unique_ptr<T[]> can be pointed to an array of any size
@@ -9,8 +10,8 @@ std::unique_ptr
       use only if we're done with uni_ptr parameter
 
   .swap(uni_ptr) swaps two std::unique_ptrs
-  .reset(ptr) is used to pass a raw pointer to a std::unique_ptr
-      why use this over assignment?
+  .reset(ptr) is used to assign a raw pointer to a std::unique_ptr
+      remember, no copy assignment
   .release() returns the raw pointer to object
       unassigns the unique_ptr, does not clean up object
 

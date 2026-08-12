@@ -10,6 +10,7 @@
 #include <cassert>
 #include <cstddef>
 #include <memory>
+#include <utility>
 
 template <typename T>
 class MyVector
@@ -28,9 +29,9 @@ public:
     }
 
     MyVector(MyVector&& v) noexcept
-      : MyVector(v.m_length)
+      : m_length{ v.m_length }, m_data{ std::move(v.m_data) }
     {
-        m_data = std::move(v.m_data);
+        v.reset();
     }
 
     MyVector& operator=(const MyVector& v)
@@ -46,22 +47,23 @@ public:
     {
         m_length = v.m_length;
         m_data = std::move(v.m_data);
+        v.reset();
         return *this;
     }
 
-    int& operator[](std::size_t index)
+    T& operator[](std::size_t index)
     {
         assert(index < m_length);
         return m_data[index];
     }
 
-    int operator[](std::size_t index) const
+    T operator[](std::size_t index) const
     {
         assert(index < m_length);
         return m_data[index];
     }
 
-    std::size_t size() { return m_length; }
+    std::size_t size() const { return m_length; }
 
     void reset()
     {
