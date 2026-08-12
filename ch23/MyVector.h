@@ -115,10 +115,10 @@ public:
     {
         assert(index < m_length);
 
-        switch (m_length)
+        if (m_length < 2)
         {
-        case 1: reset();
-        case 0: return;
+            reset();
+            return;
         }
 
         auto ptr  { std::make_unique<T[]>(m_length-1) };
