@@ -24,14 +24,12 @@ public:
     MyVector(const MyVector& v)
       : MyVector(v.m_length)
     {
-        auto start{ v.m_data.get(); }
-        auto end{ start + v.m_length; }
-        std::copy(start, end, m_data.get());
+        std::copy_n(v.m_data.get(), m_length, m_data.get());
     }
 
-    MyVector(MyVector&& v)
+    MyVector(MyVector&& v) noexcept
+      : MyVector(v.m_length)
     {
-        m_length = v.m_length;
         m_data.swap(v.m_data);
     }
 
@@ -39,10 +37,13 @@ public:
     {
         if (&v == this)
             return *this;
+        reallocate(v.m_length);
+        std::copy_n(v.m_data.get(), m_length, m_data.get());
     }
 
     MyVector& operator=(MyVector&& v)
     {
+        m_length = v.m_length;
         m_data.swap(v.m_data);
     }
 
@@ -60,34 +61,34 @@ public:
 
     std::size_t size() { return m_length; }
 
-    void erase()
+    void reset()
     {
-        m_data.reset();
         m_length = 0;
+        m_data.reset();
+    }
+
+    void reallocate(std::size_t newLength)
+    {
+        m_length = newLength;
+        m_data.reset(
+            std::make_unique<T[]>(newLength)
+        );
     }
 
     void resize(std::size_t newLength)
     {
         switch (newLength)
         {
-        case 0:        erase();
+        case 0:        reset();
         case m_length: return;
         }
 
-        if (newLength < m_length)
-        {
-            m_length = newLength;
-            return;
-        }
+        auto ptr{ std::make_unique<T[]>(newLength) };
+        auto moveLength{ std::min(m_length, newLength) };
+        std::copy_n(m_data.get(), moveLength, ptr.get());
 
-
-
-        auto newData{ std::make_unique<T[]>(newLength) };
-        std::size_t moveLength{ std::min(m_length, newLength) };
-       
-        newData = std::move(m_data); 
-
-        m_data.reset(newData);
+        m_length = newLength;
+        m_data.reset(ptr);
     }
 
 private:
