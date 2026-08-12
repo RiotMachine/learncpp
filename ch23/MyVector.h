@@ -30,7 +30,7 @@ public:
     MyVector(MyVector&& v) noexcept
       : MyVector(v.m_length)
     {
-        m_data.swap(v.m_data);
+        m_data = std::move(v.m_data);
     }
 
     MyVector& operator=(const MyVector& v)
@@ -45,7 +45,7 @@ public:
     MyVector& operator=(MyVector&& v)
     {
         m_length = v.m_length;
-        m_data.swap(v.m_data);
+        m_data = std::move(v.m_data);
         return *this;
     }
 
@@ -71,7 +71,6 @@ public:
 
     void reallocate(std::size_t newLength)
     {
-        m_data.reset();
         m_length = newLength;
         m_data = std::make_unique<T[]>(newLength);
     }
