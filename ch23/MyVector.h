@@ -135,8 +135,10 @@ public:
         m_data = std::move(ptr);
     }
 
-    void push_front(T value) { insert(value, 0); }
-    void push_back(T value)  { insert(value, m_length); }
+    void push_front(const T& value) { insert(value, 0); }
+    void push_front(T&& value)      { insert(std::move(value), 0); }
+    void push_back(const T& value)  { insert(value, m_length); }
+    void push_back(T&& value)       { insert(std::move(value), m_length); }
 
 private:
     std::size_t m_length{ };
