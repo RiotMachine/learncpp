@@ -1,0 +1,23 @@
+a) An Animal class that contains an animal type (enum) and name (string)
+Composition
+
+b) A text editor class with a save() function that takes a File object as
+     an argument. The save() function writes the contents of the editor to disk.
+Dependency
+ 
+c) An Adventurer class that can carry various kinds of Items, such as swords,
+     wands, potions, or spellbooks. These items can be dropped and picked up
+     by other Adventurers.
+Association
+
+d) The Player prays at a Shrine (to receive a new power).
+Dependency
+
+e) A Computer class that contains a CPU class. The CPU can be removed from
+     the computer and tested on its own.
+Aggregation
+
+f) A blacksmith has a specific anvil that he uses to do his work
+Association
+
+2) If you can design a class uing composition, then you should.
