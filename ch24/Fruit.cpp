@@ -20,10 +20,13 @@ private:
 class Apple : public Fruit
 {
 public:
-    Apple(std::string_view name, std::string_view color)
-      : Fruit(name, color) {}
     Apple(std::string_view color)
       : Apple("apple", color) {}
+
+// forces externals to instantiate custom apple through derived classes
+protected:
+    Apple(std::string_view name, std::string_view color)
+      : Fruit(name, color) {}
 };
 
 class Banana : public Fruit
