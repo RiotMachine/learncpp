@@ -8,7 +8,6 @@ class Creature
 {
 public:
     const std::string& name() const { return m_name; }
-    char symbol() const             { return m_symbol; }
     int health() const              { return m_health; }
     int damage() const              { return m_damage; }
     int gold() const                { return m_gold; }
@@ -20,14 +19,12 @@ public:
 
 
 protected:
-    Creature(std::string_view str, char c, int x, int y, int z)
-      : m_name{ str }, m_symbol{ c },
-        m_health{ x }, m_damage{ y }, m_gold{ z } {}
+    Creature(std::string_view str, int x, int y, int z)
+      : m_name{ str }, m_health{ x }, m_damage{ y }, m_gold{ z } {}
 
 
 private:
     std::string m_name;
-    char m_symbol{ };
     int m_health{ };
     int m_damage{ };
     int m_gold{ };

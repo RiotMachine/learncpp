@@ -22,17 +22,17 @@ public:
     }
 
 private:
-    Monster(std::string_view str, char c, int x, int y, int z)
-      : Creature(str, c, x, y, z) {}
+    Monster(std::string_view name, int health, int damage, int gold)
+      : Creature(name, health, damage, gold) {}
 
     const static std::array<Monster, max_types> monsters;
 };
 
 
 const inline std::array<Monster, Monster::max_types> Monster::monsters{{
-    { "dragon", 'D', 20, 4, 100 },
-    { "orc", 'o', 4, 2, 25 },
-    { "slime", 's', 1, 1, 10 }
+    { "dragon", 20, 4, 100 },
+    { "orc",    4, 2, 25 },
+    { "slime",  1, 1, 10 }
 }};
 
 #endif
