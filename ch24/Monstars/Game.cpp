@@ -1,6 +1,10 @@
 #include "Game.h"
 #include "IOHelper.h"
+#include "Monster.h"
 #include "Random.h"
+#include <iostream>
+#include <map>
+#include <string>
 
 // public
 
@@ -9,7 +13,7 @@ Game Game::init()
     std::cout << "Enter your name: ";
     std::string userName{ IOHelper::getString() };
     std::cout << "Welcome, " << userName << '\n';
-    return Game{ userName };
+    return Game { userName };
 }
 
 void Game::play()
@@ -21,17 +25,17 @@ void Game::play()
         bool inEncounter{ true };
         while (inEncounter)
         {
-            Option action{ chooseOption() };
-            inEncounter = options[action](monster);
+            Action action{ choosePlayerAction() };
+            inEncounter = action(monster);
             std::cout << '\n';
         }
     }
 }
 
-void Game::printResults(
+void Game::printResults()
 {
     if (m_player.hasWon())
-        std::cout << "You won with " << m_player.gold() << " gold!"
+        std::cout << "You won with " << m_player.gold() << " gold!";
     else
         std::cout << "You died at level " << m_player.level()
                   << " and with " << m_player.gold()
@@ -40,13 +44,23 @@ void Game::printResults(
 
 
 // private
-
-Game::option Game::chooseOption()
+Game::Action Game::choosePlayerAction()
 {
-
+    while (true)
+    {
+        std::cout << "(R)un or (F)ight: ";
+        char c{ IOHelper::getChar() };
+        c = IOHelper::lowerCase(c);
+        switch (c)
+        {
+        case 'r': return playerActions[run];
+        case 'f': return playerActions[fight];
+        }
+        std::cout << "Invalid input.\n";
+    }
 }
 
-bool Game::runFrom(Monster monster)
+bool Game::player_runFrom(Monster monster)
 {
     // 50% chance usr escapes
     int x{ Random::get(0,1) };
@@ -64,59 +78,23 @@ bool Game::runFrom(Monster monster)
     }
 }
 
-bool Game::fight(Monster monster)
+bool Game::player_fight(Monster monster)
 {
     monster.reduceHealth(m_player.damage());
     std::cout << "You hit the " << monster.name() << " for "
-              << m_player.damage() << ".\n"
+              << m_player.damage() << ".\n";
+
     if (!monster.isAlive())
     {
-        std::cout << "You killed the " << monster.name() << '.';
+        m_player.levelUp();
+        std::cout << "You killed the " << monster.name()
+                  << ".\n You are now level " << m_player.level()
+                  << ".\n You found " << monster.gold() << " gold.";
         return false;
     }
+
     m_player.reduceHealth(monster.damage());
     std::cout << "The " << monster.name() << " hit you for "
               << monster.damage() << " damage.";
     return m_player.isAlive();
-}
-
-
-// related non-members
-
-std::ostream& operator<<(std::ostream& out, const Game::Option option)
-{
-    switch (option)
-    {
-    case Run  : return "(R)un";
-    case Fight: return "(F)ight";
-    default   : return out << "???"
-    }
-}
-
-std::optional<Game::Option> getChoiceFromChar(char c)
-{
-    c = IOHelper::lowerCase(c);
-    switch (c)
-    {
-    case r: return Game::Run;
-    case f: return Game::Fight;
-    }
-
-    return {};
-}
-
-std::istream& operator>>(std::istream& in, Game::Option option)
-{
-    char c{ };
-    in >> c;
-    std::optional<Game::Option> choice{ getChoiceFromChar(c) };
-
-    if (choice)
-    {
-        option = *choice;
-        return in;
-    }
-    in.setstate(std::ios_base::failbit);
-    option = max_options;
-    return in;
 }

@@ -3,7 +3,7 @@
 
 #include "Monster.h"
 #include "Player.h"
-#include <array>
+#include <map>
 #include <string_view>
 
 class Game
@@ -16,26 +16,27 @@ public:
 private:
     enum Option
     {
-        Run,
-        Fight,
+        run,
+        fight,
         max_options
     };
+
+    // return whether encounter with Creature is ongoing
+    using Action = bool(*)(Creature);
 
     Game(std::string_view userName)
       : m_player{ userName } {}
 
-    Option chooseOption();
-    // return whether encounter with Monster is ongoing
-    bool runFrom(Monster);
-    bool fight(Monster);
+    Action choosePlayerAction();
+    bool player_runFrom(Monster);
+    bool player_fight(Monster);
 
-    constexpr static std::array<void(*)(Monster), max_options> options{
-        runFrom, fight
+    const std::map<Option, Action> playerActions{
+        { run, player_runFrom },
+        { fight, player_fight }
     };
 
-    static_assert(max_options == options.size());
-
-    Player m_player{ };
+    Player m_player{ "Player 1" };
 };
 
 #endif
