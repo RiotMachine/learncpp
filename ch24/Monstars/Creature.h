@@ -13,7 +13,7 @@ public:
     int gold() const                { return m_gold; }
 
     void reduceHealth(int damage) { m_health -= damage; }
-    bool isDead() const           { return m_health <= 0; }
+    bool isAlive() const          { return m_health > 0; }
     void addDamage(int damage)    { m_damage += damage; }
     void addGold(int gold)        { m_gold += gold; }
 
