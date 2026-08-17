@@ -36,7 +36,7 @@ private:
         { fight, player_fight }
     };
 
-    Player m_player{ "Player 1" };
+    Player m_player;
 };
 
 #endif

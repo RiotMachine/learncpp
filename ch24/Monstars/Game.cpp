@@ -26,7 +26,7 @@ void Game::play()
         while (inEncounter)
         {
             Action action{ choosePlayerAction() };
-            inEncounter = action(monster);
+            inEncounter = playerActions(monster);
             std::cout << '\n';
         }
     }
