@@ -1,24 +1,18 @@
 #include "Game.h"
+#include "IOHelper.h"
 #include "Random.h"
 
-char getChar()
-{
-
-}
-
-std::string getString()
-{
-
-}
+// public
 
 Game Game::init()
 {
-    std::string userName{ getString("Enter your name: ") };
+    std::cout << "Enter your name: ";
+    std::string userName{ IOHelper::getString() };
     std::cout << "Welcome, " << userName << '\n';
     return Game{ userName };
 }
 
-bool Game::play()
+void Game::play()
 {
     while (m_player.isAlive() && !m_player.hasWon())
     {
@@ -43,6 +37,9 @@ void Game::printResults(
                   << " and with " << m_player.gold()
                   << ".\nToo bad you can't take it with you!";
 }
+
+
+// private
 
 Game::option Game::chooseOption()
 {
@@ -81,4 +78,45 @@ bool Game::fight(Monster monster)
     std::cout << "The " << monster.name() << " hit you for "
               << monster.damage() << " damage.";
     return m_player.isAlive();
+}
+
+
+// related non-members
+
+std::ostream& operator<<(std::ostream& out, const Game::Option option)
+{
+    switch (option)
+    {
+    case Run  : return "(R)un";
+    case Fight: return "(F)ight";
+    default   : return out << "???"
+    }
+}
+
+std::optional<Game::Option> getChoiceFromChar(char c)
+{
+    c = IOHelper::lowerCase(c);
+    switch (c)
+    {
+    case r: return Game::Run;
+    case f: return Game::Fight;
+    }
+
+    return {};
+}
+
+std::istream& operator>>(std::istream& in, Game::Option option)
+{
+    char c{ };
+    in >> c;
+    std::optional<Game::Option> choice{ getChoiceFromChar(c) };
+
+    if (choice)
+    {
+        option = *choice;
+        return in;
+    }
+    in.setstate(std::ios_base::failbit);
+    option = max_options;
+    return in;
 }

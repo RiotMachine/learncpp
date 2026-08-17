@@ -10,7 +10,7 @@ class Game
 {
 public:
     static Game init();
-    bool play();
+    void play();
     void printResults();
 
 private:
@@ -19,7 +19,7 @@ private:
         Run,
         Fight,
         max_options
-    }
+    };
 
     Game(std::string_view userName)
       : m_player{ userName } {}
