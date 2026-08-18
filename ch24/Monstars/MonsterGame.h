@@ -8,7 +8,7 @@
 class MonsterGame : public Game
 {
 public:
-    MonsterGame(Player p)
+    MonsterGame(const Player& p)
       : Game(p) {}
 
     static MonsterGame init();
