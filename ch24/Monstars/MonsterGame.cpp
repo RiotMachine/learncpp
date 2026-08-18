@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 
-
 MonsterGame MonsterGame::init()
 {
     std::cout << "Enter your name: ";

@@ -26,7 +26,7 @@ protected:
     Game(const std::vector<Player>& players)
       : m_players{ players } {}
 
-    // returns whether encounter with Creature is ongoing
+    // return whether encounter with Creature is ongoing
     bool chooseResponse(Creature&);
     bool flee(const Creature&);
     bool fight(Creature&);
