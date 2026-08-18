@@ -3,7 +3,7 @@
 
 #include "Monster.h"
 #include "Player.h"
-#include <map>
+#include <array>
 #include <string_view>
 
 class Game
@@ -22,18 +22,18 @@ private:
     };
 
     // return whether encounter with Creature is ongoing
-    using Action = bool(*)(Creature);
+    using Action = bool(Game::*)(Monster&);
 
     Game(std::string_view userName)
       : m_player{ userName } {}
 
     Action choosePlayerAction();
-    bool player_runFrom(Monster);
-    bool player_fight(Monster);
+    bool player_runFrom(Monster&);
+    bool player_fight(Monster&);
 
-    const std::map<Option, Action> playerActions{
-        { run, player_runFrom },
-        { fight, player_fight }
+    constexpr static std::array<Action, max_options> playerActions{
+        &Game::player_runFrom,
+        &Game::player_fight
     };
 
     Player m_player;

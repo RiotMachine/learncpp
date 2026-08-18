@@ -3,7 +3,6 @@
 #include "Monster.h"
 #include "Random.h"
 #include <iostream>
-#include <map>
 #include <string>
 
 // public
@@ -26,7 +25,7 @@ void Game::play()
         while (inEncounter)
         {
             Action action{ choosePlayerAction() };
-            inEncounter = playerActions(monster);
+            inEncounter = (this->*action)(monster);
             std::cout << '\n';
         }
     }
@@ -38,8 +37,8 @@ void Game::printResults()
         std::cout << "You won with " << m_player.gold() << " gold!";
     else
         std::cout << "You died at level " << m_player.level()
-                  << " and with " << m_player.gold()
-                  << ".\nToo bad you can't take it with you!";
+                  << " and with " << m_player.gold() 
+                  << " gold.\nToo bad you can't take it with you!";
 }
 
 
@@ -60,15 +59,15 @@ Game::Action Game::choosePlayerAction()
     }
 }
 
-bool Game::player_runFrom(Monster monster)
+bool Game::player_runFrom(Monster& monster)
 {
     // 50% chance usr escapes
     int x{ Random::get(0,1) };
     if (x == 0)
     {
         m_player.reduceHealth(monster.damage());
-        std::cout << "You failed to flee.\n The " << monster.name()
-                  << " hit you for " << monster.damage() << '.';
+        std::cout << "You failed to flee.\nThe " << monster.name()
+                  << " hit you for " << monster.damage() << " damage.";
         return m_player.isAlive();
     }
     else
@@ -78,18 +77,19 @@ bool Game::player_runFrom(Monster monster)
     }
 }
 
-bool Game::player_fight(Monster monster)
+bool Game::player_fight(Monster& monster)
 {
     monster.reduceHealth(m_player.damage());
     std::cout << "You hit the " << monster.name() << " for "
-              << m_player.damage() << ".\n";
+              << m_player.damage() << " damage.\n";
 
     if (!monster.isAlive())
     {
         m_player.levelUp();
+        m_player.addGold(monster.gold());
         std::cout << "You killed the " << monster.name()
-                  << ".\n You are now level " << m_player.level()
-                  << ".\n You found " << monster.gold() << " gold.";
+                  << ".\nYou are now level " << m_player.level()
+                  << ".\nYou found " << monster.gold() << " gold.";
         return false;
     }
 

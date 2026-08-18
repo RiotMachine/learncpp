@@ -21,11 +21,7 @@ namespace IOHelper
     inline char getChar()
     {
         char c{ };
-        while (!(std::cin >> c))
-        {
-            std::cin.clear();
-            clearBuffer();
-        }
+        std::cin >> c;
         clearBuffer();
         return c;
     }
