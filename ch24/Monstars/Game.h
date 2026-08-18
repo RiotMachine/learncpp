@@ -21,18 +21,14 @@ protected:
     };
 
     Game(const Player& p)
-      : m_players{ p } {}
-
-    Game(const std::vector<Player>& players)
-      : m_players{ players } {}
+      : m_user{ p } {}
 
     // return whether encounter with Creature is ongoing
     bool chooseResponse(Creature&);
     bool flee(const Creature&);
     bool fight(Creature&);
 
-    std::vector<Player> m_players;
-    Player m_user{ m_players[0] };
+    Player m_user;
 };
 
 #endif

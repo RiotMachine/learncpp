@@ -23,9 +23,9 @@ bool Game::chooseResponse(Creature& creature)
 bool Game::flee(const Creature& creature)
 {
     // 50% chance user escapes
-    int x{ Random::get(0,99) };
+    int x{ Random::get(0,1) };
 
-    if (x % 2 == 0)
+    if (x == 0)
     {
         creature.attack(m_user);
         std::cout << "You failed to flee.\nThe " << creature.name()
