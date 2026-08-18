@@ -1,42 +1,38 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Monster.h"
+#include "Creature.h"
 #include "Player.h"
-#include <array>
-#include <string_view>
+#include <vector>
+
+/*
+  Game prototype where current Player takes actions 
+  relative to some Creature
+*/
 
 class Game
 {
-public:
-    static Game init();
-    void play();
-    void printResults();
-
-private:
-    enum Option
+protected:
+    enum class Option
     {
-        run,
+        flee,
         fight,
         max_options
     };
 
-    // return whether encounter with Creature is ongoing
-    using Action = bool(Game::*)(Monster&);
+    Game(const Player& p)
+      : m_players{ p } {}
 
-    Game(std::string_view userName)
-      : m_player{ userName } {}
+    Game(const std::vector<Player>& players)
+      : m_players{ players } {}
 
-    Action choosePlayerAction();
-    bool player_runFrom(Monster&);
-    bool player_fight(Monster&);
+    // returns whether encounter with Creature is ongoing
+    bool chooseResponse(Creature&);
+    bool flee(const Creature&);
+    bool fight(Creature&);
 
-    constexpr static std::array<Action, max_options> playerActions{
-        &Game::player_runFrom,
-        &Game::player_fight
-    };
-
-    Player m_player;
+    std::vector<Player> m_players;
+    Player m_user{ m_players[0] };
 };
 
 #endif

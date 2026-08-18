@@ -12,10 +12,11 @@ public:
     int damage() const              { return m_damage; }
     int gold() const                { return m_gold; }
 
-    void reduceHealth(int damage) { m_health -= damage; }
-    bool isAlive() const          { return m_health > 0; }
-    void addDamage(int damage)    { m_damage += damage; }
-    void addGold(int gold)        { m_gold += gold; }
+    void reduceHealth(int damage)  { m_health -= damage; }
+    bool isAlive() const           { return m_health > 0; }
+    void addDamage(int damage)     { m_damage += damage; }
+    void addGold(int gold)         { m_gold += gold; }
+    void attack(Creature& c) const { c.reduceHealth(m_damage); }
 
 
 protected:

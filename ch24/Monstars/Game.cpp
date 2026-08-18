@@ -1,49 +1,10 @@
+#include "Creature.h"
 #include "Game.h"
 #include "IOHelper.h"
-#include "Monster.h"
 #include "Random.h"
 #include <iostream>
-#include <string>
 
-// public
-
-Game Game::init()
-{
-    std::cout << "Enter your name: ";
-    std::string userName{ IOHelper::getString() };
-    std::cout << "Welcome, " << userName << '\n';
-    return Game { userName };
-}
-
-void Game::play()
-{
-    while (m_player.isAlive() && !m_player.hasWon())
-    {
-        Monster monster{ Monster::getRandomMonster() };
-        std::cout << "You have encountered a " << monster.name() << ".\n";
-        bool inEncounter{ true };
-        while (inEncounter)
-        {
-            Action action{ choosePlayerAction() };
-            inEncounter = (this->*action)(monster);
-            std::cout << '\n';
-        }
-    }
-}
-
-void Game::printResults()
-{
-    if (m_player.hasWon())
-        std::cout << "You won with " << m_player.gold() << " gold!";
-    else
-        std::cout << "You died at level " << m_player.level()
-                  << " and with " << m_player.gold() 
-                  << " gold.\nToo bad you can't take it with you!";
-}
-
-
-// private
-Game::Action Game::choosePlayerAction()
+bool Game::chooseResponse(Creature& creature)
 {
     while (true)
     {
@@ -52,49 +13,48 @@ Game::Action Game::choosePlayerAction()
         c = IOHelper::lowerCase(c);
         switch (c)
         {
-        case 'r': return playerActions[run];
-        case 'f': return playerActions[fight];
+        case 'r': return flee(creature);
+        case 'f': return fight(creature);
         }
         std::cout << "Invalid input.\n";
     }
 }
 
-bool Game::player_runFrom(Monster& monster)
+bool Game::flee(const Creature& creature)
 {
-    // 50% chance usr escapes
-    int x{ Random::get(0,1) };
-    if (x == 0)
+    // 50% chance user escapes
+    int x{ Random::get(0,99) };
+
+    if (x % 2 == 0)
     {
-        m_player.reduceHealth(monster.damage());
-        std::cout << "You failed to flee.\nThe " << monster.name()
-                  << " hit you for " << monster.damage() << " damage.";
-        return m_player.isAlive();
+        creature.attack(m_user);
+        std::cout << "You failed to flee.\nThe " << creature.name()
+                  << " hit you for " << creature.damage() << " damage.";
+        return m_user.isAlive();
     }
-    else
-    {
-        std::cout << "You successfully fled.";
-        return false;
-    }
+
+    std::cout << "You successfully fled.";
+    return false;
 }
 
-bool Game::player_fight(Monster& monster)
+bool Game::fight(Creature& creature)
 {
-    monster.reduceHealth(m_player.damage());
-    std::cout << "You hit the " << monster.name() << " for "
-              << m_player.damage() << " damage.\n";
+    m_user.attack(creature);
+    std::cout << "You hit the " << creature.name() << " for "
+              << m_user.damage() << " damage.\n";
 
-    if (!monster.isAlive())
+    if (!creature.isAlive())
     {
-        m_player.levelUp();
-        m_player.addGold(monster.gold());
-        std::cout << "You killed the " << monster.name()
-                  << ".\nYou are now level " << m_player.level()
-                  << ".\nYou found " << monster.gold() << " gold.";
+        m_user.levelUp();
+        m_user.addGold(creature.gold());
+        std::cout << "You killed the " << creature.name()
+                  << ".\nYou are now level " << m_user.level()
+                  << ".\nYou found " << creature.gold() << " gold.";
         return false;
     }
 
-    m_player.reduceHealth(monster.damage());
-    std::cout << "The " << monster.name() << " hit you for "
-              << monster.damage() << " damage.";
-    return m_player.isAlive();
+    creature.attack(m_user);
+    std::cout << "The " << creature.name() << " hit you for "
+              << creature.damage() << " damage.";
+    return m_user.isAlive();
 }
