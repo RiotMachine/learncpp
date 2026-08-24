@@ -5,7 +5,7 @@
 #include "Shape.h"
 #include <iostream>
 
-class Circle : public Shape
+class Circle final : public Shape
 {
 public:
     Circle(const Point2D& p, int radius)
