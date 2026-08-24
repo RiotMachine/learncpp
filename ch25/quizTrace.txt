@@ -1,0 +1,25 @@
+Each program 'should' print "Derived"
+
+1a)
+b.getName() will print "Base"
+Base::getName() is not virtual
+
+1b)
+b.getName() will print "Base"
+Derived::getName() const does not match the signature of Base::getName()
+
+1c)
+b.getName() will print "Base"
+b is now a Base, not a Base&. only the base portion of d will be copied
+
+1d)
+compile error.
+Base is declared final, cannot be inherited from
+
+1e)
+compile error
+Derived::getName() is declared pure virtual. a Derived cannot be instantiated
+
+1f)
+prints fine; ptr safety issue
+Base does not have a virtual destructor, so Derived portion is not freed
