@@ -8,8 +8,10 @@
 class Circle : public Shape
 {
 public:
-    Circle(Point2D p, int radius)
+    Circle(const Point2D& p, int radius)
       : m_center{ p }, m_radius{ radius } {}
+
+    int radius() const { return m_radius; }
 
 private:
     std::ostream& print(std::ostream& out) const override

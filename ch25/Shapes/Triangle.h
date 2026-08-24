@@ -8,7 +8,7 @@
 class Triangle : public Shape
 {
 public:
-    Triangle(Point2D p1, Point2D p2, Point2D p3)
+    Triangle(const Point2D& p1, const Point2D& p2, const Point2D& p3)
       : m_vertexOne{ p1 }, m_vertexTwo{ p2 }, m_vertexThree{ p3 } {}
 
 private:
