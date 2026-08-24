@@ -56,16 +56,17 @@ int main()
         new Circle   { {7,8}, 3 }
     };
 
-    std::vector<std::unique_ptr<Shape>> arrUnique(3);
+    std::vector<std::unique_ptr<Shape>> arrUnique;
+    arrUnique.reserve(3);
 
-    arrUnique[0] = std::make_unique<Circle>(
-        Point2D {1,2}, 7
+    arrUnique.push_back(
+        std::make_unique<Circle>(Point2D {1,2}, 7)
     );
-    arrUnique[1] = std::make_unique<Triangle>(
-        Point2D {1,2}, Point2D {3,4}, Point2D {5,6}
+    arrUnique.push_back(
+        std::make_unique<Triangle>(Point2D {1,2}, Point2D {3,4}, Point2D {5,6})
     );
-    arrUnique[2] = std::make_unique<Circle>(
-        Point2D {7,8}, 3
+    arrUnique.push_back(
+        std::make_unique<Circle>(Point2D {7,8}, 3)
     );
 
     printArr(arrUnique);
