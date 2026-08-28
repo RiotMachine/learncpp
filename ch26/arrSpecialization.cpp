@@ -1,6 +1,18 @@
 #include <iostream>
 #include <iomanip>
 
+class Arr2D
+{
+public:
+
+
+
+private:
+    int m_rows{ };
+    int m_cols{ };
+
+}
+
 template <int ROWS, int COLS, T typename>
 class Dynamic2D
 {
@@ -31,22 +43,36 @@ private:
     T** m_array{ nullptr };
 };
 
-void matrixAdd(const Dynamic2D& arr1, const Dynamic2D& arr2, int result[][COLS])
+template <int ROWS, int COLS, T typename>
+class Static2D
 {
-    for (int i{ }; i < ROWS; ++i)
-    {
-        for (int j{ }; j < COLS; ++j)
-            result[i][j] = arr1(i,j) + arr2(i,j);
-    }
+
+
+
+
+private:
+    int m_rows{ };
+    int m_cols{ };
+    T m_arr[ROWS][COLS}{ };
 }
 
-void matrixAdd(const int a[][COLS], const int b[][COLS], int result[][COLS])
+
+Arr2D add(const Arr2D& arr1, const Arr2D& arr2)
 {
-    for (int i{ }; i < ROWS; ++i)
+    assert (arr1.rows == arr2.rows);
+    assert (arr2.cols == arr2.cols);
+
+    int rows{ arr1.rows() };
+    int cols{ arr1.cols() };
+
+    Arr2D<rows,cols> result;
+    for (int i{ }; i < rows; ++i)
     {
-        for (int j{ }; j < COLS; ++j)
-            result[i][j] = a[i][j] + b[i][j];
+        for (int j{ }; j < cols; ++j)
+            result[i][j] = arr1(i,j) + arr2(i,j);
     }
+
+    return result;
 }
 
 void matrixTranspose(const int original[][COLS], int transpose[][ROWS])
@@ -93,11 +119,11 @@ int main()
     constexpr int rows{ 2 };
     constexpr int cols{ 3 };
 
-    int a[ROWS][COLS] = {
+    int a[][cols] = {
         {1, 2, 3},
         {4, 5, 6}
     };
-    int b[ROWS][COLS] = {
+    int b[][cols] = {
         {10, 20, 30},
         {40, 50, 60}
     };
