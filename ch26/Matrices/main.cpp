@@ -15,14 +15,14 @@ int main()
         {40, 50, 60}
     };
 
-    Matrix<int> a{ rows, cols, arr1 };
-    Matrix<int> b{ rows, cols, arr2};
+    Matrix<rows, cols, int> a{ arr1 };
+    Matrix<rows, cols, int> b{ arr2 };
 
     std::cout << "A:\n"           << a
               << "B:\n"           << b
               << "Sum (A+B):\n"   << a + b
               << "A Transpose:\n" << ~a
-              << "A x A^T:\n"      << a * ~a;
+              << "A x A^T:\n"     << a * ~a;
 
     return 0;
 }
