@@ -58,6 +58,17 @@ public:
         return sum;
     }
 
+    friend Matrix<COLS, ROWS, T> operator~(const Matrix& original)
+    {
+        Matrix<COLS, ROWS, T> transpose;
+        for (int i{ }; i < ROWS; ++i)
+        {
+            for (int j{ }; j < COLS; ++j)
+                transpose(j,i) = original(i,j);
+        }
+        return transpose;
+    }
+
     template <int N>
     friend Matrix<ROWS, N, T> operator*(const Matrix& arr1, const Matrix<COLS, N, T>& arr2)
     {
@@ -73,23 +84,12 @@ public:
         return product;
     }
 
-    friend Matrix<COLS, ROWS, T> operator~(const Matrix& original)
-    {
-        Matrix<COLS, ROWS, T> transpose;
-        for (int i{ }; i < ROWS; ++i)
-        {
-            for (int j{ }; j < COLS; ++j)
-                transpose(j,i) = original(i,j);
-        }
-        return transpose;
-    }
-
     friend std::ostream& operator<<(std::ostream& out, const Matrix& mtx)
     {
         for (int i{ }; i < ROWS; ++i)
         {
             for (int j{ }; j < COLS; ++j)
-                out << std::setw(5) << mtx(i,j);
+                out << mtx(i,j) << "    ";
             out << '\n';
         }
         return out;

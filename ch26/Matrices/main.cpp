@@ -18,11 +18,11 @@ int main()
     Matrix<rows, cols, int> a{ arr1 };
     Matrix<rows, cols, int> b{ arr2 };
 
-    std::cout << "A:\n"           << a
-              << "B:\n"           << b
-              << "Sum (A+B):\n"   << a + b
-              << "A Transpose:\n" << ~a
-              << "A x A^T:\n"     << a * ~a;
+    std::cout << "A:\n"      << a      << '\n'
+              << "B:\n"      << b      << '\n'
+              << "A+B:\n"    << a + b  << '\n'
+              << "~A:\n"     << ~a     << '\n'
+              << "A * ~A:\n" << a * ~a;
 
     return 0;
 }
