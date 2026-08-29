@@ -69,7 +69,7 @@ inline std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, T>&
 }
 
 template <int ROWS, int COLS>
-inline std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, double>& arr)
+std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, double>& arr)
 {
     IOHelper::OStreamSaver streamState{ out };
     out << std::setprecision(4);
