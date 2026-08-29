@@ -1,100 +1,141 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <algorithm>
+#include <cassert>
+#include <iomanip>
+#include <iostream>
+
 template <typename T>
 class Matrix
 {
 public:
-    Matrix(
+    Matrix() = default;
+
+    Matrix(int rows, int cols)
+      : m_rows{ rows }, m_cols{ cols },
+        m_data{ new T[static_cast<std::size_t>(rows*cols)] { } } {}
+
+    template <std::size_t N>
+    Matrix(int rows, int cols, const T (*data)[N])
+      : Matrix(rows, cols)
+    {
+        for (int i{ }; i < rows; ++i)
+        {
+            for (int j{ }; j < cols; ++j)
+                (*this)(i,j) = data[i][j];
+        }
+    }
+
+    Matrix(const Matrix& mtx)
+      : Matrix(mtx.rows(), mtx.cols())
+    {
+         std::copy_n(mtx.m_data, m_rows*m_cols, m_data);
+    }
+
+    void clear()
+    {
+        delete[] m_data;
+        m_data = nullptr;
+        m_rows = 0;
+        m_cols = 0;
+    }
+
+    void reallocate(int newRows, int newCols)
+    {
+        clear();
+        m_rows = newRows;
+        m_cols = newCols;
+        m_data = new T[static_cast<std::size_t>(newRows*newCols)] { };
+    }
+
+    Matrix& operator=(const Matrix& mtx)
+    {
+        if (&mtx == this)
+            return *this;
+
+        reallocate(mtx.rows(), mtx.cols());
+        std::copy_n(mtx.m_data, m_rows*m_cols, m_data);
+
+        return *this;
+    }
+
+    ~Matrix() { delete[] m_data; }
 
     T& operator()(int row, int col)
     {
-        return m_array[row * cols + col];
+        return m_data[row * m_cols + col];
     }
     const T& operator()(int row, int col) const
     {
-        return m_array[row * self()->cols + col];
+        return m_data[row * m_cols + col];
     }
 
-    friend Matrix operator+(const Matrix& arr1, const Matrix& arr2)
-    {
-        Arr2D sum{ arr1.rows(), arr1.cols() };
-        for (int i{ }; i < ROWS; ++i)
-        {
-            for (int j{ }; j < COLS; ++j)
-                sum(i,j) = arr1(i,j) + arr2(i,j);
-        }
-        return sum;
-    }
-
-    friend Arr2D operator*(const Arr2D& arr1, const Arr2D& arr2)
-    {
-        int rows{ arr1.rows() };
-        int cols{ arr2.cols() };
-        const int innerLen{ arr1.cols() };
-
-        Arr<rows, cols> product;
-
-        for (int i{ }; i < rows; ++i)
-        {
-            for (int j{ }; j < cols; ++j)
-            {
-                for (int k{ }; k < innerLen; ++k)
-                    product[i][j] += arr1[i][k] * arr2[k][j];
-            }
-        }
-    }
-
-    friend Arr2D operator~(const Arr2D&)
-    {
-        Arr2D<cols, rows> transpose;
-        for (int i{ }; i < rows; ++i)
-        {
-            for (int j{ }; j < cols; ++j)
-                transpose[j][i] = original[i][j];
-        }
-    }
-
-    friend std::ostream& operator<<(std::ostream& out, const Arr2D
-    {
-        for (int i{ }; i < rows; ++i)
-        {
-            for (int j{ }; j < N; ++j)
-                std::cout << std::setw(5) << arr[i][j];
-            std::cout << '\n';
-        }
-    }
-
-    int rows() { return ROWS; }
-    int cols() { return COLS; }
+    int rows() const { return m_rows; }
+    int cols() const { return m_cols; }
 
 private:
-    T m_matrix[ROWS*COLS]{ };
+    int m_rows{ };
+    int m_cols{ };
+    T* m_data{ };
 };
-
 
 template <typename T>
-class Dynamic2D : Arr2D<Dynamic2D, T>
+inline Matrix<T> operator+(const Matrix<T>& arr1, const Matrix<T>& arr2)
 {
-public:
-    Dynamic2D()
-      : m_array{ new T*[ROWS * COLS] } {}
+    assert(arr1.rows() == arr2.rows());
+    assert(arr1.cols() == arr2.cols());
+    Matrix<T> sum(arr1.rows(), arr1.cols());
 
-    ~Dynamic2D() { delete[] m_array; }
-
-    Arr2D(const Arr2D& d) = delete;
-    Arr2D& operator=(const Dynamic2D& d) = delete;
-
-private:
-    T* m_array{ };
-};
-
+    for (int i{ }; i < sum.rows(); ++i)
+    {
+        for (int j{ }; j < sum.cols(); ++j)
+            sum(i,j) = arr1(i,j) + arr2(i,j);
+    }
+    return sum;
+}
 
 template <typename T>
-class Static2D : Matrix
+inline Matrix<T> operator*(const Matrix<T>& arr1, const Matrix<T>& arr2)
 {
-private:
-    T m_array[ROWS*COLS]{ }
-};
+    assert(arr1.cols() == arr2.rows());
+    Matrix<T> product(arr1.rows(), arr2.cols());
+    const int terms{ arr1.cols() };
+
+    for (int i{ }; i < product.rows(); ++i)
+    {
+        for (int j{ }; j < product.cols(); ++j)
+        {
+            for (int k{ }; k < terms; ++k)
+                product(i,j) += arr1(i,k) * arr2(k,j);
+        }
+    }
+    return product;
+}
+
+template <typename T>
+inline Matrix<T> operator~(const Matrix<T>& original)
+{
+    Matrix<T> transpose(original.cols(), original.rows());
+
+    for (int i{ }; i < transpose.rows(); ++i)
+    {
+        for (int j{ }; j < transpose.cols(); ++j)
+            transpose(i,j) = original(j,i);
+    }
+    return transpose;
+}
+
+template <typename T>
+inline std::ostream& operator<<(std::ostream& out, const Matrix<T>& mtx)
+{
+    for (int i{ }; i < mtx.rows(); ++i)
+    {
+        for (int j{ }; j < mtx.cols(); ++j)
+            out << std::setw(5) << mtx(i,j);
+        out << '\n';
+    }
+    return out;
+}
 
 #endif

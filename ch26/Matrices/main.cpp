@@ -1,26 +1,28 @@
+#include "Matrix.h"
+#include <iostream>
+
 int main()
 {
     constexpr int rows{ 2 };
     constexpr int cols{ 3 };
 
-    int a[][cols] = {
+    int arr1[][cols] = {
         {1, 2, 3},
         {4, 5, 6}
     };
-    int b[][cols] = {
+    int arr2[][cols] = {
         {10, 20, 30},
         {40, 50, 60}
     };
 
-    std::cout << "A:\n"           << a      << '\n'
-              << "B:\n"           << b      << '\n'
-              << "Sum (A+B):\n"   << a + b  << '\n'
-              << "A Transpose:\n" << ~a     << '\n'
-              << "A x A^T\n"      << a * ~a << '\n';
+    Matrix<int> a{ rows, cols, arr1 };
+    Matrix<int> b{ rows, cols, arr2};
 
-    Dynamic2D<int, rows, cols> dynArr1{ };
-    Dynamic2D<int, rows, cols> dynArr2{ };
-    print(add(dynArr1, dynArr2), "Heap Sum");
+    std::cout << "A:\n"           << a
+              << "B:\n"           << b
+              << "Sum (A+B):\n"   << a + b
+              << "A Transpose:\n" << ~a
+              << "A x A^T:\n"      << a * ~a;
 
     return 0;
 }
