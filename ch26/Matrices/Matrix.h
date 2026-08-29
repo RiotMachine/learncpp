@@ -2,6 +2,7 @@
 #define MATRIX_H
 
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 
 template <int ROWS, int COLS, typename T>
@@ -10,7 +11,7 @@ class Matrix
 public:
     Matrix() = default;
 
-    template <std::size_t N>
+    template <int N>
     explicit Matrix(const T (*data)[N])
     {
         for (int i{ }; i < ROWS; ++i)
@@ -37,10 +38,14 @@ public:
 
     T& operator()(int row, int col)
     {
+        assert(row >= 0 && row < ROWS);
+        assert(col >= 0 && col < COLS);
         return m_data[row * COLS + col];
     }
     const T& operator()(int row, int col) const
     {
+        assert(row >= 0 && row < ROWS);
+        assert(col >= 0 && col < COLS);
         return m_data[row * COLS + col];
     }
 
