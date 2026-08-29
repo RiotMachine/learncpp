@@ -1,53 +1,17 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <algorithm>
-#include <cassert>
-#include <iostream>
+#include "Array2D.h"
 
 template <int ROWS, int COLS, typename T>
-class Matrix
+class Matrix : public Array2D<ROWS, COLS, T>
 {
 public:
     Matrix() = default;
-
+    
     template <int N>
     explicit Matrix(const T (*data)[N])
-    {
-        for (int i{ }; i < ROWS; ++i)
-        {
-            for (int j{ }; j < COLS; ++j)
-                (*this)(i,j) = data[i][j];
-        }
-    }
-
-    Matrix(const Matrix& mtx)
-    {
-        std::copy_n(mtx.m_data, ROWS*COLS, m_data);
-    }
-
-    Matrix& operator=(const Matrix& mtx)
-    {
-        if (&mtx == this)
-            return *this;
-        std::copy_n(mtx.m_data, ROWS*COLS, m_data);
-        return *this;
-    }
-
-    ~Matrix() = default;
-
-    T& operator()(int row, int col)
-    {
-        assert(row >= 0 && row < ROWS);
-        assert(col >= 0 && col < COLS);
-        return m_data[row * COLS + col];
-    }
-    const T& operator()(int row, int col) const
-    {
-        assert(row >= 0 && row < ROWS);
-        assert(col >= 0 && col < COLS);
-        return m_data[row * COLS + col];
-    }
+      : Array2D<ROWS, COLS, T>(data) {}
 
     friend Matrix operator+(const Matrix& arr1, const Matrix& arr2)
     {
@@ -85,20 +49,6 @@ public:
         }
         return product;
     }
-
-    friend std::ostream& operator<<(std::ostream& out, const Matrix& mtx)
-    {
-        for (int i{ }; i < ROWS; ++i)
-        {
-            for (int j{ }; j < COLS; ++j)
-                out << mtx(i,j) << "    ";
-            out << '\n';
-        }
-        return out;
-    }
-
-private:
-    T m_data[ROWS*COLS] { };
 };
 
 #endif
