@@ -2,7 +2,6 @@
 #define MATRIX_H
 
 #include <algorithm>
-#include <iomanip>
 #include <iostream>
 
 template <int ROWS, int COLS, typename T>
@@ -23,16 +22,14 @@ public:
 
     Matrix(const Matrix& mtx)
     {
-         std::copy_n(mtx.m_data, ROWS*COLS, m_data);
+        std::copy_n(mtx.m_data, ROWS*COLS, m_data);
     }
 
     Matrix& operator=(const Matrix& mtx)
     {
         if (&mtx == this)
             return *this;
-
         std::copy_n(mtx.m_data, ROWS*COLS, m_data);
-
         return *this;
     }
 
@@ -96,7 +93,7 @@ public:
     }
 
 private:
-    T m_data[ROWS*COLS]{ };
+    T m_data[ROWS*COLS] { };
 };
 
 #endif
