@@ -21,7 +21,15 @@ int main()
               << "B:\n"      << b       << '\n'
               << "A+B:\n"    << a + b   << '\n'
               << "~A:\n"     << ~a      << '\n'
-              << "A * ~A:\n" << a * ~a;
+              << "A * ~A:\n" << a * ~a  << '\n';
+
+    double arr3[][cols] {
+        {5,  1.2, 7.8888},
+        {23, 19, -0.0067}
+    };    
+    
+    Matrix c{ arr3 };
+    std::cout << "C:\n" << c;
 
     return 0;
 }

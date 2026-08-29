@@ -1,8 +1,10 @@
 #ifndef ARRAY2D_H
 #define ARRAY2D_H
 
+#include "IOHelper.h"
 #include <algorithm>
 #include <cassert>
+#include <iomanip>
 #include <iostream>
 
 template <int ROWS, int COLS, typename T>
@@ -66,4 +68,17 @@ inline std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, T>&
     return out;
 }
 
+template <int ROWS, int COLS>
+inline std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, double>& arr)
+{
+    IOHelper::OStreamSaver streamState{ out };
+    out << std::setprecision(4);
+    for (int i{ }; i < ROWS; ++i)
+    {
+        for (int j{ }; j < COLS; ++j)
+            out << arr(i,j) << "    ";
+        out << '\n';
+    }
+    return out;
+}
 #endif
