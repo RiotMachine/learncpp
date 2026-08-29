@@ -3,7 +3,6 @@
 
 int main()
 {
-    constexpr int rows{ 2 };
     constexpr int cols{ 3 };
 
     int arr1[][cols] {
@@ -15,8 +14,8 @@ int main()
         {40, 50, 60}
     };
 
-    Matrix<rows, cols, int> a{ arr1 };
-    Matrix<rows, cols, int> b{ arr2 };
+    Matrix a{ arr1 };
+    Matrix b{ arr2 };
 
     std::cout << "A:\n"      << a       << '\n'
               << "B:\n"      << b       << '\n'

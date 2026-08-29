@@ -11,8 +11,9 @@ class Array2D
 public:
     Array2D() = default;
 
-    template <int N>
-    explicit Array2D(const T (*data)[N])
+    // T (&data)[M][N] - reference to an array of M rows of N Ts
+    // T &data[M][N]   - an array of M rows of N T&
+    explicit Array2D(const T (&data)[ROWS][COLS])
     {
         for (int i{ }; i < ROWS; ++i)
         {

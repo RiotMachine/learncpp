@@ -9,8 +9,7 @@ class Matrix : public Array2D<ROWS, COLS, T>
 public:
     Matrix() = default;
     
-    template <int N>
-    explicit Matrix(const T (*data)[N])
+    explicit Matrix(const T (&data)[ROWS][COLS])
       : Array2D<ROWS, COLS, T>(data) {}
 
     friend Matrix operator+(const Matrix& arr1, const Matrix& arr2)
