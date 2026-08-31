@@ -65,4 +65,19 @@ std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, double>& a
     }
     return out;
 }
+
+template <int ROWS, int COLS>
+std::ostream& operator<<(std::ostream& out, const Array2D<ROWS, COLS, bool>& arr)
+{
+    IOHelper::OStreamSaver streamState{ out };
+    out << std::boolalpha;
+    for (int i{ }; i < ROWS; ++i)
+    {
+        for (int j{ }; j < COLS; ++j)
+            out << arr(i,j) << "    ";
+        out << '\n';
+    }
+    return out;
+}
+
 #endif

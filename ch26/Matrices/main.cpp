@@ -26,10 +26,17 @@ int main()
     double arr3[][cols] {
         {5,  1.2, 7.8888},
         {23, 19, -0.0067}
+    };
+
+    bool arr4[][cols] {
+        {0, 1, 1},
+        {1, 0, 0}
     };    
     
     Matrix c{ arr3 };
-    std::cout << "C:\n" << c;
+    Matrix d{ arr4 };
+    std::cout << "C:\n" << c << '\n';
+    std::cout << "D:\n" << d;
 
     return 0;
 }
