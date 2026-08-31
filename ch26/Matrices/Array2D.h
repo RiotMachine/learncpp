@@ -2,7 +2,6 @@
 #define ARRAY2D_H
 
 #include "IOHelper.h"
-#include <algorithm>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -23,21 +22,6 @@ public:
                 (*this)(i,j) = data[i][j];
         }
     }
-
-    Array2D(const Array2D& arr)
-    {
-        std::copy_n(arr.m_data, ROWS*COLS, m_data);
-    }
-
-    Array2D& operator=(const Array2D& arr)
-    {
-        if (&arr == this)
-            return *this;
-        std::copy_n(arr.m_data, ROWS*COLS, m_data);
-        return *this;
-    }
-
-    ~Array2D() = default;
 
     T& operator()(int row, int col)
     {
