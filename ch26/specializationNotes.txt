@@ -1,0 +1,19 @@
+Specialization generally
+  specializations must occur after the base template
+  prefer function overloading over function template specialization
+  specialization of member function implicitly specializes entire class
+  if member functions are specialized separately, compiler copies over remaining class boilerplate
+  inheritance from a base is one way to avoid boilerplate when doing partial class specialization
+
+Partial specialization
+  implicitly inline
+  only legal for class definitions
+  not legal for functions or member functions
+
+Full specialization
+  not implicitly inline
+  legal for both functions && class definitions
+
+Other
+  this referring to templated parent should not be implicit (use 'this->parent_item')
+
