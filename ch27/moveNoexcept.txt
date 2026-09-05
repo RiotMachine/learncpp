@@ -1,0 +1,24 @@
+noexcept
+  keyword that guarantees a function will not leak an exception
+noexcept(arg)
+  a function that returns whether the compiler thinks arg could throw
+
+implicitly noexcept
+  destructors
+  default or implicit constructors and assignment operators
+should always be noexcept
+  move constructors
+  move assignment
+  swap functions
+make noexcept if you can
+  copy constructors
+  copy assignment
+
+constructors should uphold the strong exception guarantee, meaning if they throw
+  no memory leaks
+  pre-call program state preservation
+
+std::move_if_noexcept
+  return r-value cast if object has a noexcept move constructor (or no copy semantics)
+  return l-value reference otherwise
+  used to preserve program state while providing for move semantics
