@@ -2,10 +2,11 @@
 
 int factorial(int start)
 {
-    if (start < 1)
+    if (start < 0)
         return 0;
-    else if (start == 1)
-        return start;
+    // 0! == 1
+    else if (start < 2)
+        return 1;
     else
         return start * factorial(start-1);
 }
