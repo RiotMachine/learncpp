@@ -1,0 +1,83 @@
+basics
+  definition
+    a sequence of bites accessed sequentially
+    consumers/producers include keyboard, monitor, files, network
+  standard streams
+    cin
+    cout
+    cerr
+  operators
+    insertion:  <<
+    extraction: >>
+
+
+functions
+  .ignore(int, char)
+      clears int chars from buffer, or until char is encountered
+  .get(dest, len), .getline(dest, len), std::getline(origin_stream, destination)
+      all break at newline
+      newline variants consume newline
+  .clear
+      sets all flags to default state
+    
+
+flags
+  boolean variables that determine stream operation
+  setters
+    on            - setf(flag)
+    on, group off - setf(flag, group)
+    off           - unsetf(flag)
+
+
+manipulators
+  input like regular stream values
+  automatically turn on/off relevant flags
+
+
+manipulators-of-note
+  std::ws
+      ignore leading whitespace
+
+  width
+      std::setw(int) / .width(int)
+        set insertion/extraction width
+        not sticky
+      std::setfill(char) / .fill(char)
+
+  alignment
+      std::left
+      std::right (default)
+      std::internal - left-justifies sign, right-justifies val
+
+  number formatting
+      truncation done by rounding
+      default state
+        flip/flops between scientific and regular notation 
+        precision = 6
+      std::ios::fixed
+        no scientific notation
+      std::ios::scientific
+        scientific notation-only
+      std::ios::showpoint
+        always have decimal point
+      std::setprecision(int) / .precision(int)
+        default          - int = max sigfigs
+        fixed/scientific - int = number of digits following decimal
+        showpoint        - int = num of sigfigs with padding if needed
+
+
+stream states - member functions return whether bit is set
+  goodbit / good()
+  badbit  / bad()
+    fatal error occured
+  eofbit  / eof()
+  failbit / fail()
+    non-fatal error (user extracted chars to int)
+  stream operations are ignored if anything other than goodbit is set
+
+
+stringstream
+  stream not connected to an I/O channel
+  will perform type conversion during insertion/extraction
+  operator<< breaks on whitespace, .str() returns contents including ws
+  .str(str) sets buffer value
