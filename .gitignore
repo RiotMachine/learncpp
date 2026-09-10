@@ -6,6 +6,7 @@
 !*.txt
 
 brainstorming.txt
+test.txt
 
 ## VS Code
 .vscode/*
